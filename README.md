@@ -111,7 +111,7 @@ Consultez le [site web](https://candicevialette.github.io/html/public_html/) pou
 - [Documentation MDN HTML](https://developer.mozilla.org/fr/docs/Web/HTML)
 - [W3Schools HTML Guide](https://www.w3schools.com/html/)
 - [Tutoriel vidéo sur YouTube pour les débutants](https://www.youtube.com/watch?v=pQN-pnXPaVg)
-- [FreeCodeCamp : Cours HTML Gratuit](https://www.freecodecamp.org/learn/
+- [FreeCodeCamp : Cours HTML Gratuit](https://www.freecodecamp.org/learn/)
 ---
 
 ## 🌍 **Licence**

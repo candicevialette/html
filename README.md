@@ -9,13 +9,13 @@ Cet atelier est conçu pour aider les débutants à se familiariser avec la stru
 ---
 ## 📚 **Qu'est-ce que le HTML ?**
 
-**Cisco Packet Tracer** est un simulateur de réseau développé par Cisco, conçu pour créer, configurer et simuler des réseaux en environnement virtuel. C'est un outil puissant pour :
+**HTML** (**H**yper**T**ext **M**arkup **L**anguage) est le langage standard pour structurer et présenter le contenu sur le web. Il est essentiel pour :
 
-- **Apprendre et pratiquer la configuration des équipements réseau**.
-- **Diagnostiquer des problèmes de connectivité**.
-- **Analyser le fonctionnement des protocoles réseau**.
-- **Simuler des scénarios de réseau complexes**.
-- **Former et éduquer sur les concepts de réseau et les technologies Cisco**.
+- **Créer des pages web et organiser le contenu.**.
+- **Structurer le texte avec des titres, paragraphes, et listes.**.
+- **Intégrer des images, des vidéos et des liens.**.
+- **Définir la structure des formulaires et des tableaux.**.
+- **Servir de base pour les langages complémentaires comme CSS et JavaScript.**.
   
 ### 🔗 **Fonctionnalités Principales de Cisco Packet Tracer**
 
@@ -27,27 +27,35 @@ Cet atelier est conçu pour aider les débutants à se familiariser avec la stru
 ## 📂 **Structure du Dépôt**
 
 ```
-📂 decouverte-packet-tracer/
+📂 html/
 |
 ├── 📂 image/
-│   ├── Bloc1_sem1-atelier_01_VIALET...
-│   └── Bloc1_sem1-atelier_01_VIALET...
-|
-├── 📂 nbproject/
-│   ├── Bloc1_sem1-atelier_01_Activite...
-│   ├── Bloc1_sem1-atelier_01_Activite...
-│   └── Bloc1_sem1-atelier_01_Activite...
-|
-├── 📂 public_html/
+│   ├── image.png
 │   └── background.png
 |
+├── 📂 nbproject/
+│   ├── project.properties
+│   └── project.xml
+|
+├── 📂 public_html/
+│   ├── index.html
+│   ├── TP03.html
+│   ├── TP03_Exo1.html
+│   ├── TP03_Exo2.html
+│   └── TP03_Exo3.html
+|
+├── .bowerrc
+├── Gruntfile.js
+├── bower.json
+├── bower.json
+├── gulpfile.js
+├── package.json
 └── README.md
 ```
 ---
 
 ## ⚙️ **Prérequis**
 Aucune connaissance préalable en programmation n'est requise. Un éditeur de texte et un navigateur web suffisent pour commencer.
-
 ---
 
 ## 🚀 **Mise en Œuvre**
@@ -60,12 +68,12 @@ git clone https://github.com/candicevialette/html.git
 
 ### 2. **Parcourir la Documentation**
 
-Consultez le dossier `documentation/` pour des guides d'analyse détaillés.
+Consultez le [site web]([[https://candicevialette.github.io/html/public_html/]]) pour des guides détaillés.
 
 ### 3. **Explorer les dossiers**
-public_html/ : Contient les fichiers HTML principaux.
-image/ : Inclut les images utilisées dans les exemples.
-documentation/ : Fournit des guides et des ressources supplémentaires.
+public_html/ : Contient les fichiers HTML principaux et les pages web.
+image/ : Inclut les images utilisées.
+
 
 
 

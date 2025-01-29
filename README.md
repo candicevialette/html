@@ -68,7 +68,7 @@ git clone https://github.com/candicevialette/html.git
 
 ### 2. **Parcourir la Documentation**
 
-Consultez le [site web]([[https://candicevialette.github.io/html/public_html/]]) pour des guides détaillés.
+Consultez le (site web)[https://candicevialette.github.io/html/public_html/] pour des guides détaillés.
 
 ### 3. **Explorer les dossiers**
 ***public_html/ :***
@@ -85,7 +85,7 @@ background.png : Image utilisée en arrière-plan des pages HTML.
 nbproject/ :
 Contient les métadonnées du projet, spécifiques aux environnements de développement NetBeans.
 
-***project.properties et project.xml : ***
+***project.properties et project.xml :***
 Fichiers de configuration du projet.
 
 ***Fichiers de configuration (à la racine) :***
@@ -97,23 +97,13 @@ package.json : Fichier de configuration pour gérer les dépendances Node.js.
 Fichier principal pour la documentation du projet. Contient les instructions et les explications relatives au contenu du dépôt.
 ---
 
-## 👉 **Fonctionnalités Clés de Cisco Packet Tracer**
-- **Création de réseaux virtuels** : Construisez des topologies réseau complètes avec des routeurs, commutateurs et autres équipements Cisco.
-- **Simulation de protocoles réseau** : Expérimentez avec des protocoles comme **ICMP**, **TCP**, **UDP**, **HTTP**, **FTP**.
-- **Outils de diagnostic** : Utilisez les commandes `ping`, `traceroute` et d'autres outils pour dépanner les réseaux.
-- **Configuration des services** : Apprenez à configurer **DHCP**, **DNS**, **NAT**, et d'autres services essentiels.
-- **Prise en charge des réseaux sans fil** : Simulez des réseaux Wi-Fi avec des points d'accès et des appareils mobiles.
-- **Simulation d'IoT** : Intégrez et configurez des appareils connectés pour des scénarios de maison intelligente.
-
----
-
 ## 💡 **Bonnes Pratiques**
 
-- **Sauvegardez régulièrement vos configurations** pour éviter toute perte de données.
-- **Utilisez Utilisez des annotations** pour documenter vos topologies réseau.
-- **Testez différents scénarios** pour comprendre le comportement des protocoles.
-- **Expérimentez avec des erreurs de configuration** pour améliorer vos compétences en dépannage.
-
+- **Enregistrez fréquemment vos fichiers HTML** pour éviter toute perte de modifications importantes.
+- **Utilisez des commentaires dans le code** pour documenter vos sections et faciliter la compréhension.
+- **Expérimentez différents styles avec CSS** pour mieux comprendre l'impact de la mise en forme sur les éléments HTML.
+- **Validez vos fichiers HTML avec un validateur** pour assurer une conformité aux standards.
+- **Testez vos pages web sur différents navigateurs**pour garantir leur compatibilité.
 ---
 
 ## 📚 **Ressources Utiles**

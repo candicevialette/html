@@ -68,7 +68,7 @@ git clone https://github.com/candicevialette/html.git
 
 ### 2. **Parcourir la Documentation**
 
-Consultez le (site web)[https://candicevialette.github.io/html/public_html/] pour des guides détaillés.
+Consultez le (site web)([https://candicevialette.github.io/html/public_html/]) pour des guides détaillés.
 
 ### 3. **Explorer les dossiers**
 ***public_html/ :***
@@ -108,7 +108,7 @@ Fichier principal pour la documentation du projet. Contient les instructions et 
 
 ## 📚 **Ressources Utiles**
 
-- [Cours sur le HTML]([https://developer.mozilla.org/fr/docs/Web/HTML])
+- [Cours sur le HTML]([https://candicevialette.github.io/html/public_html/TP03_Exo1.html])
 ---
 
 ## 🌍 **Licence**

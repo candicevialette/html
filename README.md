@@ -43,6 +43,7 @@ Ce dépôt contient des ressources pour apprendre et maîtriser le langage HTML.
 │   ├── TP03.html
 │   ├── TP03_Exo1.html
 │   ├── TP03_Exo2.html
+│   ├── CV.html
 │   └── TP03_Exo3.html
 |
 ├── .bowerrc
@@ -57,7 +58,7 @@ Ce dépôt contient des ressources pour apprendre et maîtriser le langage HTML.
 
 ## ⚙️ **Prérequis**
 - Aucun prérequis technique n'est nécessaire.
-- Utilisez un éditeur de texte comme VS Code, Sublime Text ou Notepad++.
+- Utilisez un éditeur de texte comme VS Code, Netbeans ou Notepad++.
 - Un navigateur web moderne pour prévisualiser vos pages HTML.
 
 ---
@@ -78,6 +79,7 @@ Consultez le [site web](https://candicevialette.github.io/html/public_html/) pou
 
 - **`public_html/`** : Contient les principaux fichiers HTML du projet.
   - `index.html` : Page d'accueil du projet HTML.
+  -  `cv.html` : CV.
   - `TP03.html` : Fichier regroupant le contenu d'un exercice spécifique.
   - `TP03_Exo1.html`, `TP03_Exo2.html`, `TP03_Exo3.html` : Pages dédiées aux exercices pratiques.
 

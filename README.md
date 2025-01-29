@@ -71,12 +71,30 @@ git clone https://github.com/candicevialette/html.git
 Consultez le [site web]([[https://candicevialette.github.io/html/public_html/]]) pour des guides détaillés.
 
 ### 3. **Explorer les dossiers**
-public_html/ : Contient les fichiers HTML principaux et les pages web.
-image/ : Inclut les images utilisées.
+***public_html/ :***
+Contient les principaux fichiers HTML du projet. Vous y trouverez :
 
+***index.html : Page d'accueil du projet HTML.***
+TP03.html : Fichier regroupant le contenu d'un exercice spécifique.
+TP03_Exo1.html, TP03_Exo2.html, TP03_Exo3.html : Pages dédiées aux exercices pratiques pour explorer des concepts HTML particuliers.
 
+***image/ :***
+Ce dossier stocke les ressources visuelles utilisées dans le projet :
+image.png : Illustration pour les exemples ou la présentation.
+background.png : Image utilisée en arrière-plan des pages HTML.
+nbproject/ :
+Contient les métadonnées du projet, spécifiques aux environnements de développement NetBeans.
 
+***project.properties et project.xml : ***
+Fichiers de configuration du projet.
 
+***Fichiers de configuration (à la racine) :***
+.bowerrc, bower.json : Fichiers de configuration pour le gestionnaire de dépendances Bower.
+Gruntfile.js et gulpfile.js : Scripts pour automatiser des tâches comme la compilation ou la minification des fichiers.
+package.json : Fichier de configuration pour gérer les dépendances Node.js.
+
+***README.md :***
+Fichier principal pour la documentation du projet. Contient les instructions et les explications relatives au contenu du dépôt.
 ---
 
 ## 👉 **Fonctionnalités Clés de Cisco Packet Tracer**

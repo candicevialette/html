@@ -110,7 +110,8 @@ Consultez le [site web](https://candicevialette.github.io/html/public_html/) pou
 - [Cours sur le HTML](https://candicevialette.github.io/html/public_html/TP03_Exo1.html)
 - [Documentation MDN HTML](https://developer.mozilla.org/fr/docs/Web/HTML)
 - [W3Schools HTML Guide](https://www.w3schools.com/html/)
-
+- [Tutoriel vidéo sur YouTube pour les débutants](https://www.youtube.com/watch?v=pQN-pnXPaVg)
+- [FreeCodeCamp : Cours HTML Gratuit](https://www.freecodecamp.org/learn/
 ---
 
 ## 🌍 **Licence**

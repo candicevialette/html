@@ -32,37 +32,51 @@ ul {
 
 .section {
     margin-bottom: 20px;
-   .button {
-   border-top: 1px solid #451d0c;
-   background: #cc8446;
-   background: -webkit-gradient(linear, left top, left bottom, from(#7d4e23), to(#cc8446));
-   background: -webkit-linear-gradient(top, #7d4e23, #cc8446);
-   background: -moz-linear-gradient(top, #7d4e23, #cc8446);
-   background: -ms-linear-gradient(top, #7d4e23, #cc8446);
-   background: -o-linear-gradient(top, #7d4e23, #cc8446);
-   padding: 14px 28px;
-   -webkit-border-radius: 21px;
-   -moz-border-radius: 21px;
-   border-radius: 21px;
-   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
-   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
-   box-shadow: rgba(0,0,0,1) 0 1px 0;
-   text-shadow: rgba(0,0,0,.4) 0 1px 0;
-   color: #332206;
-   font-size: 18px;
-   font-family: Helvetica, Arial, Sans-Serif;
-   text-decoration: none;
-   vertical-align: middle;
-   }
-.button:hover {
-   border-top-color: #8f501a;
-   background: #8f501a;
-   color: #d2bae8;
-   }
-.button:active {
-   border-top-color: #19939c;
-   background: #19939c;
-   }
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Button Example</title>
+  <style>
+    body {
+      background-color: #4d4d4d; /* Gris foncé pour correspondre à l'arrière-plan */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .button {
+      background-color: #cc7a1d; /* Orange pour le fond */
+      color: #1a1a1a; /* Couleur du texte */
+      font-size: 18px;
+      font-family: Arial, sans-serif;
+      border: none;
+      border-radius: 25px;
+      padding: 10px 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Effet d'ombre */
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Accentuation de l'ombre */
+    }
+
+    .button:active {
+      transform: scale(0.95);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <button class="button">View the CSS</button>
+</body>
+</html>
+
 }</body
     </style>
 </head>

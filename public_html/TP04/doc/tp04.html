@@ -1,64 +1,58 @@
 <!DOCTYPE html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TP4 : Les Liens en HTML</title>
+    <title>Page d'accueil</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+       <link rel="stylesheet" href="style.css">
+        .image-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .image-container img {
+            width: 74px;
+            height: 60px;
+            background-color: #ccc;
+            display: block;
+            border: 1px solid #999;
+        }
+
+        .description {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>TP4 : Les Liens en HTML</h1>
-        <h2>Apprenez à créer des hyperliens et à organiser un projet web</h2>
+        <h1>Page d'accueil</h1>
     </header>
-    <main>
-        <section>
-            <h2>Description</h2>
-            <p>
-                Ce projet vous guide pour créer des pages web liées entre elles. Vous apprendrez à organiser les fichiers et à créer des liens interactifs.
-            </p>
-        </section>
 
-        <section>
-            <h2>Les Cours</h2>
-            <div>
-                <a href="html.html" class="course-link">
-                    <img src="images/html.png" alt="Cours HTML">
-                    <p>Apprenez les bases du HTML</p>
-                </a>
+    <div class="image-container">
+        <img src="https://raw.githubusercontent.com/candicevialette/html/master/TP04/images/image_js.png" alt width="250">
+       <img src="https://raw.githubusercontent.com/candicevialette/html/master/TP04/images/image_css.png" alt width="250">
+       <img src="https://raw.githubusercontent.com/candicevialette/html/master/TP04/images/image_html.png" alt width="250">
+    </div>
 
-                <a href="css.html" class="course-link">
-                    <img src="images/css.png" alt="Cours CSS">
-                    <p>Explorez les styles avec CSS</p>
-                </a>
+    <div class="description">
+        <p>Descriptif du cours</p>
+    </div>
 
-                <a href="js.html" class="course-link">
-                    <img src="images/js.png" alt="Cours JavaScript">
-                    <p>Initiez-vous au JavaScript</p>
-                </a>
-            </div>
-        </section>
-
-        <section>
-            <h2>Accès Rapide</h2>
-            <ul>
-                <li><a href="#description">Voir la description</a></li>
-                <li><a href="#cours">Voir les cours</a></li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>À faire</h2>
-            <p>
-                1. Créez l'arborescence du projet comme décrit dans le TP.<br>
-                2. Ajoutez les fichiers nécessaires (images, styles, scripts).<br>
-                3. Implémentez les pages pour chaque cours avec des contenus interactifs.
-            </p>
-        </section>
-    </main>
-
-    <footer>
-        <p>Projet réalisé dans le cadre du BTS SIO, janvier 2025.</p>
-    </footer>
+    <div class="course-list">
+        <ul>
+            <li><a href="html.html">1. Cours et TP HTML</a></li>
+            <li><a href="css.html">2. Cours et TP CSS</a></li>
+            <li><a href="js.html">3. Cours et TP JS</a></li>
+        </ul>
+    </div>
 </body>
 </html>
-

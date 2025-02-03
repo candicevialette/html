@@ -1,1 +1,130 @@
 <!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours et TP HTML</title>
+    <style>
+       body {
+    font-family: 'Georgia', serif;
+    background-color: #f5e4c3;
+    margin: 0;
+    padding: 0;
+    color: #5e3d1e;
+    text-align: center;
+}
+
+h1 {
+    font-size: 3em;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin-bottom: 30px;
+    color: #8a5738;
+}
+{
+    font-size: 1.2em;
+    line-height: 1.6;
+    margin: 10px 0;
+}
+a {
+    text-decoration: none;
+    color: #5e3d1e;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    font-size: 1.1em;
+    color: #d2691e;
+}
+
+button {
+    background-color: #8a5738;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #d2691e;
+    transform: scale(1.1);
+}
+        .image-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .image-container img {
+            width: 74px;
+            height: 60px;
+            background-color: #ccc;
+            border: 1px solid #999;
+        }
+
+        .course-list, .tp-list {
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .course-list ul, .tp-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .course-list li, .tp-list li {
+            margin: 5px 0;
+        }
+
+        .course-list a {
+            text-decoration: none;
+            color: #007BFF;
+            transition: color 0.3s ease;
+        }
+
+        .course-list a:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Cours et TP sur le HTML</h1>
+        <a href="index.html">Retour Accueil</a>
+    </header>
+
+    <div class="image-container">
+        <img src="https://raw.githubusercontent.com/candicevialette/html/master/TP04/images/image_html.png" >
+    </div>
+
+    <div class="course-list">
+        <h2>Liste des cours</h2>
+        <ul>
+            <li><a href="#introduction">1. Introduction</a></li>
+            <li><a href="#variables">2. Les variables</a></li>
+            <li><a href="#bases">3. Les bases du HTML</a></li>
+            <li><a href="#controles1">4. Les structures de contrôles - Partie 1</a></li>
+            <li><a href="#controles2">5. Les structures de contrôles - Partie 2</a></li>
+            <li><a href="#fonctions">6. Les fonctions</a></li>
+            <li><a href="#tableaux">7. Les tableaux</a></li>
+        </ul>
+    </div>
+
+    <div class="tp-list">
+        <h2>TP</h2>
+        <ul>
+            <li><a href="https://raw.githubusercontent.com/candicevialette/html/master/TP04/docs/tp03.pdf">TP3</a></li>
+            <li><a href="https://raw.githubusercontent.com/candicevialette/html/master/TP04/docs/tp04.pdf">TP4</a></li>
+        </ul>
+    </div>
+</body>
+</html>

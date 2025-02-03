@@ -4,55 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page d'accueil</title>
-    <link rel="stylesheet" href="style.css">
     <style>
-        .image-container {
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4e3c0;
+            color: #3a2e25;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .container {
+            width: 80%;
+            max-width: 800px;
+            text-align: center;
+        }
+        .title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .images {
             display: flex;
             justify-content: center;
             gap: 10px;
             margin-bottom: 20px;
         }
-
-        .image-container img {
+        .images img {
             width: 74px;
             height: 60px;
-            background-color: #ccc;
-            display: block;
-            border: 1px solid #999;
+            background-color: transparent;
+            border: none;
         }
-
         .description {
-            text-align: center;
-            margin-bottom: 20px;
+            font-size: 1.2rem;
+            margin: 20px 0;
             padding: 10px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: transparent;
+        }
+        .links {
+            list-style-type: decimal;
+            text-align: left;
+            padding-left: 20px;
+        }
+        .links li {
+            margin: 10px 0;
+        }
+        .return {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .return a {
+            text-decoration: none;
+            color: #3a2e25;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Page d'accueil</h1>
-    </header>
-
-    <div class="image-container">
-        <img src="https://candicevialette.github.io/html/public_html/TP04/images/image_js.png" alt="Image JS" width="500">
-        <img src="https://candicevialette.github.io/html/public_html/TP04/images/image_css.png" alt="Image CSS" width="500">
-        <img src="https://candicevialette.github.io/html/public_html/TP04/images/image_html.png" alt="Image HTML" width="500">
-    </div>
-
-    <div class="description">
-        <p>Descriptif du cours</p>
-    </div>
-
-    <div class="course-list">
-        <ul>
-            <li><a href="html.html">1. Cours et TP HTML</a></li>
-            <li><a href="css.html">2. Cours et TP CSS</a></li>
-            <li><a href="https://candicevialette.github.io/html/public_html/TP04/doc/cours_JS/Cours/Pr%C3%A9sentation.html">3. Cours et TP JS</a></li>
+    <div class="container">
+        <div class="title">Page d'accueil</div>
+        <div class="images">
+            <img src="https://candicevialette.github.io/html/public_html/TP04/images/image_js.png" alt="JavaScript">
+            <img src="https://candicevialette.github.io/html/public_html/TP04/images/image_css.png" alt="CSS">
+            <img src="https://candicevialette.github.io/html/public_html/TP04/images/image_html.png" alt="HTML">
+        </div>
+        <div class="description">Descriptif du cours</div>
+        <ul class="links">
+            <li>Cours et TP HTML</li>
+            <li>Cours et TP CSS</li>
+            <li>Cours et TP JS</li>
         </ul>
-        <a href="https://candicevialette.github.io/html/public_html">1. Retour à l'accueil</a>
+        <div class="return">
+            <a href="https://candicevialette.github.io/html/public_html">Retour à l'accueil</a>
+        </div>
     </div>
 </body>
 </html>

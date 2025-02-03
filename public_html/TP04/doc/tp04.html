@@ -6,76 +6,105 @@
     <title>Page d'accueil</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4e3c0;
-            color: #3a2e25;
+            font-family: 'Georgia', serif;
+            background-color: #f5e6d8;
+            color: #5a3a29;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
         }
+
         .container {
-            width: 80%;
             max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fffaf0;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
             text-align: center;
+            font-size: 2.5rem;
+            color: #3d2b1f;
         }
-        .title {
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
-        .images {
+
+        .photos {
             display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
+            justify-content: space-around;
+            margin: 20px 0;
         }
-        .images img {
+
+        .photos img {
             width: 74px;
             height: 60px;
-            background-color: transparent;
-            border: none;
+            border: 2px solid #3d2b1f;
+            border-radius: 5px;
         }
+
         .description {
+            text-align: center;
             font-size: 1.2rem;
             margin: 20px 0;
+        }
+
+        .cours {
             padding: 10px;
-            background-color: transparent;
+            border: 2px solid #3d2b1f;
+            border-radius: 5px;
+            background-color: #f9f1e5;
         }
-        .links {
-            list-style-type: decimal;
-            text-align: left;
-            padding-left: 20px;
+
+        .cours ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
-        .links li {
-            margin: 10px 0;
-        }
-        .return {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .return a {
-            text-decoration: none;
-            color: #3a2e25;
-            font-weight: bold;
+
+        .cours li {
+            margin: 5px 0;
+            font-size: 1.1rem;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="title">Page d'accueil</div>
-        <div class="images">
-            <img src="https://candicevialette.github.io/html/public_html/TP04/images/image_js.png" alt="JavaScript">
+        <h1>Page d'accueil</h1>
+        
+        <div class="photos">
+            <img src="https://candicevialette.github.io/html/public_html/TP04/images/image_js.png" alt="Java Script">
             <img src="https://candicevialette.github.io/html/public_html/TP04/images/image_css.png" alt="CSS">
             <img src="https://candicevialette.github.io/html/public_html/TP04/images/image_html.png" alt="HTML">
         </div>
+        
+        <div class="description">
+            <p>Descriptif du cours</p>
+        </div>
+        
+        <div class="cours">
+            <ul>
+                 <li> <a href="https://candicevialette.github.io/html/public_html" style="color: inherit; text-decoration: none; font-weight: bold; cursor: pointer;">
+    Cours et TP HTML</li>
+            <li> <a href="https://candicevialette.github.io/html/public_html" style="color: inherit; text-decoration: none; font-weight: bold; cursor: pointer;">
+    Cours et TP CSS</li>
+            <li> <a href="https://candicevialette.github.io/html/public_html" style="color: inherit; text-decoration: none; font-weight: bold; cursor: pointer;">
+   Cours et TP JS</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+
+            <img src="" alt="JavaScript">
+            <img src="" alt="CSS">
+            <img src="" alt="HTML">
+        </div>
         <div class="description">Descriptif du cours</div>
         <ul class="links">
-            <li>Cours et TP HTML</li>
-            <li>Cours et TP CSS</li>
-            <li>Cours et TP JS</li>
+            <li> <a href="https://candicevialette.github.io/html/public_html" style="color: inherit; text-decoration: none; font-weight: bold; cursor: pointer;">
+    Retour à la page d'accueilCours et TP HTML</li>
+            <li> <a href="https://candicevialette.github.io/html/public_html" style="color: inherit; text-decoration: none; font-weight: bold; cursor: pointer;">
+    Retour à la page d'accueilCours et TP CSS</li>
+            <li> <a href="https://candicevialette.github.io/html/public_html" style="color: inherit; text-decoration: none; font-weight: bold; cursor: pointer;">
+    Retour à la page d'accueilCours et TP JS</li>
         </ul>
         <div class="return">
             <a href="https://candicevialette.github.io/html/public_html">Retour à l'accueil</a>

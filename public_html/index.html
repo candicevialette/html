@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html>
-    <style> a.custom-link {
-    color: #873600; /* Couleur normale */
-    text-decoration: none; /* Supprime le soulignement par défaut */
-    transition: transform 0.3s ease; /* Animation fluide pour l'agrandissement */
-    cursor: pointer; /* Change le curseur en main */
-    display: inline-block; /* Nécessaire pour la transformation */
-}
-
-a.custom-link:hover {
-    color: #a54800; /* Couleur légèrement plus claire au survol (optionnel) */
-}
-
-a.custom-link:active {
-    color: #873600; /* Couleur pendant le clic */
-    transform: scale(1.1); /* Agrandissement de 10% */
-}
+    <style>  .link {
+            display: inline-block;
+            color: #000;
+            text-decoration: none;
+            padding: 10px 15px;
+            border: 1px solid #000;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        .link:hover {
+            background-color: #5A3D31; /* Marron foncé */
+            color: #fff;
+            cursor: pointer;
+            transform: scale(1.1); /* Agrandissement */
+        }
 body {
             font-family: "Times New Roman", Times, serif;
             line-height: 1.6;

@@ -1,78 +1,59 @@
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page d'accueil</title>
-    <style>
-        body {
-            font-family: 'Georgia', serif;
-            background-color: #f5e6d8;
-            color: #5a3a29;
+<style>a.custom-link {
+    color: #873600; /* Couleur normale */
+    text-decoration: none; /* Supprime le soulignement par défaut */
+    transition: transform 0.3s ease; /* Animation fluide pour l'agrandissement */
+    cursor: pointer; /* Change le curseur en main */
+    display: inline-block; /* Nécessaire pour la transformation */
+}
+
+a.custom-link:hover {
+    color: #a54800; /* Couleur légèrement plus claire au survol (optionnel) */
+}
+
+a.custom-link:active {
+    color: #873600; /* Couleur pendant le clic */
+    transform: scale(1.1); /* Agrandissement de 10% */
+}
+body {
+            font-family: "Times New Roman", Times, serif;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
+            background-color: #d2b48c; /* Beige */
+            color: #5c4033; /* Marron foncé */
         }
-
         .container {
             max-width: 800px;
             margin: 20px auto;
             padding: 20px;
-            background-color: #fffaf0;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            border: 1px solid #5c4033; /* Marron foncé */
+            background-color: #e5d3b3; /* Beige plus clair */
         }
-
-        h1 {
-            text-align: center;
-            font-size: 2.5rem;
-            color: #3d2b1f;
+        h1, h2, h3 {
+            margin-bottom: 10px;
+            color: #5c4033; /* Marron foncé */
         }
-
-        .photos {
+        ul {
+            padding-left: 20px;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+.image-row {
             display: flex;
-            justify-content: space-around;
-            margin: 20px 0;
+            justify-content: space-between;
+            margin-bottom: 20px;
         }
-
-        .photos img {
-            width: 74px;
-            height: 60px;
-            border: 2px solid #3d2b1f;
-            border-radius: 5px;
-        }
-
-        .description {
-            text-align: center;
-            font-size: 1.2rem;
-            margin: 20px 0;
-        }
-
-        .cours {
-            padding: 10px;
-            border: 2px solid #3d2b1f;
-            border-radius: 5px;
-            background-color: #f9f1e5;
-        }
-
-        .cours ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .cours li {
-            margin: 5px 0;
-            font-size: 1.1rem;
-        }
-    </style>
-</head>
+</style>
+<head> <tilte> TP04</tilte> </head>
 <body>
-    <div class="container">
-        <h1>Page d'accueil</h1>
+        <h1>Page d'accueil</h1> <a href="https://candicevialette.github.io/html/public_html">Retour à l'accueil</a>
         
         <div class="photos">
-            <img src="https://candicevialette.github.io/html/public_html/TP04/images/image_js.png" alt="Java Script">
-            <img src="https://candicevialette.github.io/html/public_html/TP04/images/image_css.png" alt="CSS">
-            <img src="https://candicevialette.github.io/html/public_html/TP04/images/image_html.png" alt="HTML">
+            <img src="https://candicevialette.github.io/html/public_html/TP04/images/image_js.png" alt="Java Script" width="500">
+            <img src="https://candicevialette.github.io/html/public_html/TP04/images/image_css.png" alt="CSS"width="500">
+            <img src="https://candicevialette.github.io/html/public_html/TP04/images/image_html.png" alt="HTML"width="500">
         </div>
         
         <div class="description">
@@ -81,34 +62,22 @@
         
         <div class="cours">
             <ul>
-                 <li> <a href="https://candicevialette.github.io/html/public_html" style="color: inherit; text-decoration: none; font-weight: bold; cursor: pointer;">
+                 <li> <a href="https://candicevialette.github.io/html/public_html/TP04/doc/cours_HTML/cours.html">
     Cours et TP HTML</li>
-            <li> <a href="https://candicevialette.github.io/html/public_html" style="color: inherit; text-decoration: none; font-weight: bold; cursor: pointer;">
+            <li> <a href="https://candicevialette.github.io/html/public_html/TP04/doc/cours_JS/cours.html" >
     Cours et TP CSS</li>
-            <li> <a href="https://candicevialette.github.io/html/public_html" style="color: inherit; text-decoration: none; font-weight: bold; cursor: pointer;">
+            <li> <a href="https://candicevialette.github.io/html/public_html/TP04/doc/cours_CSS/cours.html">
    Cours et TP JS</li>
             </ul>
-        </div>
-    </div>
-</body>
-</html>
-
-            <img src="" alt="JavaScript">
-            <img src="" alt="CSS">
-            <img src="" alt="HTML">
-        </div>
-        <div class="description">Descriptif du cours</div>
+        <div class="description">Description du cours</div>
         <ul class="links">
-            <li> <a href="https://candicevialette.github.io/html/public_html" style="color: inherit; text-decoration: none; font-weight: bold; cursor: pointer;">
+            <li> <a href="https://candicevialette.github.io/html/public_html">
     Retour à la page d'accueilCours et TP HTML</li>
-            <li> <a href="https://candicevialette.github.io/html/public_html" style="color: inherit; text-decoration: none; font-weight: bold; cursor: pointer;">
-    Retour à la page d'accueilCours et TP CSS</li>
-            <li> <a href="https://candicevialette.github.io/html/public_html" style="color: inherit; text-decoration: none; font-weight: bold; cursor: pointer;">
-    Retour à la page d'accueilCours et TP JS</li>
+            <li> <a href="https://candicevialette.github.io/html/public_html">
+    Cours et TP CSS</li>
+            <li> <a href="https://candicevialette.github.io/html/public_html">
+    Cours et TP JS</li>
         </ul>
-        <div class="return">
-            <a href="https://candicevialette.github.io/html/public_html">Retour à l'accueil</a>
-        </div>
     </div>
 </body>
 </html>

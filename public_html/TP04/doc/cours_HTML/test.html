@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Accueil</title>
+    <title>Page d'accueil</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,37 +12,44 @@
         .container {
             max-width: 600px;
             margin: 0 auto;
-            text-align: center;
+            padding: 20px;
+            border: 2px solid #000; /* Bordure autour du conteneur principal */
         }
         .title {
             font-size: 24px;
             margin-bottom: 20px;
+            padding: 10px;
+            border: 2px solid #000; /* Carré autour du titre */
         }
         .images {
             display: flex;
             justify-content: space-around;
             margin-bottom: 20px;
+            border: 2px solid #000; /* Carré autour du groupe d'images */
+            padding: 10px;
         }
         .images img {
             width: 74px;
             height: 60px;
             background-color: #ccc;
-            border: 1px solid #aaa;
+            border: 1px solid #000; /* Carré autour de chaque image */
         }
         .description {
             margin-bottom: 20px;
             font-size: 16px;
             padding: 10px;
-            border: 1px solid #ddd;
+            border: 2px solid #000; /* Carré autour de la description */
         }
         .list {
+            border: 2px solid #000; /* Carré autour de la liste */
+            padding: 10px;
             text-align: left;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="title">Titre</div>
+        <div class="title">Cours</div>
         <div class="images">
             <img src="#" alt="Image 1">
             <img src="#" alt="Image 2">
@@ -61,4 +68,3 @@
     </div>
 </body>
 </html>
-

@@ -7,73 +7,116 @@
    <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        .title {
-            font-size: 24px;
-            margin-bottom: 20px;
-            padding: 10px;
-            border: 2px solid #000; /* Carré autour du titre */
+            margin: 0;
+            padding: 0;
+            background-color: #f8f5f1;
+            color: #333;
         }
 
-       .images {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 20px;
-            border: 2px solid #000; /* Carré autour du groupe d'images */
-            padding: 10px;
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
         }
+
+        .title {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .images {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .images img {
+            width: 80px;
+            height: auto;
+            border-radius: 4px;
+            transition: transform 0.3s ease;
+        }
+
+        .images img:hover {
+            transform: scale(1.1);
+        }
+
         .description {
+            text-align: center;
             margin-bottom: 20px;
             font-size: 16px;
-            padding: 10px;
-            border: 2px solid #000; /* Carré autour de la description */
+            line-height: 1.6;
         }
+
         .list {
-            border: 2px solid #000; /* Carré autour de la liste */
-            padding: 10px;
-            text-align: left;
+            text-align: center;
         }
+
+        .list ol {
+            list-style: none;
+            padding: 0;
+        }
+
+        .list li {
+            margin: 10px 0;
+        }
+
         .list a {
-            text-decoration: none; /* Supprime le soulignement des liens */
-            color: #000; /* Couleur initiale du lien */
-            font-size: 16px; /* Taille de base du texte */
-            transition: all 0.3s ease; /* Ajout d'une transition pour les effets */
+            text-decoration: none;
+            color: #007BFF;
+            font-size: 16px;
+            transition: color 0.3s ease;
         }
+
         .list a:hover {
-            color: #007BFF; /* Change la couleur lorsqu'on survole */
-            font-size: 18px; /* Agrandit légèrement le texte */
-            cursor: pointer; /* Change le curseur en main */
+            color: #0056b3;
         }
-        .images img {
-            width: 100px; /* Largeur uniforme */
-            height: auto; /* Préserve les proportions */
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="title">Cours</div>
-        <a href="https://candicevialette.github.io/html/public_html/index.html">
-  Retour à l'accueil
+        <div class="footer">
+            <a href="https://candicevialette.github.io/html/public_html/index.html">Retour à l'accueil</a>
+
         <div class="images">
-            <img src="https://candicevialette.github.io/html/public_html/TP04/images/image_js.png" >
-            <img src="https://candicevialette.github.io/html/public_html/TP04/images/image_css.png" alt="Image 2">
-            <img src="https://candicevialette.github.io/html/public_html/TP04/images/image_html.png" alt="Image 3">
+            <img src="https://candicevialette.github.io/html/public_html/TP04/images/image_js.png" alt="JavaScript">
+            <img src="https://candicevialette.github.io/html/public_html/TP04/images/image_css.png" alt="CSS">
+            <img src="https://candicevialette.github.io/html/public_html/TP04/images/image_html.png" alt="HTML">
         </div>
+
         <div class="description">
-            Bienvenue sur l'arborescence des cours du second semestre. Vous retrouverez ici les différents liens sur les cours et TP HTML, CSS et Java-Script 
+            Bienvenue sur l'arborescence des cours du second semestre. Vous retrouverez ici les différents liens sur les cours et TP HTML, CSS et JavaScript.
         </div>
+
         <div class="list">
             <ol>
-                <li><a href="https://candicevialette.github.io/html/public_html/TP04/doc/cours_CSS/cours.html">
-   Cours et TP CSS</li>
-                <li><a href="https://candicevialette.github.io/html/public_html/TP04/doc/cours_HTML/cours.html">
-   Cours et TP HTML</li>
-                <li><a href="https://candicevialette.github.io/html/public_html/TP04/doc/cours_JS/cours.html">
-   Cours et TP Java Script</li>
+                <li><a href="https://candicevialette.github.io/html/public_html/TP04/doc/cours_CSS/cours.html">Cours et TP CSS</a></li>
+                <li><a href="https://candicevialette.github.io/html/public_html/TP04/doc/cours_HTML/cours.html">Cours et TP HTML</a></li>
+                <li><a href="https://candicevialette.github.io/html/public_html/TP04/doc/cours_JS/cours.html">Cours et TP JavaScript</a></li>
             </ol>
         </div>
-    </div>
-</body>
-</html>
+        </body>  

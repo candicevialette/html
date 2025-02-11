@@ -1,30 +1,25 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
-    <title>Les Atomes et Modèles Atomiques</title>
+    <title>Atomes et Modèles</title>
 </head>
 <body>
-        <h1>Les Atomes et Modèles Atomiques</h1>
-            <ul>
-                <li><a href="index.html">Accueil</a></li>
-                <li><a href="liaisons.html">Les Liaisons Chimiques</a></li>
-                <li><a href="reactions.html">Les Réactions Chimiques</a></li>
-            </ul>
-    <main>
-        <section>
-            <h2>Introduction aux Atomes</h2>
-            <p>Un atome est la plus petite unité de matière constituée d'un noyau (protons et neutrons) et d'électrons en orbite.</p>
-        </section>
-        <section>
-            <h2>Modèles Atomiques</h2>
-            <ul>
-                <li>Modèle de Dalton</li>
-                <li>Modèle de Thomson</li>
-                <li>Modèle de Rutherford</li>
-                <li>Modèle de Bohr</li>
-                <li>Modèle Quantique</li>
-            </ul>
-        </section>
-    </main>
+    <h1>Atomes et Modèles</h1>
+    <nav>
+        <a href="index.html">Accueil</a> |
+        <a href="liaisons.html">Liaisons</a> |
+        <a href="reactions.html">Réactions</a>
+    </nav>
+    <h2>Introduction</h2>
+    <p>Un atome est la plus petite unité de matière avec un noyau et des électrons.</p>
+    <h2>Modèles</h2>
+    <ul>
+        <li>Dalton</li>
+        <li>Thomson</li>
+        <li>Rutherford</li>
+        <li>Bohr</li>
+        <li>Quantique</li>
+    </ul>
+<a href="https://candicevialette.github.io/html/public_html/TP04/doc/cours_CSS/cours.html">Retour au TP02</a>
 </body>
 </html>

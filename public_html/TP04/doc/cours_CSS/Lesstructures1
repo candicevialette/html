@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Réactions Chimiques</title>
+</head>
+<body>
+    <h1>Réactions Chimiques</h1>
+    <h2>Introduction</h2>
+    <p>Une réaction chimique transforme des réactifs en produits.</p>
+    <h2>Types de Réactions</h2>
+    <ul>
+        <li>Combinaison</li>
+        <li>Décomposition</li>
+        <li>Oxydoréduction</li>
+        <li>Acide-Base</li>
+        <li>Précipitation</li>
+    </ul>
+</body>
+</html>

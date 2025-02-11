@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les Réactions Chimiques</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Les Réactions Chimiques</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="atomes.html">Les Atomes</a></li>
+                <li><a href="liaisons.html">Les Liaisons Chimiques</a></li>
+                <li><a href="reactions.html">Les Réactions Chimiques</a></li>
+                <li><a href="ph.html">Le pH et les Acides/Bases</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section>
+            <h2>Introduction aux Réactions Chimiques</h2>
+            <p>Une réaction chimique est une transformation de la matière au cours de laquelle les substances initiales (réactifs) se transforment en nouvelles substances (produits).</p>
+        </section>
+        <section>
+            <h2>Types de Réactions Chimiques</h2>
+            <ul>
+                <li><strong>Réactions de synthèse</strong> : Deux ou plusieurs substances réagissent pour former un produit unique.</li>
+                <li><strong>Réactions de décomposition</strong> : Un composé se sépare en plusieurs produits plus simples.</li>
+                <li><strong>Réactions d’oxydoréduction</strong> : Transfert d’électrons entre réactifs.</li>
+                <li><strong>Réactions acido-basiques</strong> : Interaction entre un acide et une base.</li>
+                <li><strong>Réactions de précipitation</strong> : Formation d’un solide insoluble dans une solution.</li>
+            </ul>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 - Cours de Chimie Terminale Spé</p>
+    </footer>
+</body>
+</html>

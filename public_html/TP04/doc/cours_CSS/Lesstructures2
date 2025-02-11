@@ -1,0 +1,19 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>pH et Acides-Bases</title>
+</head>
+<body>
+    <h1>pH et Acides-Bases</h1>
+    <h2>Introduction</h2>
+    <p>Le pH mesure l'acidité ou la basicité d'une solution.</p>
+    <h2>Échelle du pH</h2>
+    <ul>
+        <li>pH < 7 : Acide</li>
+        <li>pH = 7 : Neutre</li>
+        <li>pH > 7 : Basique</li>
+    </ul>
+<a href="https://candicevialette.github.io/html/public_html/TP04/doc/cours_CSS/cours.html">Retour au TP02</a>
+</body>
+</html>

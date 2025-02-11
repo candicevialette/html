@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liaisons Chimiques</title>
+</head>
+<body>
+    <h1>Liaisons Chimiques</h1>
+    <h2>Introduction</h2>
+    <p>Les liaisons chimiques unissent les atomes pour former des molécules et des composés.</p>
+    <h2>Types de Liaisons</h2>
+    <ul>
+        <li>Covalente</li>
+        <li>Ionique</li>
+        <li>Métallique</li>
+        <li>Hydrogène</li>
+        <li>Van der Waals</li>
+    </ul>
+<a href="https://candicevialette.github.io/html/public_html/TP04/doc/cours_HTML/cours.html">Retour au TP02</a>
+</body>
+</html>

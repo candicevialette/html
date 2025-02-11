@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Les Atomes et Modèles Atomiques</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -14,9 +12,8 @@
                 <li><a href="liaisons.html">Les Liaisons Chimiques</a></li>
                 <li><a href="reactions.html">Les Réactions Chimiques</a></li>
             </ul>
-        </nav>
-    </header>
-    
+</nav>
+
     <main>
         <section>
             <h2>Introduction aux Atomes</h2>
@@ -33,5 +30,9 @@
             </ul>
         </section>
     </main>
+    
+    <footer>
+        <p>&copy; 2025 - Cours de Chimie Terminale Spé</p>
+    </footer>
 </body>
 </html>

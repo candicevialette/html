@@ -1,36 +1,194 @@
-<!DOCTYPE HTMl>
+<!DOCTYPE html>
 <head>
-  <title>Jeu du mémory</title>
+  <meta charset="UTF-8">
+  <title>Jeu du Memory</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    a {
+      display: inline-block;
+      margin-bottom: 20px;
+      text-decoration: none;
+      color: #007BFF;
+    }
+    /* Plateau de jeu en grille */
+    #game-board {
+      display: grid;
+      grid-template-columns: repeat(5, 100px);
+      gap: 10px;
+      justify-content: center;
+      margin: auto;
+    }
+    /* Carte */
+    .card {
+      width: 100px;
+      height: 100px;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    /* Rotation pour révéler la face */
+    .card.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border: 1px solid black;
+      border-radius: 5px;
+    }
+    /* Face avant : dos de la carte */
+    .card-front {
+      background: lightgray;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2em;
+    }
+    /* Face arrière : image de l'animal */
+    .card-back {
+      transform: rotateY(180deg);
+    }
+    .card-back img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+  </style>
 </head>
-<style>
-  img{
- border :solid 1px black;
-}
-<link rel="stylesheet" href="styles.css">
-</style>
 <body>
-<h1>Jeu du mémory</h1> 
-  <a href="https://candicevialette.github.io/html/public_html/"> Retours a l'accueil</a><br>
-<img src="https://candicevialette.github.io/html/public_html/TP03/Image/dinde.png">
-  <img src="https://candicevialette.github.io/html/public_html/TP03/Image/dinde.png">
-  <img src="https://candicevialette.github.io/html/public_html/TP03/Image/cochon.png">
-  <img src="https://candicevialette.github.io/html/public_html/TP03/Image/cochon.png">
-  <img src="https://candicevialette.github.io/html/public_html/TP03/Image/ane.png">
-  <img src="https://candicevialette.github.io/html/public_html/TP03/Image/ane.png">
-  <img src="https://candicevialette.github.io/html/public_html/TP03/Image/canard.png">
-  <img src="https://candicevialette.github.io/html/public_html/TP03/Image/canard.png">
-  <img src="https://candicevialette.github.io/html/public_html/TP03/Image/cheval.png">
-  <img src="https://candicevialette.github.io/html/public_html/TP03/Image/cheval.png">
-  <img src="https://candicevialette.github.io/html/public_html/TP03/Image/lapin.png">
-  <img src="https://candicevialette.github.io/html/public_html/TP03/Image/lapin.png">
-  <img src="https://candicevialette.github.io/html/public_html/TP03/Image/mouton.png">
-  <img src="https://candicevialette.github.io/html/public_html/TP03/Image/mouton.png">
-  <img src="https://candicevialette.github.io/html/public_html/TP03/Image/poule.png">
-  <img src="https://candicevialette.github.io/html/public_html/TP03/Image/poule.png">
-  <img src="https://candicevialette.github.io/html/public_html/TP03/Image/vache.png">
-  <img src="https://candicevialette.github.io/html/public_html/TP03/Image/vache.png">
-    <img src="https://candicevialette.github.io/html/public_html/TP03/Image/chevre.png">
-    <img src="https://candicevialette.github.io/html/public_html/TP03/Image/chevre.png">
-  <div id="image-grid"></div>
- <script src="script.js"></script>
+  <h1>Jeu du Memory</h1>
+  <a href="https://candicevialette.github.io/html/public_html/">Retour à l'accueil</a>
+  
+  <div id="game-board"></div>
+
+  <script>
+    // Données de cartes (10 images, chacune en double pour créer des paires)
+    const cardsData = [
+      { name: 'dinde',  img: 'https://candicevialette.github.io/html/public_html/TP03/Image/dinde.png' },
+      { name: 'cochon', img: 'https://candicevialette.github.io/html/public_html/TP03/Image/cochon.png' },
+      { name: 'ane',    img: 'https://candicevialette.github.io/html/public_html/TP03/Image/ane.png' },
+      { name: 'canard', img: 'https://candicevialette.github.io/html/public_html/TP03/Image/canard.png' },
+      { name: 'cheval', img: 'https://candicevialette.github.io/html/public_html/TP03/Image/cheval.png' },
+      { name: 'lapin',  img: 'https://candicevialette.github.io/html/public_html/TP03/Image/lapin.png' },
+      { name: 'mouton',img: 'https://candicevialette.github.io/html/public_html/TP03/Image/mouton.png' },
+      { name: 'poule',  img: 'https://candicevialette.github.io/html/public_html/TP03/Image/poule.png' },
+      { name: 'vache',  img: 'https://candicevialette.github.io/html/public_html/TP03/Image/vache.png' },
+      { name: 'chevre', img: 'https://candicevialette.github.io/html/public_html/TP03/Image/chevre.png' }
+    ];
+
+    // Création du tableau des cartes (chaque carte apparaît 2 fois)
+    let cardsArray = [...cardsData, ...cardsData];
+
+    // Fonction de mélange (algorithme de Fisher-Yates)
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+    cardsArray = shuffle(cardsArray);
+
+    const gameBoard = document.getElementById('game-board');
+
+    let firstCard = null;
+    let secondCard = null;
+    let lockBoard = false;
+    let matchedPairs = 0;
+
+    // Création d'une carte HTML
+    function createCard(cardData) {
+      const card = document.createElement('div');
+      card.classList.add('card');
+      card.dataset.name = cardData.name;
+
+      const cardInner = document.createElement('div');
+      cardInner.classList.add('card-inner');
+
+      // Face avant (dos de la carte)
+      const cardFront = document.createElement('div');
+      cardFront.classList.add('card-face', 'card-front');
+      cardFront.textContent = "?";
+
+      // Face arrière (image)
+      const cardBack = document.createElement('div');
+      cardBack.classList.add('card-face', 'card-back');
+      const img = document.createElement('img');
+      img.src = cardData.img;
+      cardBack.appendChild(img);
+
+      // Assemblage de la carte
+      cardInner.appendChild(cardFront);
+      cardInner.appendChild(cardBack);
+      card.appendChild(cardInner);
+
+      // Gestion du clic sur la carte
+      card.addEventListener('click', () => {
+        if (lockBoard || card.classList.contains('flipped')) return;
+        card.classList.add('flipped');
+
+        if (!firstCard) {
+          firstCard = card;
+        } else {
+          secondCard = card;
+          checkForMatch();
+        }
+      });
+
+      return card;
+    }
+
+    // Vérification des cartes sélectionnées
+    function checkForMatch() {
+      const isMatch = firstCard.dataset.name === secondCard.dataset.name;
+      if (isMatch) {
+        // Les cartes restent retournées
+        resetBoard();
+        matchedPairs++;
+        if (matchedPairs === cardsData.length) {
+          setTimeout(() => alert('Félicitations, vous avez gagné !'), 500);
+        }
+      } else {
+        lockBoard = true;
+        setTimeout(() => {
+          firstCard.classList.remove('flipped');
+          secondCard.classList.remove('flipped');
+          resetBoard();
+        }, 1000);
+      }
+    }
+
+    // Réinitialise les variables de contrôle
+    function resetBoard() {
+      [firstCard, secondCard] = [null, null];
+      lockBoard = false;
+    }
+
+    // Initialisation du jeu en créant et affichant toutes les cartes
+    function initGame() {
+      cardsArray.forEach(cardData => {
+        const cardElement = createCard(cardData);
+        gameBoard.appendChild(cardElement);
+      });
+    }
+
+    initGame();
+  </script>
 </body>
+</html>

@@ -69,7 +69,7 @@
       object-fit: cover;
       border-radius: 5px;
     }
-    /* Styles pour le bouton et les stats */
+    /* Styles pour le bouton et les statistiques */
     #restart-button {
       margin-top: 20px;
       padding: 10px 20px;
@@ -93,8 +93,9 @@
   <button id="restart-button">Recommencer le jeu</button>
   
   <div id="stats">
-    <p>Paires trouvées : 0</p>
-    <p>Pourcentage de réussite : 0%</p>
+    <p id="pairs">Paires trouvées : 0</p>
+    <p id="success">Pourcentage de réussite : 0%</p>
+    <p id="timerDisplay">Temps : <span id="timer">0</span> secondes</p>
   </div>
 
   <script>
@@ -118,12 +119,16 @@
     let lockBoard = false;
     let matchedPairs = 0;
     let attempts = 0;
+    let timeElapsed = 0;
+    let timerInterval = null;
 
     const gameBoard = document.getElementById('game-board');
-    const statsDiv = document.getElementById('stats');
+    const pairsEl = document.getElementById('pairs');
+    const successEl = document.getElementById('success');
+    const timerSpan = document.getElementById('timer');
     const restartButton = document.getElementById('restart-button');
 
-    // Mélange des cartes avec l'algorithme de Fisher-Yates
+    // Fonction de mélange (algorithme de Fisher-Yates)
     function shuffle(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -137,13 +142,11 @@
       cardsArray = shuffle([...cardsData, ...cardsData]);
     }
 
-    // Mise à jour des statistiques affichées
+    // Mise à jour des statistiques (sauf le timer)
     function updateStats() {
       const successRate = attempts > 0 ? Math.round((matchedPairs / attempts) * 100) : 0;
-      statsDiv.innerHTML = `
-        <p>Paires trouvées : ${matchedPairs}</p>
-        <p>Pourcentage de réussite : ${successRate}%</p>
-      `;
+      pairsEl.textContent = `Paires trouvées : ${matchedPairs}`;
+      successEl.textContent = `Pourcentage de réussite : ${successRate}%`;
     }
 
     // Création d'une carte HTML
@@ -186,7 +189,7 @@
       return card;
     }
 
-    // Vérification de la correspondance entre 2 cartes
+    // Vérification des deux cartes sélectionnées
     function checkForMatch() {
       const isMatch = firstCard.dataset.name === secondCard.dataset.name;
       if (isMatch) {
@@ -194,7 +197,8 @@
         updateStats();
         resetBoard();
         if (matchedPairs === cardsData.length) {
-          setTimeout(() => alert('Félicitations, vous avez gagné !'), 500);
+          clearInterval(timerInterval);
+          setTimeout(() => alert(`Félicitations, vous avez gagné en ${timeElapsed} secondes !`), 500);
         }
       } else {
         lockBoard = true;
@@ -212,8 +216,19 @@
       lockBoard = false;
     }
 
-    // Initialisation du jeu
+    // Démarrage du timer qui se met à jour chaque seconde
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        timeElapsed++;
+        timerSpan.textContent = timeElapsed;
+      }, 1000);
+    }
+
+    // Initialisation (ou réinitialisation) de la partie
     function initGame() {
+      if (timerInterval) clearInterval(timerInterval);
+      timeElapsed = 0;
+      timerSpan.textContent = timeElapsed;
       gameBoard.innerHTML = '';
       firstCard = null;
       secondCard = null;
@@ -226,10 +241,12 @@
         const cardElement = createCard(cardData);
         gameBoard.appendChild(cardElement);
       });
+      startTimer();
     }
 
     restartButton.addEventListener('click', initGame);
 
+    // Lancement initial du jeu
     initGame();
   </script>
 </body>

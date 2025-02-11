@@ -4,61 +4,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cours et TP CSS</title>
     <style>
-       body {
-    font-family: 'Georgia', serif;
-    background-color: #f5e4c3;
-    margin: 0;
-    padding: 0;
-    color: #5e3d1e;
-    text-align: center;
-}
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #f5e4c3;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-h1 {
-    font-size: 3em;
-    font-weight: bold;
-    margin-top: 20px;
-}
-
-h2 {
-    font-size: 1.5em;
-    margin-bottom: 30px;
-    color: #8a5738;
-}
-{
-    font-size: 1.2em;
-    line-height: 1.6;
-    margin: 10px 0;
-}
-a {
-    text-decoration: none;
-    color: #5e3d1e;
-    font-weight: bold;
-    transition: all 0.3s ease;
-}
-
-a:hover {
-    font-size: 1.1em;
-    color: #d2691e;
-}
-
-button {
-    background-color: #8a5738;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 1em;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-button:hover {
-    background-color: #d2691e;
-    transform: scale(1.1);
-}
-        .image-container {
-            text-align: center;
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
             margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 2em;
+            color: #5e3d1e;
+        }
+
+        header a {
+            text-decoration: none;
+            color: #5e3d1e;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        header a:hover {
+            color: #d2691e;
+        }
+
+        .image-container {
+            margin-bottom: 20px;
+            text-align: center;
         }
 
         .image-container img {
@@ -66,37 +49,45 @@ button:hover {
             height: 60px;
             background-color: #ccc;
             border: 1px solid #999;
+            border-radius: 5px;
         }
 
         .course-list, .tp-list {
-            background-color: #fff;
-            padding: 10px;
+            background-color: #ffffff;
+            padding: 15px;
+            width: 100%;
+            max-width: 800px;
             margin-bottom: 20px;
             border: 1px solid #ddd;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
+        .course-list h2, .tp-list h2 {
+            text-align: center;
+            color: #5e3d1e;
+            margin-bottom: 10px;
+        }
+
         .course-list ul, .tp-list ul {
-            list-style: none;
+            list-style: decimal inside;
             padding: 0;
+            margin: 0;
         }
 
         .course-list li, .tp-list li {
-            margin: 5px 0;
+            margin: 8px 0;
+            color: #5e3d1e;
         }
 
-        .course-list a {
+        .course-list a, .tp-list a {
             text-decoration: none;
-            color: #007BFF;
+            color: #5e3d1e;
+            font-weight: bold;
             transition: color 0.3s ease;
         }
 
-        .course-list a:hover {
-            color: #0056b3;
-        }
-         .images img {
-            width: 100px; /* Largeur uniforme */
-            height: auto; /* Préserve les proportions */
+        .course-list a:hover, .tp-list a:hover {
+            color: #d2691e;
         }
     </style>
 </head>

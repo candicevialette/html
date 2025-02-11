@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
         <h1>Les Atomes et Modèles Atomiques</h1>
         <nav>
             <ul>
@@ -34,9 +33,5 @@
             </ul>
         </section>
     </main>
-    
-    <footer>
-        <p>&copy; 2025 - Cours de Chimie Terminale Spé</p>
-    </footer>
 </body>
 </html>

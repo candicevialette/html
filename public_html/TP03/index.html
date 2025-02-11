@@ -51,25 +51,22 @@
       border: 1px solid black;
       border-radius: 5px;
     }
-    /* Dos de carte */
+    /* Face visible avant le retournement : dos de la carte */
     .card-front {
       background: lightgray;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2em;
     }
-    /* Face avec l'image */
+    /* Face dévoilée : image de l'animal */
     .card-back {
       transform: rotateY(180deg);
     }
-    .card-back img {
+    /* Application des styles aux images présentes sur une face */
+    .card-face img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       border-radius: 5px;
     }
-    /* Styles pour le bouton et les statistiques */
+    /* Bouton et statistiques */
     #restart-button {
       margin-top: 20px;
       padding: 10px 20px;
@@ -142,7 +139,7 @@
       cardsArray = shuffle([...cardsData, ...cardsData]);
     }
 
-    // Mise à jour des statistiques (sauf le timer)
+    // Mise à jour des statistiques
     function updateStats() {
       const successRate = attempts > 0 ? Math.round((matchedPairs / attempts) * 100) : 0;
       pairsEl.textContent = `Paires trouvées : ${matchedPairs}`;
@@ -158,15 +155,21 @@
       const cardInner = document.createElement('div');
       cardInner.classList.add('card-inner');
 
+      // Face avant de la carte (dos de la carte) : affichage de l'image personnalisée
       const cardFront = document.createElement('div');
       cardFront.classList.add('card-face', 'card-front');
-      cardFront.textContent = "?";
+      const imgBack = document.createElement('img');
+      imgBack.src = 'https://candicevialette.github.io/html/public_html/TP03/Image/ferme.png';
+      imgBack.alt = 'Dos de la carte';
+      cardFront.appendChild(imgBack);
 
+      // Face arrière de la carte (image de l'animal)
       const cardBack = document.createElement('div');
       cardBack.classList.add('card-face', 'card-back');
-      const img = document.createElement('img');
-      img.src = cardData.img;
-      cardBack.appendChild(img);
+      const imgAnimal = document.createElement('img');
+      imgAnimal.src = cardData.img;
+      imgAnimal.alt = cardData.name;
+      cardBack.appendChild(imgAnimal);
 
       cardInner.appendChild(cardFront);
       cardInner.appendChild(cardBack);
@@ -216,7 +219,7 @@
       lockBoard = false;
     }
 
-    // Démarrage du timer qui se met à jour chaque seconde
+    // Démarrage du timer
     function startTimer() {
       timerInterval = setInterval(() => {
         timeElapsed++;
@@ -245,8 +248,6 @@
     }
 
     restartButton.addEventListener('click', initGame);
-
-    // Lancement initial du jeu
     initGame();
   </script>
 </body>

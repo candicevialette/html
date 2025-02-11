@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <title>Jeu du Memory</title>
@@ -17,7 +18,7 @@
       text-decoration: none;
       color: #007BFF;
     }
-    /* Plateau de jeu en grille */
+    /* Plateau de jeu */
     #game-board {
       display: grid;
       grid-template-columns: repeat(5, 100px);
@@ -39,7 +40,6 @@
       transition: transform 0.6s;
       transform-style: preserve-3d;
     }
-    /* Rotation pour révéler la face */
     .card.flipped .card-inner {
       transform: rotateY(180deg);
     }
@@ -51,7 +51,7 @@
       border: 1px solid black;
       border-radius: 5px;
     }
-    /* Face avant : dos de la carte */
+    /* Dos de carte */
     .card-front {
       background: lightgray;
       display: flex;
@@ -59,7 +59,7 @@
       justify-content: center;
       font-size: 2em;
     }
-    /* Face arrière : image de l'animal */
+    /* Face avec l'image */
     .card-back {
       transform: rotateY(180deg);
     }
@@ -69,6 +69,19 @@
       object-fit: cover;
       border-radius: 5px;
     }
+    /* Styles pour le bouton et les stats */
+    #restart-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    #stats {
+      margin-top: 20px;
+    }
+    #stats p {
+      margin: 5px;
+    }
   </style>
 </head>
 <body>
@@ -76,9 +89,16 @@
   <a href="https://candicevialette.github.io/html/public_html/">Retour à l'accueil</a>
   
   <div id="game-board"></div>
+  
+  <button id="restart-button">Recommencer le jeu</button>
+  
+  <div id="stats">
+    <p>Paires trouvées : 0</p>
+    <p>Pourcentage de réussite : 0%</p>
+  </div>
 
   <script>
-    // Données de cartes (10 images, chacune en double pour créer des paires)
+    // Données de cartes (10 images, chacune en double)
     const cardsData = [
       { name: 'dinde',  img: 'https://candicevialette.github.io/html/public_html/TP03/Image/dinde.png' },
       { name: 'cochon', img: 'https://candicevialette.github.io/html/public_html/TP03/Image/cochon.png' },
@@ -92,10 +112,18 @@
       { name: 'chevre', img: 'https://candicevialette.github.io/html/public_html/TP03/Image/chevre.png' }
     ];
 
-    // Création du tableau des cartes (chaque carte apparaît 2 fois)
-    let cardsArray = [...cardsData, ...cardsData];
+    let cardsArray = [];
+    let firstCard = null;
+    let secondCard = null;
+    let lockBoard = false;
+    let matchedPairs = 0;
+    let attempts = 0;
 
-    // Fonction de mélange (algorithme de Fisher-Yates)
+    const gameBoard = document.getElementById('game-board');
+    const statsDiv = document.getElementById('stats');
+    const restartButton = document.getElementById('restart-button');
+
+    // Mélange des cartes avec l'algorithme de Fisher-Yates
     function shuffle(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -103,14 +131,20 @@
       }
       return array;
     }
-    cardsArray = shuffle(cardsArray);
 
-    const gameBoard = document.getElementById('game-board');
+    // Initialisation du tableau des cartes
+    function initCards() {
+      cardsArray = shuffle([...cardsData, ...cardsData]);
+    }
 
-    let firstCard = null;
-    let secondCard = null;
-    let lockBoard = false;
-    let matchedPairs = 0;
+    // Mise à jour des statistiques affichées
+    function updateStats() {
+      const successRate = attempts > 0 ? Math.round((matchedPairs / attempts) * 100) : 0;
+      statsDiv.innerHTML = `
+        <p>Paires trouvées : ${matchedPairs}</p>
+        <p>Pourcentage de réussite : ${successRate}%</p>
+      `;
+    }
 
     // Création d'une carte HTML
     function createCard(cardData) {
@@ -121,24 +155,20 @@
       const cardInner = document.createElement('div');
       cardInner.classList.add('card-inner');
 
-      // Face avant (dos de la carte)
       const cardFront = document.createElement('div');
       cardFront.classList.add('card-face', 'card-front');
       cardFront.textContent = "?";
 
-      // Face arrière (image)
       const cardBack = document.createElement('div');
       cardBack.classList.add('card-face', 'card-back');
       const img = document.createElement('img');
       img.src = cardData.img;
       cardBack.appendChild(img);
 
-      // Assemblage de la carte
       cardInner.appendChild(cardFront);
       cardInner.appendChild(cardBack);
       card.appendChild(cardInner);
 
-      // Gestion du clic sur la carte
       card.addEventListener('click', () => {
         if (lockBoard || card.classList.contains('flipped')) return;
         card.classList.add('flipped');
@@ -147,6 +177,8 @@
           firstCard = card;
         } else {
           secondCard = card;
+          attempts++;
+          updateStats();
           checkForMatch();
         }
       });
@@ -154,13 +186,13 @@
       return card;
     }
 
-    // Vérification des cartes sélectionnées
+    // Vérification de la correspondance entre 2 cartes
     function checkForMatch() {
       const isMatch = firstCard.dataset.name === secondCard.dataset.name;
       if (isMatch) {
-        // Les cartes restent retournées
-        resetBoard();
         matchedPairs++;
+        updateStats();
+        resetBoard();
         if (matchedPairs === cardsData.length) {
           setTimeout(() => alert('Félicitations, vous avez gagné !'), 500);
         }
@@ -174,19 +206,29 @@
       }
     }
 
-    // Réinitialise les variables de contrôle
+    // Réinitialisation des variables de contrôle
     function resetBoard() {
       [firstCard, secondCard] = [null, null];
       lockBoard = false;
     }
 
-    // Initialisation du jeu en créant et affichant toutes les cartes
+    // Initialisation du jeu
     function initGame() {
+      gameBoard.innerHTML = '';
+      firstCard = null;
+      secondCard = null;
+      lockBoard = false;
+      matchedPairs = 0;
+      attempts = 0;
+      updateStats();
+      initCards();
       cardsArray.forEach(cardData => {
         const cardElement = createCard(cardData);
         gameBoard.appendChild(cardElement);
       });
     }
+
+    restartButton.addEventListener('click', initGame);
 
     initGame();
   </script>

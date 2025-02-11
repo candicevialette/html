@@ -2,18 +2,14 @@
 <html lang="fr">
 <head>
     <title>Les Atomes et Modèles Atomiques</title>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
         <h1>Les Atomes et Modèles Atomiques</h1>
-        <nav>
             <ul>
                 <li><a href="index.html">Accueil</a></li>
                 <li><a href="liaisons.html">Les Liaisons Chimiques</a></li>
                 <li><a href="reactions.html">Les Réactions Chimiques</a></li>
             </ul>
-</nav>
-
     <main>
         <section>
             <h2>Introduction aux Atomes</h2>
@@ -30,9 +26,5 @@
             </ul>
         </section>
     </main>
-    
-    <footer>
-        <p>&copy; 2025 - Cours de Chimie Terminale Spé</p>
-    </footer>
 </body>
 </html>

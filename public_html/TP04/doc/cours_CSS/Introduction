@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les Atomes et Modèles Atomiques</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Les Atomes et Modèles Atomiques</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="liaisons.html">Les Liaisons Chimiques</a></li>
+                <li><a href="reactions.html">Les Réactions Chimiques</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section>
+            <h2>Introduction aux Atomes</h2>
+            <p>Un atome est la plus petite unité de matière constituée d'un noyau (protons et neutrons) et d'électrons en orbite.</p>
+        </section>
+        <section>
+            <h2>Modèles Atomiques</h2>
+            <ul>
+                <li>Modèle de Dalton</li>
+                <li>Modèle de Thomson</li>
+                <li>Modèle de Rutherford</li>
+                <li>Modèle de Bohr</li>
+                <li>Modèle Quantique</li>
+            </ul>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 - Cours de Chimie Terminale Spé</p>
+    </footer>
+</body>
+</html>

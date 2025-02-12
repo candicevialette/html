@@ -1,0 +1,53 @@
+/* Style général */
+ body {
+            font-family: "Times New Roman", Times, serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #d2b48c; /* Beige */
+            color: #5c4033; /* Marron foncé */
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #5c4033; /* Marron foncé */
+            background-color: #e5d3b3; /* Beige plus clair */
+        }
+        h1, h2, h3 {
+            margin-bottom: 10px;
+            color: #5c4033; /* Marron foncé */
+        }
+
+/* Style des liens */
+a {
+    text-decoration: none;
+    font-size: 16px;
+    color: #654321; /* Marron foncé */
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    font-size: 20px;
+    color: #8B4513; /* Marron plus foncé */
+    cursor: pointer;
+}
+
+/* Style du footer */
+.footer {
+    text-align: center;
+    padding: 10px;
+    background: #deb887; /* Brun clair */
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer a {
+    color: #654321; /* Marron foncé */
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}

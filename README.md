@@ -17,6 +17,26 @@ Ce dépôt contient des ressources pour apprendre et maîtriser le langage HTML.
 - **Servir de base pour les langages complémentaires comme CSS et JavaScript.**
   
 ---
+## 📚 Qu'est-ce que le CSS ?**
+
+**CSS** (**C**ascading **S**tyle **M**arkup **S**heets) est le langage utilisé pour décrire la présentation d’un document HTML. Il est essentiel pour :
+- **Définir l'apparence visuelle des pages web :** couleurs, polices, marges, espacements, etc.
+- **Créer des mises en page réactives :** adapter l’affichage aux différents types d’écrans (ordinateurs, tablettes, smartphones).
+- **Séparer la structure (HTML) de la présentation** facilitant ainsi la maintenance et la réutilisation du design.
+- **Appliquer des animations et des transitions :** améliorer l’expérience utilisateur grâce à des effets visuels dynamiques.
+- **Utiliser des sélecteurs pour cibler précisément des éléments :** permettant une personnalisation fine du style.
+---
+## 📚 **Qu'est-ce que JavaScript ?**
+
+**JavaScript**  est un langage de programmation dynamique principalement utilisé pour ajouter de l’interactivité aux pages web. Il est essentiel pour :
+
+- **Rendre les pages web interactives :** gérer des actions comme les clics, les survols ou les saisies utilisateur.
+- **Manipuler le DOM (Document Object Model) :** modifier le contenu et la structure d’une page en temps réel.
+- **Gérer des événements et des animations :** créer des effets et des comportements dynamiques sur la page.
+- **Communiquer avec des serveurs :** charger ou envoyer des données de manière asynchrone via AJAX ou l’API Fetch.
+- **Développer des applications web complètes :** allant de simples scripts interactifs à des applications complexes et évolutives.
+  
+---
 ## 🔗 **Fonctionnalités Principales du Dépôt**
 
 - **Exemples de code** avec des fichiers HTML illustrant divers éléments et attributs.
@@ -44,7 +64,7 @@ Ce dépôt contient des ressources pour apprendre et maîtriser le langage HTML.
 │   ├── TP03_Exo1.html
 │   ├── TP03_Exo2.html
 │   ├── CV.html
-│   └── TP03_Exo3.html
+│   └── TP03_Exo3.html 
 |
 ├── .bowerrc
 ├── Gruntfile.js
@@ -105,15 +125,6 @@ Consultez le [site web](https://candicevialette.github.io/html/public_html/) pou
 - **Testez vos pages web sur plusieurs navigateurs** pour assurer une compatibilité optimale.
 - **Expérimentez avec CSS et JavaScript** pour enrichir vos pages HTML.
 
----
-
-## 📚 **Ressources Utiles**
-
-- [Cours sur le HTML](https://candicevialette.github.io/html/public_html/TP03_Exo1.html)
-- [Documentation MDN HTML](https://developer.mozilla.org/fr/docs/Web/HTML)
-- [W3Schools HTML Guide](https://www.w3schools.com/html/)
-- [Tutoriel vidéo sur YouTube pour les débutants](https://www.youtube.com/watch?v=pQN-pnXPaVg)
-- [FreeCodeCamp : Cours HTML Gratuit](https://www.freecodecamp.org/learn/)
 ---
 
 ## 🌍 **Licence**

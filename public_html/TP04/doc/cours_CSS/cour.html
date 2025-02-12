@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction au CSS</title>
+    <link rel="stylesheet" href="https://candicevialette.github.io/html/public_html/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Introduction au CSS</h1>
+        <p>Apprends à styliser tes pages web facilement !</p>
+    </header>
+    
+    <section>
+        <h2>Pourquoi utiliser CSS ?</h2>
+        <p>CSS permet de rendre un site web joli et bien organisé.</p>
+        <ul>
+            <li>Changer les couleurs</li>
+            <li>Modifier la police et la taille du texte</li>
+            <li>Aligner et positionner les éléments</li>
+        </ul>
+    </section>
+    
+    <section>
+        <h2>Comment ça marche ?</h2>
+        <pre><code>
+        h1 {
+            color: red;
+        }
+        </code></pre>
+        <p>Ce code rend tous les titres &lt;h1&gt; rouges.</p>
+    </section>
+    
+    <section>
+        <h2>Les 3 façons d’ajouter du CSS</h2>
+        <h3>1. Directement sur un élément</h3>
+        <pre><code>
+        &lt;p style="color: green;"&gt;Je suis vert !&lt;/p&gt;
+        </code></pre>
+        
+        <h3>2. Dans un bloc &lt;style&gt; en HTML</h3>
+        <pre><code>
+        &lt;style&gt;
+        p {
+            color: green;
+        }
+        &lt;/style&gt;
+        </code></pre>
+        
+        <h3>3. Dans un fichier CSS séparé</h3>
+        <pre><code>
+        /* styles.css */
+        p {
+            color: green;
+        }
+        </code></pre>
+        <p>Ajoute ensuite dans ton HTML :</p>
+        <pre><code>
+        &lt;link rel="stylesheet" href="styles.css"&gt;
+        </code></pre>
+    </section>
+    
+    <section>
+        <h2>Organiser un site avec CSS</h2>
+        <h3>1. Centrer un texte</h3>
+        <pre><code>
+        h1 {
+            text-align: center;
+        }
+        </code></pre>
+        
+        <h3>2. Ajouter des marges et de l’espace</h3>
+        <pre><code>
+        p {
+            margin: 20px;
+            padding: 10px;
+        }
+        </code></pre>
+        
+        <h3>3. Changer l’arrière-plan</h3>
+        <pre><code>
+        body {
+            background-color: lightblue;
+        }
+        </code></pre>
+    </section>
+    
+    <section>
+        <h2>Animations et effets</h2>
+        <h3>Bouton interactif</h3>
+        <pre><code>
+        button {
+            background-color: blue;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: red;
+        }
+        </code></pre>
+        <p>Le bouton change de couleur au survol !</p>
+    </section>
+</body>
+</html>

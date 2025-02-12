@@ -1,0 +1,89 @@
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours Complet sur JavaScript</title>
+  <link rel="stylesheet" href="https://candicevialette.github.io/html/public_html/style.css">
+</head>
+<body>
+    <header>
+        <h1>Cours Complet sur JavaScript</h1>
+        <p>Apprends à rendre tes pages web interactives avec JavaScript !</p>
+    </header>
+    
+    <section>
+        <h2>Pourquoi utiliser JavaScript ?</h2>
+        <p>JavaScript est utilisé pour ajouter de l’interactivité à un site web.</p>
+        <ul>
+            <li>Modifier du contenu en temps réel</li>
+            <li>Créer des animations</li>
+            <li>Gérer des événements utilisateur (clics, saisies, etc.)</li>
+        </ul>
+    </section>
+    
+    <section>
+        <h2>Comment fonctionne JavaScript ?</h2>
+        <p>Exemple : Modifier le texte d’un élément en cliquant sur un bouton.</p>
+        <button id="changeText">Clique-moi</button>
+        <p id="text">Texte initial</p>
+        <pre><code>
+        document.getElementById("changeText").addEventListener("click", function() {
+            document.getElementById("text").innerText = "Texte modifié !";
+        });
+        </code></pre>
+    </section>
+    
+    <section>
+        <h2>Les 3 façons d’ajouter du JavaScript</h2>
+        <h3>1. Directement dans un élément HTML</h3>
+        <pre><code>
+        &lt;button onclick="alert('Bonjour !')"&gt;Clique-moi&lt;/button&gt;
+        </code></pre>
+        
+        <h3>2. Dans un bloc &lt;script&gt; en HTML</h3>
+        <pre><code>
+        &lt;script&gt;
+        document.getElementById("text").style.color = "blue";
+        &lt;/script&gt;
+        </code></pre>
+        
+        <h3>3. Dans un fichier JavaScript séparé</h3>
+        <pre><code>
+        // script.js
+        document.getElementById("changeText").addEventListener("click", function() {
+            document.getElementById("text").innerText = "Texte modifié !";
+        });
+        </code></pre>
+        <p>Ajoute ensuite dans ton HTML :</p>
+        <pre><code>
+        &lt;script defer src="script.js"&gt;&lt;/script&gt;
+        </code></pre>
+    </section>
+    
+    <section>
+        <h2>Animations et interactions avec JavaScript</h2>
+        <h3>1. Changer la couleur d’un élément</h3>
+        <button id="colorButton">Changer la couleur</button>
+        <p id="colorText">Regarde-moi changer !</p>
+        <pre><code>
+        document.getElementById("colorButton").addEventListener("click", function() {
+            document.getElementById("colorText").style.color = "green";
+        });
+        </code></pre>
+        
+        <h3>2. Afficher ou masquer un élément</h3>
+        <button id="toggleButton">Afficher/Masquer</button>
+        <p id="toggleText">Ceci peut être caché.</p>
+        <pre><code>
+        document.getElementById("toggleButton").addEventListener("click", function() {
+            let text = document.getElementById("toggleText");
+            if (text.style.display === "none") {
+                text.style.display = "block";
+            } else {
+                text.style.display = "none";
+            }
+        });
+        </code></pre>
+    </section>
+</body>
+</html>

@@ -96,7 +96,7 @@
   </div>
 
   <script>
-    // Données de cartes (10 images, chacune en double)
+    // Données de cartes (en double)
     const cardsData = [
       { name: 'dinde',  img: 'https://candicevialette.github.io/html/public_html/TP03/Image/dinde.png' },
       { name: 'cochon', img: 'https://candicevialette.github.io/html/public_html/TP03/Image/cochon.png' },
@@ -155,7 +155,7 @@
       const cardInner = document.createElement('div');
       cardInner.classList.add('card-inner');
 
-      // Face avant de la carte (dos de la carte) : affichage de l'image personnalisée
+      // Face avant de la carte (ferme)
       const cardFront = document.createElement('div');
       cardFront.classList.add('card-face', 'card-front');
       const imgBack = document.createElement('img');
@@ -163,7 +163,7 @@
       imgBack.alt = 'Dos de la carte';
       cardFront.appendChild(imgBack);
 
-      // Face arrière de la carte (image de l'animal)
+      // Face arrière de la carte (animaux)
       const cardBack = document.createElement('div');
       cardBack.classList.add('card-face', 'card-back');
       const imgAnimal = document.createElement('img');
@@ -227,7 +227,7 @@
       }, 1000);
     }
 
-    // Initialisation (ou réinitialisation) de la partie
+    // Initialisation de la partie
     function initGame() {
       if (timerInterval) clearInterval(timerInterval);
       timeElapsed = 0;

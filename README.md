@@ -17,7 +17,7 @@ Ce dépôt contient des ressources pour apprendre et maîtriser le langage HTML.
 - **Servir de base pour les langages complémentaires comme CSS et JavaScript.**
   
 ---
-## 📚 Qu'est-ce que le CSS ?**
+## 📚 **Qu'est-ce que le CSS ?**
 
 **CSS** (**C**ascading **S**tyle **M**arkup **S**heets) est le langage utilisé pour décrire la présentation d’un document HTML. Il est essentiel pour :
 - **Définir l'apparence visuelle des pages web :** couleurs, polices, marges, espacements, etc.

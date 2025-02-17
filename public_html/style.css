@@ -1,29 +1,32 @@
 /* Style général */
- body {
-            font-family: "Times New Roman", Times, serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            background-color: #d2b48c; /* Beige */
-            color: #5c4033; /* Marron foncé */
-        }
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #5c4033; /* Marron foncé */
-            background-color: #e5d3b3; /* Beige plus clair */
-        }
-        h1, h2, h3 {
-            margin-bottom: 10px;
-            color: #5c4033; /* Marron foncé */
-        }
+body {
+    font-family: "Times New Roman", Times, serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #d2b48c; /* Beige */
+    color: #5c4033; /* Marron foncé */
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #5c4033; /* Marron foncé */
+    background-color: #e5d3b3; /* Beige plus clair */
+}
+
+h1, h2, h3 {
+    margin-bottom: 10px;
+    color: #5c4033; /* Marron foncé */
+}
 
 /* Style des liens */
 a {
     text-decoration: none;
     font-size: 16px;
     color: #654321; /* Marron foncé */
+    font-weight: bold; /* Texte en gras */
     transition: all 0.3s ease;
 }
 
@@ -46,50 +49,54 @@ a:hover {
 .footer a {
     color: #654321; /* Marron foncé */
     text-decoration: none;
+    font-weight: bold; /* Texte en gras */
 }
 
 .footer a:hover {
     text-decoration: underline;
 }
-/* Listes*/
+
+/* Listes */
 .list {
-            text-align: center;
-        }
+    text-align: center;
+}
 
-        .list ol {
-            list-style: none;
-            padding: 0;
-        }
+.list ol {
+    list-style: none;
+    padding: 0;
+}
 
-        .list li {
-            margin: 10px 0;
-        }
+.list li {
+    margin: 10px 0;
+}
 
-        .list a {
-            text-decoration: none;
-            color: #007BFF;
-            font-size: 16px;
-            transition: color 0.3s ease;
-        }
+.list a {
+    text-decoration: none;
+    color: #007BFF;
+    font-size: 16px;
+    font-weight: bold; /* Texte en gras */
+    transition: color 0.3s ease;
+}
 
-        .list a:hover {
-            color: #0056b3;
-        }
-/*Image*/
+.list a:hover {
+    color: #0056b3;
+}
+
+/* Image */
 .images {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
 
-        .images img {
-            width: 80px;
-            height: auto;
-            border-radius: 4px;
-            transition: transform 0.3s ease;
-        }
+.images img {
+    width: 80px;
+    height: auto;
+    border-radius: 4px;
+    transition: transform 0.3s ease;
+}
 
-        .images img:hover {
-            transform: scale(1.1);
-        }
+.images img:hover {
+    transform: scale(1.1);
+}

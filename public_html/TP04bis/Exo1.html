@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <title>Calendrier Scolaire 2017-2018</title>
@@ -6,85 +7,104 @@
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
+      background-color: #f8f8f8; /* Fond global */
+      color: #333;
     }
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 10px;
+      margin-top: 20px;
+      background-color: white;
     }
     th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      vertical-align: top;
-    }
-    th {
-      background-color: #f2f2f2;
+      border: 1px solid #ddd;
+      padding: 10px;
       text-align: left;
     }
+    th {
+      background-color: #444;
+      color: white;
+    }
     thead th {
-      background-color: #e0e0e0;
+      background-color: #222;
+    }
+    tbody tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    /* Couleurs pour les zones */
+    .zone-a {
+      background-color: #ffcc80; /* Orange clair */
+      font-weight: bold;
+    }
+    .zone-b {
+      background-color: #80d4ff; /* Bleu clair */
+      font-weight: bold;
+    }
+    .zone-c {
+      background-color: #a0e6a0; /* Vert clair */
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-<a href="https://candicevialette.github.io/html/public_html/TP04bis/presentation.html">Retour au TP04</a>
+
 <table>
   <thead>
     <tr>
       <th>Vacances</th>
-      <th>Zone A</th>
-      <th>Zone B</th>
-      <th>Zone C</th>
+      <th class="zone-a">Zone A</th>
+      <th class="zone-b">Zone B</th>
+      <th class="zone-c">Zone C</th>
     </tr>
     <tr>
       <td></td>
-      <td>Académies : Besançon, Bordeaux, Clermont-Ferrand, Dijon, Grenoble, Limoges, Lyon, Poitiers</td>
-      <td>Académies : Aix-Marseille, Amiens, Caen, Lille, Nancy-Metz, Nantes, Nice, Orléans-Tours, Reims, Rennes, Rouen, Strasbourg</td>
-      <td>Académies : Créteil, Montpellier, Paris, Toulouse, Versailles</td>
+      <td class="zone-a">Académies : Besançon, Bordeaux, Clermont-Ferrand, Dijon, Grenoble, Limoges, Lyon, Poitiers</td>
+      <td class="zone-b">Académies : Aix-Marseille, Amiens, Caen, Lille, Nancy-Metz, Nantes, Nice, Orléans-Tours, Reims, Rennes, Rouen, Strasbourg</td>
+      <td class="zone-c">Académies : Créteil, Montpellier, Paris, Toulouse, Versailles</td>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>Prérentrée des enseignants</td>
-      <td>Reprise des cours : vendredi 1er septembre 2017</td>
-      <td>Reprise des cours : lundi 4 septembre 2017</td>
-      <td>Reprise des cours : lundi 4 septembre 2017</td>
+      <td class="zone-a">Reprise des cours : vendredi 1er septembre 2017</td>
+      <td class="zone-b">Reprise des cours : lundi 4 septembre 2017</td>
+      <td class="zone-c">Reprise des cours : lundi 4 septembre 2017</td>
     </tr>
     <tr>
       <td>Rentrée scolaire des élèves</td>
-      <td>Reprise des cours : lundi 4 septembre 2017</td>
-      <td>Reprise des cours : lundi 4 septembre 2017</td>
-      <td>Reprise des cours : lundi 4 septembre 2017</td>
+      <td class="zone-a">Reprise des cours : lundi 4 septembre 2017</td>
+      <td class="zone-b">Reprise des cours : lundi 4 septembre 2017</td>
+      <td class="zone-c">Reprise des cours : lundi 4 septembre 2017</td>
     </tr>
     <tr>
       <td>Vacances de la Toussaint</td>
-      <td>Fin des cours : samedi 21 octobre 2017<br>Reprise des cours : lundi 6 novembre 2017</td>
-      <td>Fin des cours : samedi 21 octobre 2017<br>Reprise des cours : lundi 6 novembre 2017</td>
-      <td>Fin des cours : samedi 21 octobre 2017<br>Reprise des cours : lundi 6 novembre 2017</td>
+      <td class="zone-a">Fin des cours : samedi 21 octobre 2017<br>Reprise des cours : lundi 6 novembre 2017</td>
+      <td class="zone-b">Fin des cours : samedi 21 octobre 2017<br>Reprise des cours : lundi 6 novembre 2017</td>
+      <td class="zone-c">Fin des cours : samedi 21 octobre 2017<br>Reprise des cours : lundi 6 novembre 2017</td>
     </tr>
     <tr>
       <td>Vacances de Noël</td>
-      <td>Fin des cours : samedi 23 décembre 2017<br>Reprise des cours : lundi 8 janvier 2018</td>
-      <td>Fin des cours : samedi 23 décembre 2017<br>Reprise des cours : lundi 8 janvier 2018</td>
-      <td>Fin des cours : samedi 23 décembre 2017<br>Reprise des cours : lundi 8 janvier 2018</td>
+      <td class="zone-a">Fin des cours : samedi 23 décembre 2017<br>Reprise des cours : lundi 8 janvier 2018</td>
+      <td class="zone-b">Fin des cours : samedi 23 décembre 2017<br>Reprise des cours : lundi 8 janvier 2018</td>
+      <td class="zone-c">Fin des cours : samedi 23 décembre 2017<br>Reprise des cours : lundi 8 janvier 2018</td>
     </tr>
     <tr>
       <td>Vacances d'hiver</td>
-      <td>Fin des cours : samedi 10 février 2018<br>Reprise des cours : lundi 26 février 2018</td>
-      <td>Fin des cours : samedi 24 février 2018<br>Reprise des cours : lundi 12 mars 2018</td>
-      <td>Fin des cours : samedi 17 février 2018<br>Reprise des cours : lundi 5 mars 2018</td>
+      <td class="zone-a">Fin des cours : samedi 10 février 2018<br>Reprise des cours : lundi 26 février 2018</td>
+      <td class="zone-b">Fin des cours : samedi 24 février 2018<br>Reprise des cours : lundi 12 mars 2018</td>
+      <td class="zone-c">Fin des cours : samedi 17 février 2018<br>Reprise des cours : lundi 5 mars 2018</td>
     </tr>
     <tr>
       <td>Vacances de printemps</td>
-      <td>Fin des cours : samedi 7 avril 2018<br>Reprise des cours : lundi 23 avril 2018</td>
-      <td>Fin des cours : samedi 7 avril 2018<br>Reprise des cours : lundi 23 avril 2018</td>
-      <td>Fin des cours : samedi 14 avril 2018<br>Reprise des cours : lundi 30 avril 2018</td>
+      <td class="zone-a">Fin des cours : samedi 7 avril 2018<br>Reprise des cours : lundi 23 avril 2018</td>
+      <td class="zone-b">Fin des cours : samedi 7 avril 2018<br>Reprise des cours : lundi 23 avril 2018</td>
+      <td class="zone-c">Fin des cours : samedi 14 avril 2018<br>Reprise des cours : lundi 30 avril 2018</td>
     </tr>
     <tr>
       <td>Vacances d'été</td>
-      <td>Fin des cours : samedi 7 juillet 2018</td>
-      <td>Fin des cours : samedi 7 juillet 2018</td>
-      <td>Fin des cours : samedi 7 juillet 2018</td>
+      <td class="zone-a">Fin des cours : samedi 7 juillet 2018</td>
+      <td class="zone-b">Fin des cours : samedi 7 juillet 2018</td>
+      <td class="zone-c">Fin des cours : samedi 7 juillet 2018</td>
     </tr>
   </tbody>
 </table>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>7</title>
+  /* 
+  Exercice 3
+  - Zone du Haut (rouge)
+  - Zone de Gauche (bleu)
+  - 5 zones vertes au milieu (Z1..Z5)
+  - Zone de Droite (bleu)
+  - Zone du bas (jaune)
+*/
+
+/* Reset */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* On organise le body en colonne : header, container (milieu), footer */
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Zone du Haut (rouge) : ~15% */
+header {
+  background-color: red;
+  height: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #000;
+}
+
+/* Container principal (Gauche + Milieu + Droite) : ~70% */
+.container {
+  display: flex;
+  flex: 1; /* occupe l'espace restant entre le header et le footer */
+}
+
+/* Zone de Gauche (bleu) : ~15% de la largeur */
+.gauche {
+  background-color: blue;
+  width: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* Milieu : 5 colonnes vertes Z1..Z5 */
+main {
+  flex: 1; /* prend l'espace central entre la gauche et la droite */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Conteneur des 5 zones Z1..Z5 */
+.milieu {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 colonnes */
+  width: 100%;
+  height: 100%;
+}
+
+/* Chaque zone verte occupe une colonne */
+.milieu > section {
+  background-color: green;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #000;
+  border: 1px solid #fff; /* Pour visualiser les séparations */
+}
+
+/* Zone de Droite (bleu) : ~15% de la largeur */
+.droite {
+  background-color: blue;
+  width: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* Zone du bas (jaune) : ~15% */
+footer {
+  background-color: yellow;
+  height: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+</head>
+<body>
+   <a href="https://candicevialette.github.io/html/public_html/TP05/exo2/presentation.html" style="color: inherit; text-decoration: none; font-weight: bold; cursor: pointer;">Retour au TP05</a>
+  <!-- 
+    Zoning :
+      - Zone du Haut (rouge)
+      - Zone de Gauche (bleu)
+      - Zone de Droite (bleu)
+      - 5 zones vertes au milieu (Z1 à Z5)
+      - Zone du bas (jaune)
+  -->
+
+  <!-- Zone du Haut -->
+  <header>
+    Zone du Haut
+  </header>
+
+  <!-- Conteneur principal : Gauche, 5 zones (Z1..Z5), Droite -->
+  <div class="container">
+    <aside class="gauche">
+      Zone de Gauche
+    </aside>
+
+    <!-- Milieu : 5 colonnes vertes (Z1..Z5) -->
+    <main>
+      <div class="milieu">
+        <section class="z1">Z1</section>
+        <section class="z2">Z2</section>
+        <section class="z3">Z3</section>
+        <section class="z4">Z4</section>
+        <section class="z5">Z5</section>
+      </div>
+    </main>
+
+    <aside class="droite">
+      Zone de Droite
+    </aside>
+  </div>
+
+  <!-- Zone du bas -->
+  <footer>
+    Zone du bas
+  </footer>
+</body>
+</html>

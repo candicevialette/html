@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>3</title>
+  /* 
+  Fichier CSS pour l'exercice 3
+  Objectif : reproduire le zoning 
+  (Deux colonnes : Gauche (turquoise), Droite (violet), 
+   et une zone Bas (jaune) en pleine largeur)
+*/
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Le conteneur général en colonne */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* La zone du haut est elle-même un conteneur flex pour avoir 2 colonnes */
+.haut {
+  display: flex;
+  flex: 1; /* occupe tout l'espace disponible, sauf le footer */
+}
+
+/* Colonne de gauche (turquoise) */
+.gauche {
+  background-color: #40E0D0; /* turquoise */
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* Colonne de droite (violet) */
+.droite {
+  background-color: purple;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* Footer (jaune) occupant la largeur complète en bas */
+footer {
+  background-color: gold;
+  height: 15%; /* Par exemple 15% de la hauteur totale */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+</head>
+<body>
+  <a href="https://github.com/candicevialette/html/blob/master/public_html/TP05/presentation.html" style="color: inherit; text-decoration: none; font-weight: bold; cursor: pointer;">
+    TP01</a>
+  <!-- 
+    On veut deux colonnes (Gauche et Droite) 
+    et un Bas (barre horizontale en bas)
+  -->
+
+  <div class="wrapper">
+    <div class="haut">
+      <!-- 
+        Conteneur haut divisé en deux : 
+        Gauche (turquoise) et Droite (violet)
+      -->
+      <section class="gauche">
+        gauche
+      </section>
+      <section class="droite">
+        droite
+      </section>
+    </div>
+
+    <!-- 
+      Zone Bas (jaune) en dessous de la zone Haut
+    -->
+    <footer>
+      Bas
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Exercice 2 - Zoning</title>
+ <style>/* 
+  Fichier CSS pour l'exercice 2
+  Objectif : reproduire le zoning 
+  (Haut en rouge, Gauche en bleu, Milieu en vert, Droite en marron)
+*/
+
+/* On enlève les marges par défaut du body et on force la hauteur à 100% */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Le header occupe 100% de la largeur et ~15% de la hauteur */
+header {
+  background-color: red;
+  height: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #000;
+}
+
+/* Le conteneur principal : 85% de hauteur, flex pour aligner 3 colonnes */
+.container {
+  display: flex;
+  height: 85%;
+}
+
+/* Zone de Gauche (bleu) : ~20% de la largeur */
+.gauche {
+  background-color: blue;
+  width: 20%;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* Zone du Milieu (vert) : flex:1 pour prendre l'espace restant */
+main {
+  background-color: green;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  font-weight: bold;
+}
+
+/* Zone de Droite (marron) : ~20% de la largeur */
+.droite {
+  background-color: #8B4513; /* Marron */
+  width: 20%;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+  <a href="https://github.com/candicevialette/html/blob/master/public_html/TP05/presentation.html">Retour au TP05</a>
+  <!-- 
+    Zone du Haut (rouge)
+    Largeur : 100%, Hauteur : ~15%
+  -->
+  <header>
+    Zone du Haut
+  </header>
+
+  <!-- 
+    Conteneur principal 
+    - Zone de Gauche (bleu)
+    - Zone du Milieu (vert)
+    - Zone de Droite (marron)
+  -->
+  <div class="container">
+    <aside class="gauche">
+      Zone de Gauche
+    </aside>
+    <main>
+      Zone du Milieu
+    </main>
+    <aside class="droite">
+      Zone de Droite
+    </aside>
+  </div>
+</body>
+</html>

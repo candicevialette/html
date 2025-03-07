@@ -1,1 +1,84 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>1</title>
+  <style>/* 
+  Fichier CSS pour l'exercice 1
+  Objectif : reproduire le zoning 
+  (Haut en rouge, Gauche en bleu, Milieu en vert)
+*/
+
+/* On enlève les marges par défaut du body et on force la hauteur à 100% */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Le header occupe la largeur complète et une hauteur de 15% */
+header {
+  background-color: red;      /* Couleur de fond rouge */
+  color: #000;                /* Couleur du texte (noir) */
+  height: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* Le conteneur principal occupe le reste de l'espace (85%) */
+.container {
+  display: flex;       /* Pour placer Gauche et Milieu côte à côte */
+  height: 85%;
+}
+
+/* Zone de Gauche (bleu) : on fixe une largeur, par exemple 20% */
+aside {
+  background-color: blue;
+  width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;  /* Texte en blanc pour contraste */
+  font-weight: bold;
+}
+
+/* Zone du Milieu (vert) : le reste de la place (80%) */
+main {
+  background-color: green;
+  flex: 1;  /* Pour occuper tout l'espace restant */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+  <a href="https://github.com/candicevialette/html/blob/master/public_html/TP05/presentation.html">Retour au TP05</a>
+  <!-- 
+    Zone du Haut (rouge) 
+    Largeur : 100%, Hauteur : par exemple 15% de la fenêtre
+  -->
+  <header>
+    Zone du Haut
+  </header>
+
+  <!-- 
+    Conteneur principal : 
+    - Zone de Gauche (bleu) 
+    - Zone du Milieu (vert)
+  -->
+  <div class="container">
+    <aside>
+      Zone de Gauche
+    </aside>
+    <main>
+      Zone du Milieu
+    </main>
+  </div>
+</body>
+</html>

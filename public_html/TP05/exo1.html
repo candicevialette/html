@@ -1,42 +1,83 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Exo 1</title>
-    <link rel="stylesheet" href="https://candicevialette.github.io/html/public_html/style.css">
-    <style>
-      /* Les bordures permettent de visualiser les zones lors de l’inspection */
-      header { border: 2px dashed gray; } /* Zone d’en-tête */
-      nav { border: 2px dashed blue; }      /* Zones de navigation */
-      form { border: 2px dashed red; }       /* Zone de recherche */
-      section { border: 2px dashed green; }  /* Zone principale du contenu */
-      article { border: 2px dashed purple; } /* Zone de l’article (architecture du site) */
-      footer { border: 2px dashed orange; }  /* Zone du pied de page */
-    </style>
-  </head>
-  <body>
-    <!-- La zone d’en-tête regroupe le menu et la recherche -->
-    <header>
-      <div>
-        <!-- Menu principal (balise <nav>) -->
-        <nav>Menu 1</nav>
-        <!-- Zone de recherche (balise <form>) -->
-        <form>
-          <input type="text" placeholder="Recherche">
-          <input type="submit" value="Ok">
-        </form>
-      </div>
-      <!-- Un second menu en dessous -->
-      <nav>Menu 2</nav>
-    </header>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Exo1</title>
+  <style>
+    /* Style commun pour toutes les zones */
+    .zone {
+      border: 2px solid #333;
+      margin: 10px;
+      padding: 10px;
+    }
+    /* Styles spécifiques pour distinguer visuellement chaque zone */
+    header {
+      background-color: #f0f0f0;
+    }
+    nav {
+      background-color: #d0f0d0;
+    }
+    article {
+      background-color: #f0d0d0;
+    }
+    aside {
+      background-color: #d0d0f0;
+    }
+    footer {
+      background-color: #f0f0d0;
+    }
+    /* Mise en page pour la zone principale (article + aside) */
+    .conteneur-principal {
+      display: flex;
+    }
+    .conteneur-principal article {
+      flex: 3;
+      margin-right: 10px;
+    }
+    .conteneur-principal aside {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <!-- En-tête du site : balise <header> -->
+  <header class="zone">
+    <h1>En-tête du site</h1>
+    <!-- Contient le logo, le titre, etc. -->
+  </header>
+  
+  <!-- Zone de navigation : balise <nav> -->
+  <nav class="zone">
+    <ul>
+      <li><a href="#">Lien 1</a></li>
+      <li><a href="#">Lien 2</a></li>
+      <li><a href="#">Lien 3</a></li>
+    </ul>
+  </nav>
+  
+  <!-- Conteneur principal regroupant l'article et la barre latérale -->
+  <div class="zone conteneur-principal">
+    <!-- Article principal : balise <article> -->
+    <article class="zone">
+      <h2>Article Principal</h2>
+      <p>Contenu principal de la page.</p>
+      <!-- Architecture du site :
+           - Cette zone représente le contenu central avec la hiérarchie des pages et sections.
+           - Ici, on peut détailler l'organisation interne du site.
+           La balise utilisée ici est <article>.
+      -->
+    </article>
     
-    <!-- Section principale qui contient l’article -->
-    <section>
-      <!-- L’article représente ici le contenu principal et l’architecture du site -->
-      <article>Contenu de l’article</article>
-    </section>
-    
-    <!-- Pied de page -->
-    <footer>Pied de page</footer>
-  </body>
+    <!-- Barre latérale : balise <aside> -->
+    <aside class="zone">
+      <h3>Barre latérale</h3>
+      <p>Contenu complémentaire (liens, infos, etc.).</p>
+    </aside>
+  </div>
+  
+  <!-- Pied de page : balise <footer> -->
+  <footer class="zone">
+    <p>Pied de page - informations de contact, copyright, etc.</p>
+  </footer>
+</body>
 </html>

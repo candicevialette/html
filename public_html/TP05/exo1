@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Exo 1</title>
+    <link rel="stylesheet" href="https://candicevialette.github.io/html/public_html/style.css">
+    <style>
+      /* Les bordures permettent de visualiser les zones lors de l’inspection */
+      header { border: 2px dashed gray; } /* Zone d’en-tête */
+      nav { border: 2px dashed blue; }      /* Zones de navigation */
+      form { border: 2px dashed red; }       /* Zone de recherche */
+      section { border: 2px dashed green; }  /* Zone principale du contenu */
+      article { border: 2px dashed purple; } /* Zone de l’article (architecture du site) */
+      footer { border: 2px dashed orange; }  /* Zone du pied de page */
+    </style>
+  </head>
+  <body>
+    <!-- La zone d’en-tête regroupe le menu et la recherche -->
+    <header>
+      <div>
+        <!-- Menu principal (balise <nav>) -->
+        <nav>Menu 1</nav>
+        <!-- Zone de recherche (balise <form>) -->
+        <form>
+          <input type="text" placeholder="Recherche">
+          <input type="submit" value="Ok">
+        </form>
+      </div>
+      <!-- Un second menu en dessous -->
+      <nav>Menu 2</nav>
+    </header>
+    
+    <!-- Section principale qui contient l’article -->
+    <section>
+      <!-- L’article représente ici le contenu principal et l’architecture du site -->
+      <article>Contenu de l’article</article>
+    </section>
+    
+    <!-- Pied de page -->
+    <footer>Pied de page</footer>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Exercice 7 : Devis cimenterie</title>
+  <link rel="stylesheet" href="https://candicevialette.github.io/html/public_html/style.css">
+</head>
+<body>
+  <a href=" https://candicevialette.github.io/html/public_html/TP6/presentation"> Retour au TP06 </a>
+    <h1>Calcul du devis pour la cimenterie</h1>
+    <label for="surface">Surface en m² :</label>
+    <input type="number" id="surface"><br>
+    <label for="epaisseur">Épaisseur de la dalle (cm) :</label>
+    <input type="number" id="epaisseur" min="15" max="35"><br>
+    <button onclick="calculerDevis()">Calculer</button>
+    <div id="result"></div>
+
+    <script>
+        function calculerDevis() {
+            var surface = parseFloat(document.getElementById('surface').value);
+            var epaisseur = parseFloat(document.getElementById('epaisseur').value);
+
+            if (isNaN(surface) || surface <= 0 || isNaN(epaisseur) || epaisseur < 15 || epaisseur > 35) {
+                document.getElementById('result').innerHTML = "Veuillez entrer des valeurs valides.";
+                return;
+            }
+
+            var epaisseurM = epaisseur / 100;
+            var volume = surface * epaisseurM;
+            var cimentTonne = (volume * 350) / 1000;
+            var nbCamions = Math.ceil(volume / 9);
+            var prixBetonHT = volume * 91;
+            var coutTransportHT = nbCamions * 140;
+            var totalHT = prixBetonHT + coutTransportHT;
+            var totalTTC = totalHT * 1.2; // TVA de 20%
+
+            document.getElementById('result').innerHTML =
+                "<h2>Résultats</h2>" +
+                "<p>Volume de béton nécessaire : " + volume.toFixed(2) + " m³</p>" +
+                "<p>Quantité de ciment : " + cimentTonne.toFixed(2) + " tonnes</p>" +
+                "<p>Nombre de camions nécessaires : " + nbCamions + "</p>" +
+                "<p>Prix HT : " + totalHT.toFixed(2) + " €</p>" +
+                "<p>Prix TTC : " + totalTTC.toFixed(2) + " €</p>";
+        }
+    </script>
+</body>
+</html>

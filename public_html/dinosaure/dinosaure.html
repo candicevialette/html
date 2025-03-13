@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Jeu de l'araignée - Obligation de se baisser</title>
+  <title>Jeu de l'araignée - Obstacles variés</title>
   <style>
     body {
       margin: 0;
@@ -37,9 +37,9 @@
     <h2>Jeu de l'araignée</h2>
     <p>
       - Flèche haut ou barre d’espace : Sauter<br>
-      - Flèche bas : Se baisser <br>
-      - Les obstacles deviennent de plus en plus rapides et fréquents avec le temps<br>
-      Bonne chance !
+      - Flèche bas : Se baisser (obligatoire pour éviter les obstacles hauts)<br>
+      - Certains obstacles peuvent apparaître côte à côte.<br>
+      La difficulté augmente avec le temps !
     </p>
   </div>
 
@@ -58,31 +58,30 @@
 
     // --- Chargement des images ---
     const spiderImg = new Image();
-    spiderImg.src = 'araignee.png'; // Image du personnage
+    spiderImg.src = 'araignee.png'; // Personnage
 
-    const obstacleImg1 = new Image();
-    obstacleImg1.src = 'obstacle.png'; // Image obstacle (utilisée pour les obstacles bas)
-    const obstacleImg2 = new Image();
-    obstacleImg2.src = 'ombrage.png';   // Image obstacle (utilisée pour les obstacles hauts)
+    // Nous utiliserons obstacle.png pour les obstacles bas et ombrage.png pour les obstacles hauts
+    const lowObstacleImg = new Image();
+    lowObstacleImg.src = 'obstacle.png';
 
-    // On utilise les deux images dans les deux cas, pour varier visuellement
-    const obstacleImages = [obstacleImg1, obstacleImg2];
+    const highObstacleImg = new Image();
+    highObstacleImg.src = 'ombrage.png';
 
-    // --- Variables globales et paramètres agrandis ---
-    const groundY = 300; // Niveau de départ (position où l'araignée se place)
+    // --- Variables globales ---
+    const groundY = 300; // Niveau de base (position où se situe le sol)
     let score, obstacles, lastObstacleTime, gameActive;
-    let highScore = 0;    // Meilleur score
-    let bestTime = 0;     // Meilleur temps de survie
-    let startTime = 0;    // Pour mesurer le temps de survie
+    let highScore = 0;
+    let bestTime = 0;
+    let startTime = 0;
 
-    // Configuration du personnage agrandi
+    // --- Configuration du personnage agrandi ---
     const spider = {
       x: 100,
       y: groundY,
       width: 80,
-      normalHeight: 80, // Hauteur quand debout
-      duckHeight: 40,   // Hauteur quand baissée
-      height: 80,       // Hauteur actuelle
+      normalHeight: 80, // Hauteur debout
+      duckHeight: 40,   // Hauteur en position accroupie
+      height: 80,
       dy: 0,
       jumpForce: 16,
       gravity: 0.8,
@@ -96,15 +95,15 @@
       switch (e.code) {
         case 'Space':
         case 'ArrowUp':
-          // Saut (interdit si déjà en l’air)
+          // Saut (impossible si déjà en l’air)
           if (!spider.isJumping) {
             spider.dy = -spider.jumpForce;
             spider.isJumping = true;
-            spider.isDucking = false;
+            spider.isDucking = false; // On annule le duck si saut
           }
           break;
         case 'ArrowDown':
-          // Se baisser : on déplace l’araignée vers le bas et on réduit sa hauteur
+          // Se baisser uniquement au sol
           if (!spider.isJumping) {
             spider.isDucking = true;
           }
@@ -115,7 +114,6 @@
     document.addEventListener('keyup', (e) => {
       if (!gameActive) return;
       if (e.code === 'ArrowDown') {
-        // Relâchement de la touche bas => se relever
         spider.isDucking = false;
       }
     });
@@ -136,7 +134,7 @@
       spider.dy = 0;
       spider.isJumping = false;
       spider.isDucking = false;
-      spider.height = spider.normalHeight; // Par défaut, debout
+      spider.height = spider.normalHeight;
       gameActive = true;
       startTime = Date.now();
 
@@ -146,34 +144,55 @@
       update();
     }
 
-    // --- Création d'obstacle avec deux types : "low" et "high" ---
+    // --- Création d'obstacle ---
     function spawnObstacle() {
       const difficultyFactor = getDifficultyFactor();
-      // Définir aléatoirement le type d'obstacle
+      // Déterminer aléatoirement le type d'obstacle : "low" ou "high"
       const obstacleType = Math.random() < 0.5 ? 'low' : 'high';
-      let obstacle = {
-        x: canvas.width,
-        speed: 8 * difficultyFactor,
-        img: obstacleImages[Math.floor(Math.random() * obstacleImages.length)]
-      };
+      let obstacle = { x: canvas.width, speed: 8 * difficultyFactor, type: obstacleType };
 
       if (obstacleType === 'low') {
-        // Obstacle bas (au sol) à éviter en sautant
-        const size = Math.random() * 20 + 30; // Taille entre 30 et 50
+        // Obstacle bas à sauter
+        const size = Math.random() * 20 + 30; // Entre 30 et 50
         obstacle.width = size;
         obstacle.height = size;
-        // Positionné de façon à ce qu'il touche le sol (la partie basse de l'obstacle est à 300+80 = 380)
+        // Positionné pour toucher le sol (la partie basse de l'obstacle est alignée)
         obstacle.y = groundY + spider.normalHeight - size;
+        obstacle.img = lowObstacleImg;
       } else {
-        // Obstacle haut (à éviter en se baissant)
-        // Pour forcer à se baisser, on fixe une hauteur faible pour l'obstacle
+        // Obstacle haut : il faut se baisser pour l'éviter.
+        // On le positionne de façon à couvrir la zone quand l'araignée est debout.
         obstacle.width = Math.random() * 20 + 30; // Entre 30 et 50
-        obstacle.height = 30; // Hauteur fixe
-        // Positionné de façon à bloquer la zone quand l'araignée est debout
-        obstacle.y = groundY;
+        obstacle.height = 50; // Hauteur plus importante
+        // On le place légèrement au-dessus du sol pour qu'en position debout, l'araignée entre en collision.
+        obstacle.y = groundY - 10; // De 290 à 340 (si l'araignée est debout, sa zone est de 300 à 380)
+        obstacle.img = highObstacleImg;
       }
 
       obstacles.push(obstacle);
+
+      // Avec une probabilité, créer un obstacle supplémentaire côte à côte (gap réduit)
+      if (Math.random() < 0.3) {
+        let gap = Math.random() * 20 + 10; // gap entre 10 et 30 pixels
+        let additional = {
+          x: obstacle.x + obstacle.width + gap,
+          speed: 8 * difficultyFactor,
+          type: obstacleType
+        };
+        if (obstacleType === 'low') {
+          const size = Math.random() * 20 + 30;
+          additional.width = size;
+          additional.height = size;
+          additional.y = groundY + spider.normalHeight - size;
+          additional.img = lowObstacleImg;
+        } else {
+          additional.width = Math.random() * 20 + 30;
+          additional.height = 50;
+          additional.y = groundY - 10;
+          additional.img = highObstacleImg;
+        }
+        obstacles.push(additional);
+      }
     }
 
     // --- Boucle d'animation ---
@@ -182,25 +201,21 @@
       const difficultyFactor = getDifficultyFactor();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Gravité et saut
+      // Gestion de la gravité et du saut
       spider.dy += spider.gravity;
       spider.y += spider.dy;
-
-      // Empêcher de descendre sous le "sol"
       if (spider.y > groundY) {
         spider.y = groundY;
         spider.dy = 0;
         spider.isJumping = false;
       }
 
-      // Gérer la position et la taille pour le ducking
+      // Ajustement de la taille et de la position en ducking
       if (!spider.isJumping && spider.isDucking) {
-        // Pour se baisser, on déplace l'araignée vers le bas
         spider.height = spider.duckHeight;
-        // On fixe le bas de l'araignée à groundY + normalHeight
+        // On déplace l’araignée vers le bas pour garder le bas au sol
         spider.y = groundY + (spider.normalHeight - spider.duckHeight);
       } else {
-        // En position debout
         spider.height = spider.normalHeight;
         if (!spider.isJumping) {
           spider.y = groundY;
@@ -210,7 +225,7 @@
       // Dessiner l'araignée
       ctx.drawImage(spiderImg, spider.x, spider.y, spider.width, spider.height);
 
-      // Générer les obstacles avec un intervalle qui diminue avec la difficulté
+      // Générer des obstacles avec un intervalle qui diminue avec la difficulté
       const spawnInterval = 2000 / difficultyFactor;
       if (Date.now() - lastObstacleTime > spawnInterval) {
         spawnObstacle();
@@ -219,33 +234,42 @@
 
       // Mise à jour et dessin des obstacles
       for (let i = obstacles.length - 1; i >= 0; i--) {
-        let obs = obstacles[i];
+        const obs = obstacles[i];
         obs.x -= obs.speed;
-
         ctx.drawImage(obs.img, obs.x, obs.y, obs.width, obs.height);
 
-        // Si l'obstacle sort de l'écran, on le supprime et on incrémente le score
+        // Suppression si hors de l'écran et incrémentation du score
         if (obs.x + obs.width < 0) {
           obstacles.splice(i, 1);
           score++;
         }
 
-        // Détection de collision
-        if (
-          spider.x < obs.x + obs.width &&
-          spider.x + spider.width > obs.x &&
-          spider.y < obs.y + obs.height &&
-          spider.y + spider.height > obs.y
-        ) {
-          gameOver();
-          return;
+        // Vérification de la collision
+        if (obs.type === 'high') {
+          // Pour un obstacle haut, la seule solution est de se baisser.
+          if (!spider.isDucking) {
+            // Collision immédiate si l'araignée n'est pas en position ducking
+            gameOver();
+            return;
+          }
+        } else {
+          // Pour les obstacles bas, collision classique par détection de bounding box
+          if (
+            spider.x < obs.x + obs.width &&
+            spider.x + spider.width > obs.x &&
+            spider.y < obs.y + obs.height &&
+            spider.y + spider.height > obs.y
+          ) {
+            gameOver();
+            return;
+          }
         }
       }
 
       // Calcul du temps de survie
       const currentTime = (Date.now() - startTime) / 1000;
 
-      // Affichage du score et du temps
+      // Affichage du score, du temps, du meilleur score et du meilleur temps
       ctx.fillStyle = '#000';
       ctx.font = '20px Arial';
       ctx.fillText('Score : ' + score, 10, 30);
@@ -279,7 +303,7 @@
       window.location.href = 'https://candicevialette.github.io/html/public_html/';
     });
 
-    // --- Lancement ---
+    // --- Lancement du jeu ---
     initGame();
   </script>
 </body>

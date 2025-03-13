@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Jeu de l'araignée - Avec position accroupie</title>
+  <title>Jeu de l'araignée - Obligation de se baisser</title>
   <style>
     body {
       margin: 0;
@@ -36,14 +36,14 @@
   <div id="instructions">
     <h2>Jeu de l'araignée</h2>
     <p>
-      - Barre d’espace ou flèche haut : Sauter<br>
-      - Flèche bas : Se baisser (uniquement au sol)<br>
-      - Les obstacles deviennent de plus en plus rapides et fréquents au fil du temps !<br>
+      - Flèche haut ou barre d’espace : Sauter<br>
+      - Flèche bas : Se baisser <br>
+      - Les obstacles deviennent de plus en plus rapides et fréquents avec le temps<br>
       Bonne chance !
     </p>
   </div>
 
-  <canvas id="gameCanvas" width="800" height="200"></canvas>
+  <canvas id="gameCanvas" width="1200" height="400"></canvas>
   
   <!-- Boutons -->
   <button id="homeBtn" class="btn">Accueil</button>
@@ -58,56 +58,53 @@
 
     // --- Chargement des images ---
     const spiderImg = new Image();
-    spiderImg.src = 'araignee.png'; // Personnage
+    spiderImg.src = 'araignee.png'; // Image du personnage
 
     const obstacleImg1 = new Image();
-    obstacleImg1.src = 'obstacle.png'; // Obstacle 1
-
+    obstacleImg1.src = 'obstacle.png'; // Image obstacle (utilisée pour les obstacles bas)
     const obstacleImg2 = new Image();
-    obstacleImg2.src = 'ombrage.png'; // Obstacle 2
+    obstacleImg2.src = 'ombrage.png';   // Image obstacle (utilisée pour les obstacles hauts)
 
-    // Tableau d'images pour obstacles
+    // On utilise les deux images dans les deux cas, pour varier visuellement
     const obstacleImages = [obstacleImg1, obstacleImg2];
 
-    // --- Variables globales ---
-    const groundY = 150; // Coordonnée Y où l'araignée est "posée"
+    // --- Variables globales et paramètres agrandis ---
+    const groundY = 300; // Niveau de départ (position où l'araignée se place)
     let score, obstacles, lastObstacleTime, gameActive;
-    let highScore = 0;   // Meilleur score
-    let bestTime = 0;    // Meilleur temps de survie
-    let startTime = 0;   // Pour mesurer le temps de survie
+    let highScore = 0;    // Meilleur score
+    let bestTime = 0;     // Meilleur temps de survie
+    let startTime = 0;    // Pour mesurer le temps de survie
 
-    // --- Configuration du personnage ---
+    // Configuration du personnage agrandi
     const spider = {
-      x: 50,
+      x: 100,
       y: groundY,
-      width: 40,           // Largeur (inchangée)
-      normalHeight: 40,    // Hauteur quand debout
-      duckHeight: 20,      // Hauteur quand baissée
-      height: 40,          // Hauteur courante (change selon debout/baissée)
-      dy: 0,               // Vitesse verticale
-      jumpForce: 12,
-      gravity: 0.6,
+      width: 80,
+      normalHeight: 80, // Hauteur quand debout
+      duckHeight: 40,   // Hauteur quand baissée
+      height: 80,       // Hauteur actuelle
+      dy: 0,
+      jumpForce: 16,
+      gravity: 0.8,
       isJumping: false,
       isDucking: false
     };
 
-    // --- Gestion des entrées clavier ---
+    // --- Gestion du clavier ---
     document.addEventListener('keydown', (e) => {
       if (!gameActive) return;
-
       switch (e.code) {
         case 'Space':
         case 'ArrowUp':
-          // Saut
+          // Saut (interdit si déjà en l’air)
           if (!spider.isJumping) {
             spider.dy = -spider.jumpForce;
             spider.isJumping = true;
-            spider.isDucking = false; // Au cas où on appuie en même temps
+            spider.isDucking = false;
           }
           break;
-
         case 'ArrowDown':
-          // Se baisser seulement si on n'est pas en l'air
+          // Se baisser : on déplace l’araignée vers le bas et on réduit sa hauteur
           if (!spider.isJumping) {
             spider.isDucking = true;
           }
@@ -117,9 +114,8 @@
 
     document.addEventListener('keyup', (e) => {
       if (!gameActive) return;
-
       if (e.code === 'ArrowDown') {
-        // Relâcher la touche bas => se relever
+        // Relâchement de la touche bas => se relever
         spider.isDucking = false;
       }
     });
@@ -127,8 +123,7 @@
     // --- Facteur de difficulté (augmente avec le temps) ---
     function getDifficultyFactor() {
       const survivalTime = (Date.now() - startTime) / 1000;
-      // Exemple : on augmente la difficulté linéairement toutes les 30s
-      return 1 + survivalTime / 30;
+      return 1 + survivalTime / 30; // Augmentation linéaire
     }
 
     // --- Initialisation du jeu ---
@@ -136,7 +131,7 @@
       score = 0;
       obstacles = [];
       lastObstacleTime = Date.now();
-      spider.x = 50;
+      spider.x = 100;
       spider.y = groundY;
       spider.dy = 0;
       spider.isJumping = false;
@@ -145,35 +140,37 @@
       gameActive = true;
       startTime = Date.now();
 
-      // Masquer les boutons
       restartBtn.style.display = 'none';
       homeBtn.style.display = 'none';
 
       update();
     }
 
-    // --- Création d'obstacle ---
+    // --- Création d'obstacle avec deux types : "low" et "high" ---
     function spawnObstacle() {
       const difficultyFactor = getDifficultyFactor();
-      const size = Math.random() * 20 + 20; // 20 à 40
-      const isAirObstacle = Math.random() < 0.5; // 50% de chance d'être en l'air
-
-      const obstacle = {
+      // Définir aléatoirement le type d'obstacle
+      const obstacleType = Math.random() < 0.5 ? 'low' : 'high';
+      let obstacle = {
         x: canvas.width,
-        y: 0,
-        width: size,
-        height: size,
-        // On applique la difficulté sur la vitesse
-        speed: 6 * difficultyFactor,
+        speed: 8 * difficultyFactor,
         img: obstacleImages[Math.floor(Math.random() * obstacleImages.length)]
       };
 
-      if (!isAirObstacle) {
-        // Obstacle au sol
+      if (obstacleType === 'low') {
+        // Obstacle bas (au sol) à éviter en sautant
+        const size = Math.random() * 20 + 30; // Taille entre 30 et 50
+        obstacle.width = size;
+        obstacle.height = size;
+        // Positionné de façon à ce qu'il touche le sol (la partie basse de l'obstacle est à 300+80 = 380)
         obstacle.y = groundY + spider.normalHeight - size;
       } else {
-        // Obstacle en l'air
-        obstacle.y = groundY - 50; // Ajustez selon vos goûts
+        // Obstacle haut (à éviter en se baissant)
+        // Pour forcer à se baisser, on fixe une hauteur faible pour l'obstacle
+        obstacle.width = Math.random() * 20 + 30; // Entre 30 et 50
+        obstacle.height = 30; // Hauteur fixe
+        // Positionné de façon à bloquer la zone quand l'araignée est debout
+        obstacle.y = groundY;
       }
 
       obstacles.push(obstacle);
@@ -182,41 +179,39 @@
     // --- Boucle d'animation ---
     function update() {
       if (!gameActive) return;
-
       const difficultyFactor = getDifficultyFactor();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Gravité + saut
+      // Gravité et saut
       spider.dy += spider.gravity;
       spider.y += spider.dy;
 
-      // Empêche de traverser le sol
+      // Empêcher de descendre sous le "sol"
       if (spider.y > groundY) {
         spider.y = groundY;
         spider.dy = 0;
         spider.isJumping = false;
       }
 
-      // Gérer la hauteur selon si on est baissé
+      // Gérer la position et la taille pour le ducking
       if (!spider.isJumping && spider.isDucking) {
-        // Accroupi
+        // Pour se baisser, on déplace l'araignée vers le bas
         spider.height = spider.duckHeight;
-        // On place la partie haute de l'araignée plus bas pour garder le bas au sol
-        spider.y = groundY + (spider.normalHeight - spider.height);
+        // On fixe le bas de l'araignée à groundY + normalHeight
+        spider.y = groundY + (spider.normalHeight - spider.duckHeight);
       } else {
-        // Debout
+        // En position debout
         spider.height = spider.normalHeight;
-        // Si on est sur le sol, s'assurer qu'on se remet bien à la position groundY
         if (!spider.isJumping) {
           spider.y = groundY;
         }
       }
 
-      // Dessin de l'araignée
+      // Dessiner l'araignée
       ctx.drawImage(spiderImg, spider.x, spider.y, spider.width, spider.height);
 
-      // Génération d'obstacles (avec intervalle réduit par la difficulté)
-      const spawnInterval = 1500 / difficultyFactor;
+      // Générer les obstacles avec un intervalle qui diminue avec la difficulté
+      const spawnInterval = 2000 / difficultyFactor;
       if (Date.now() - lastObstacleTime > spawnInterval) {
         spawnObstacle();
         lastObstacleTime = Date.now();
@@ -224,18 +219,18 @@
 
       // Mise à jour et dessin des obstacles
       for (let i = obstacles.length - 1; i >= 0; i--) {
-        const obs = obstacles[i];
+        let obs = obstacles[i];
         obs.x -= obs.speed;
 
         ctx.drawImage(obs.img, obs.x, obs.y, obs.width, obs.height);
 
-        // Sortie de l'écran => suppression + score++
+        // Si l'obstacle sort de l'écran, on le supprime et on incrémente le score
         if (obs.x + obs.width < 0) {
           obstacles.splice(i, 1);
           score++;
         }
 
-        // Collision rectangulaire
+        // Détection de collision
         if (
           spider.x < obs.x + obs.width &&
           spider.x + spider.width > obs.x &&
@@ -247,20 +242,17 @@
         }
       }
 
-      // Temps de survie
+      // Calcul du temps de survie
       const currentTime = (Date.now() - startTime) / 1000;
 
       // Affichage du score et du temps
       ctx.fillStyle = '#000';
-      ctx.font = '16px Arial';
-      ctx.fillText('Score : ' + score, 10, 20);
-      ctx.fillText('Temps : ' + currentTime.toFixed(2) + 's', 10, 40);
+      ctx.font = '20px Arial';
+      ctx.fillText('Score : ' + score, 10, 30);
+      ctx.fillText('Temps : ' + currentTime.toFixed(2) + 's', 10, 60);
+      ctx.fillText('Meilleur Score : ' + highScore, canvas.width - 220, 30);
+      ctx.fillText('Meilleur Temps : ' + bestTime.toFixed(2) + 's', canvas.width - 220, 60);
 
-      // Meilleur score / temps
-      ctx.fillText('Meilleur Score : ' + highScore, canvas.width - 150, 20);
-      ctx.fillText('Meilleur Temps : ' + bestTime.toFixed(2) + 's', canvas.width - 160, 40);
-
-      // On boucle
       requestAnimationFrame(update);
     }
 
@@ -268,19 +260,15 @@
     function gameOver() {
       gameActive = false;
       const survivalTime = (Date.now() - startTime) / 1000;
-
-      // Mise à jour du meilleur score/temps
       if (score > highScore) highScore = score;
       if (survivalTime > bestTime) bestTime = survivalTime;
 
-      // Écran de fin
       ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = '#fff';
       ctx.font = '40px Arial';
       ctx.fillText('Game Over', canvas.width / 2 - 100, canvas.height / 2);
 
-      // Afficher les boutons
       restartBtn.style.display = 'block';
       homeBtn.style.display = 'block';
     }
@@ -288,7 +276,6 @@
     // --- Boutons ---
     restartBtn.addEventListener('click', initGame);
     homeBtn.addEventListener('click', () => {
-      // Redirige vers une page d'accueil ou autre
       window.location.href = 'https://candicevialette.github.io/html/public_html/';
     });
 

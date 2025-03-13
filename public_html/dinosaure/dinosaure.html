@@ -11,23 +11,23 @@
       background: #f7f7f7;
       font-family: sans-serif;
     }
+    #instructions {
+      text-align: center;
+      margin: 10px 0;
+    }
     #gameCanvas {
       display: block;
       margin: 0 auto;
       background: #fff;
       border: 1px solid #000;
     }
-    #instructions {
-      text-align: center;
-      margin: 10px 0;
-    }
-    #restartBtn {
-      display: none; /* On le cache par défaut, il n'apparaît qu'après Game Over */
+    .btn {
+      display: none;
       margin: 10px auto;
-      display: block;
       padding: 10px 20px;
       font-size: 16px;
       cursor: pointer;
+      text-align: center;
     }
   </style>
 </head>
@@ -35,40 +35,45 @@
 
   <div id="instructions">
     <h2>Jeu de l'araignée</h2>
-    <p>Utilisez la barre d’espace ou la flèche du haut pour sauter.<br>
-       Évitez les obstacles au sol et en l’air.<br>
-       Bonne chance !</p>
+    <p>
+      Utilisez la barre d’espace ou la flèche du haut pour sauter.<br>
+      Évitez les obstacles au sol et en l’air.<br>
+      Bonne chance !
+    </p>
   </div>
 
   <canvas id="gameCanvas" width="800" height="200"></canvas>
-  <button id="restartBtn">Recommencer</button>
+  
+  <!-- Boutons -->
+  <button id="homeBtn" class="btn">Accueil</button>
+  <button id="restartBtn" class="btn">Recommencer</button>
 
   <script>
-    // Récupération du canvas et de son contexte
+    // Récupération des éléments
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
-
-    // Bouton pour recommencer
+    const homeBtn = document.getElementById('homeBtn');
     const restartBtn = document.getElementById('restartBtn');
 
-    // Chargement des images
+    // Images
     const spiderImg = new Image();
-    spiderImg.src = 'araignee.png'; // Image 3 (le perso)
-
+    spiderImg.src = 'araignee.png'; // Personnage
     const obstacleImg1 = new Image();
-    obstacleImg1.src = 'obstacle.png'; // Image 1
-
+    obstacleImg1.src = 'obstacle.png'; // Obstacle 1
     const obstacleImg2 = new Image();
-    obstacleImg2.src = 'ombrage.png'; // Image 2
+    obstacleImg2.src = 'ombrage.png'; // Obstacle 2
 
-    // Tableau d'images pour obstacles (pour un choix aléatoire)
+    // Tableau d'images pour obstacles
     const obstacleImages = [obstacleImg1, obstacleImg2];
 
-    // Configuration générale
-    const groundY = 150;  // Coordonnée Y du sol
+    // Variables globales
+    const groundY = 150; // Coordonnée Y du sol
     let score, obstacles, lastObstacleTime, gameActive;
+    let highScore = 0;    // Meilleur score
+    let bestTime = 0;     // Meilleur temps de survie
+    let startTime = 0;    // Pour mesurer le temps de survie
 
-    // Configuration du personnage (araignée)
+    // Configuration du personnage
     const spider = {
       x: 50,
       y: groundY,
@@ -80,7 +85,7 @@
       isJumping: false
     };
 
-    // Écoute du clavier pour le saut
+    // Gestion du clavier pour sauter
     document.addEventListener('keydown', (e) => {
       if ((e.code === 'Space' || e.code === 'ArrowUp') && gameActive) {
         if (!spider.isJumping) {
@@ -90,7 +95,7 @@
       }
     });
 
-    // Fonction pour initialiser ou réinitialiser le jeu
+    // Initialisation du jeu
     function initGame() {
       score = 0;
       obstacles = [];
@@ -100,44 +105,47 @@
       spider.dy = 0;
       spider.isJumping = false;
       gameActive = true;
-      restartBtn.style.display = 'none'; // Cache le bouton
-      update(); // Relance la boucle de jeu
+      startTime = Date.now();
+
+      // Masquer les boutons
+      restartBtn.style.display = 'none';
+      homeBtn.style.display = 'none';
+
+      update();
     }
 
-    // Fonction de création d'un obstacle
+    // Création d'obstacle
     function spawnObstacle() {
-      const size = Math.random() * 20 + 20; // Largeur/hauteur entre 20 et 40
+      const size = Math.random() * 20 + 20; // 20 à 40
       const isAirObstacle = Math.random() < 0.5; // 50% de chance d'être en l'air
 
-      // Position de départ
       const obstacle = {
         x: canvas.width,
-        y: 0,  // Va être ajusté plus bas
+        y: 0,
         width: size,
         height: size,
         speed: 6,
         img: obstacleImages[Math.floor(Math.random() * obstacleImages.length)]
       };
 
-      // Si obstacle au sol, on le positionne sur le sol.
-      // Sinon, on le place un peu plus haut (ex: 50px au-dessus du sol).
-      // Vous pouvez ajuster ce paramètre ou le randomiser davantage si souhaité.
       if (!isAirObstacle) {
+        // Obstacle au sol
         obstacle.y = groundY + spider.height - size;
       } else {
-        obstacle.y = groundY - 50; // Par exemple 50px au-dessus du sol
+        // Obstacle en l'air
+        obstacle.y = groundY - 50; // Ajustez à volonté
       }
 
       obstacles.push(obstacle);
     }
 
-    // Boucle de mise à jour
+    // Boucle d'animation
     function update() {
-      if (!gameActive) return; // Si le jeu est terminé, on arrête la boucle
+      if (!gameActive) return; // Si le jeu est terminé, on ne relance plus
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Gravité et position de l'araignée
+      // Gravité
       spider.dy += spider.gravity;
       spider.y += spider.dy;
       if (spider.y > groundY) {
@@ -146,11 +154,11 @@
         spider.isJumping = false;
       }
 
-      // Dessin de l'araignée
+      // Dessin du personnage
       ctx.drawImage(spiderImg, spider.x, spider.y, spider.width, spider.height);
 
-      // Génération périodique d'obstacles
-      if (Date.now() - lastObstacleTime > 1500) { // 1500ms = 1,5s
+      // Génération d'obstacles
+      if (Date.now() - lastObstacleTime > 1500) {
         spawnObstacle();
         lastObstacleTime = Date.now();
       }
@@ -158,16 +166,76 @@
       // Mise à jour et dessin des obstacles
       for (let i = obstacles.length - 1; i >= 0; i--) {
         const obs = obstacles[i];
-        obs.x -= obs.speed; // Déplacement vers la gauche
+        obs.x -= obs.speed;
 
         ctx.drawImage(obs.img, obs.x, obs.y, obs.width, obs.height);
 
-        // Si l'obstacle sort de l'écran
+        // Sortie de l'écran => on supprime + score++
         if (obs.x + obs.width < 0) {
           obstacles.splice(i, 1);
           score++;
         }
 
-        // Détection de collision (rectangle contre rectangle)
+        // Collision rectangulaire
         if (
-          spider.x < obs.x + obs.
+          spider.x < obs.x + obs.width &&
+          spider.x + spider.width > obs.x &&
+          spider.y < obs.y + obs.height &&
+          spider.y + spider.height > obs.y
+        ) {
+          gameOver();
+          return;
+        }
+      }
+
+      // Calcul du temps de survie (en secondes)
+      const currentTime = (Date.now() - startTime) / 1000;
+
+      // Affichage du score et du temps
+      ctx.fillStyle = '#000';
+      ctx.font = '16px Arial';
+      ctx.fillText('Score : ' + score, 10, 20);
+      ctx.fillText('Temps : ' + currentTime.toFixed(2) + 's', 10, 40);
+
+      // Affichage du meilleur score et meilleur temps
+      ctx.fillText('Meilleur Score : ' + highScore, canvas.width - 150, 20);
+      ctx.fillText('Meilleur Temps : ' + bestTime.toFixed(2) + 's', canvas.width - 160, 40);
+
+      // Boucle
+      requestAnimationFrame(update);
+    }
+
+    // Game Over
+    function gameOver() {
+      gameActive = false;
+      const survivalTime = (Date.now() - startTime) / 1000;
+
+      // Mise à jour du meilleur score/temps
+      if (score > highScore) highScore = score;
+      if (survivalTime > bestTime) bestTime = survivalTime;
+
+      // Écran de fin
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#fff';
+      ctx.font = '40px Arial';
+      ctx.fillText('Game Over', canvas.width / 2 - 100, canvas.height / 2);
+
+      // Afficher les boutons
+      restartBtn.style.display = 'block';
+      homeBtn.style.display = 'block';
+    }
+
+    // Bouton Recommencer
+    restartBtn.addEventListener('click', initGame);
+
+    // Bouton Accueil (changez la page cible si besoin)
+    homeBtn.addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+
+    // Lancement
+    initGame();
+  </script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Jeu de l'araignée</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: #f7f7f7;
+    }
+    canvas {
+      display: block;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid #000;
+    }
+  </style>
+</head>
+<body>
+<canvas id="gameCanvas" width="800" height="200"></canvas>
+<script>
+  // Récupération du canvas et de son contexte
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+
+  // Chargement des images
+  const spiderImg = new Image();
+  spiderImg.src = 'araignee.png'; // Image 3 (le perso)
+
+  const obstacleImg1 = new Image();
+  obstacleImg1.src = 'obstacle.png'; // Image 1
+
+  const obstacleImg2 = new Image();
+  obstacleImg2.src = 'ombrage.png'; // Image 2
+
+  // On peut placer les images d'obstacles dans un tableau pour en choisir une au hasard
+  const obstacleImages = [obstacleImg1, obstacleImg2];
+
+  // Configuration du sol et du score
+  const groundY = 150;
+  let score = 0;
+
+  // Configuration du personnage (araignée)
+  const spider = {
+    x: 50,
+    y: groundY,
+    width: 40,
+    height: 40,
+    dy: 0,
+    jumpForce: 12,
+    gravity: 0.6,
+    isJumping: false
+  };
+
+  // Configuration des obstacles
+  let obstacles = [];
+  const obstacleFrequency = 1500; // en millisecondes (1,5 s entre chaque obstacle)
+  let lastObstacleTime = Date.now();
+
+  // Gestion du saut avec la barre d'espace ou la flèche du haut
+  document.addEventListener('keydown', (e) => {
+    if (e.code === 'Space' || e.code === 'ArrowUp') {
+      if (!spider.isJumping) {
+        spider.dy = -spider.jumpForce;
+        spider.isJumping = true;
+      }
+    }
+  });
+
+  // Fonction pour générer un obstacle
+  function spawnObstacle() {
+    const size = Math.random() * 20 + 20; // Largeur/hauteur entre 20 et 40
+    const obstacle = {
+      x: canvas.width,
+      y: groundY + spider.height - size, // Au niveau du sol
+      width: size,
+      height: size,
+      speed: 6,
+      // Choix aléatoire d'une des deux images d'obstacle
+      img: obstacleImages[Math.floor(Math.random() * obstacleImages.length)]
+    };
+    obstacles.push(obstacle);
+  }
+
+  // Boucle principale d'animation
+  function update() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Gravité et position de l'araignée
+    spider.dy += spider.gravity;
+    spider.y += spider.dy;
+
+    // Empêche l'araignée de passer sous le sol
+    if (spider.y > groundY) {
+      spider.y = groundY;
+      spider.dy = 0;
+      spider.isJumping = false;
+    }
+
+    // Dessin de l'araignée
+    ctx.drawImage(spiderImg, spider.x, spider.y, spider.width, spider.height);
+
+    // Génération d'obstacles périodique
+    if (Date.now() - lastObstacleTime > obstacleFrequency) {
+      spawnObstacle();
+      lastObstacleTime = Date.now();
+    }
+
+    // Mise à jour et dessin des obstacles
+    for (let i = obstacles.length - 1; i >= 0; i--) {
+      const obs = obstacles[i];
+      obs.x -= obs.speed; // Déplacement vers la gauche
+
+      // Dessin de l'obstacle
+      ctx.drawImage(obs.img, obs.x, obs.y, obs.width, obs.height);
+
+      // Si l'obstacle sort de l'écran, on le retire et on augmente le score
+      if (obs.x + obs.width < 0) {
+        obstacles.splice(i, 1);
+        score++;
+      }
+
+      // Détection de collision (rectangle contre rectangle)
+      if (
+        spider.x < obs.x + obs.width &&
+        spider.x + spider.width > obs.x &&
+        spider.y < obs.y + obs.height &&
+        spider.y + spider.height > obs.y
+      ) {
+        gameOver();
+        return; // Stoppe la boucle pour figer le jeu
+      }
+    }
+
+    // Affichage du score
+    ctx.fillStyle = '#000';
+    ctx.font = '20px Arial';
+    ctx.fillText('Score: ' + score, 10, 20);
+
+    // Relance de la boucle
+    requestAnimationFrame(update);
+  }
+
+  // Affiche l'écran de fin et arrête le jeu
+  function gameOver() {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#fff';
+    ctx.font = '40px Arial';
+    ctx.fillText('Game Over', canvas.width / 2 - 100, canvas.height / 2);
+  }
+
+  // Lancement du jeu
+  update();
+</script>
+</body>
+</html>

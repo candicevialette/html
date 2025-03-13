@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Exercice 6 : Table de multiplication</title>
+  <link rel="stylesheet" href="https://candicevialette.github.io/html/public_html/style.css">
+</head>
+<body>
+  <a href=" https://candicevialette.github.io/html/public_html/TP6/presentation"> Retour au TP06 </a>
+    <h1>Table de multiplication</h1>
+    <label for="nombre">Entrez un nombre :</label>
+    <input type="number" id="nombre"><br>
+    <button onclick="afficherTable()">Afficher la table</button>
+    <div id="result"></div>
+
+    <script>
+        function afficherTable() {
+            var n = parseInt(document.getElementById('nombre').value);
+            if (!isNaN(n)) {
+                var table = "<h2>Table de " + n + "</h2><table border='1'>";
+                for (var i = 1; i <= 10; i++) {
+                    table += "<tr><td>" + n + " x " + i + " = " + (n * i) + "</td></tr>";
+                }
+                table += "</table>";
+                document.getElementById('result').innerHTML = table;
+            } else {
+                document.getElementById('result').innerHTML = "Veuillez entrer un nombre valide.";
+            }
+        }
+    </script>
+</body>
+</html>

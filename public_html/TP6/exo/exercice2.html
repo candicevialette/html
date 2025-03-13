@@ -1,23 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>Exercice 2 : Confirmation des Valeurs</title>
+    <meta charset="utf-8">
+    <title>Exercice 2 : Confirmation des valeurs</title>
   <link rel="stylesheet" href="https://candicevialette.github.io/html/public_html/style.css">
 </head>
 <body>
-  <a href=" https://candicevialette.github.io/html/public_html/TP6/presentation"> Retour au TP06 </a>
-  <script>
-    var x, y, confirmation;
-    do {
-      x = parseInt(prompt("Entrez la valeur de X :"));
-      y = parseInt(prompt("Entrez la valeur de Y :"));
-      confirmation = confirm("Utiliser les valeurs X = " + x + " et Y = " + y + " ?");
-    } while (!confirmation);
-    
-    var surface = x * y;
-    console.log("La surface du rectangle est : " + surface);
-    alert("La surface du rectangle est : " + surface);
-  </script>
+   <a href=" https://candicevialette.github.io/html/public_html/TP6/presentation"> Retour au TP06 </a>
+    <h1>Calcul de la surface avec confirmation</h1>
+    <label for="x">Entrez la valeur de X :</label>
+    <input type="number" id="x"><br>
+    <label for="y">Entrez la valeur de Y :</label>
+    <input type="number" id="y"><br>
+    <button onclick="confirmerCalcul()">Calculer</button>
+    <p id="result"></p>
+
+    <script>
+        function confirmerCalcul() {
+            var x = parseInt(document.getElementById('x').value);
+            var y = parseInt(document.getElementById('y').value);
+            if (!isNaN(x) && !isNaN(y)) {
+                if (confirm("Utiliser les valeurs X=" + x + " et Y=" + y + " ?")) {
+                    document.getElementById('result').innerText = "La surface du rectangle est : " + (x * y);
+                } else {
+                    document.getElementById('result').innerText = "Saisie annulée.";
+                }
+            } else {
+                document.getElementById('result').innerText = "Veuillez entrer des valeurs valides.";
+            }
+        }
+    </script>
 </body>
 </html>

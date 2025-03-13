@@ -9,151 +9,165 @@
       padding: 0;
       overflow: hidden;
       background: #f7f7f7;
+      font-family: sans-serif;
     }
-    canvas {
+    #gameCanvas {
       display: block;
       margin: 0 auto;
       background: #fff;
       border: 1px solid #000;
     }
+    #instructions {
+      text-align: center;
+      margin: 10px 0;
+    }
+    #restartBtn {
+      display: none; /* On le cache par défaut, il n'apparaît qu'après Game Over */
+      margin: 10px auto;
+      display: block;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-<canvas id="gameCanvas" width="800" height="200"></canvas>
-<script>
-  // Récupération du canvas et de son contexte
-  const canvas = document.getElementById('gameCanvas');
-  const ctx = canvas.getContext('2d');
 
-  // Chargement des images
-  const spiderImg = new Image();
-  spiderImg.src = 'araignee.png'; // Image 3 (le perso)
+  <div id="instructions">
+    <h2>Jeu de l'araignée</h2>
+    <p>Utilisez la barre d’espace ou la flèche du haut pour sauter.<br>
+       Évitez les obstacles au sol et en l’air.<br>
+       Bonne chance !</p>
+  </div>
 
-  const obstacleImg1 = new Image();
-  obstacleImg1.src = 'obstacle.png'; // Image 1
+  <canvas id="gameCanvas" width="800" height="200"></canvas>
+  <button id="restartBtn">Recommencer</button>
 
-  const obstacleImg2 = new Image();
-  obstacleImg2.src = 'ombrage.png'; // Image 2
+  <script>
+    // Récupération du canvas et de son contexte
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
 
-  // On peut placer les images d'obstacles dans un tableau pour en choisir une au hasard
-  const obstacleImages = [obstacleImg1, obstacleImg2];
+    // Bouton pour recommencer
+    const restartBtn = document.getElementById('restartBtn');
 
-  // Configuration du sol et du score
-  const groundY = 150;
-  let score = 0;
+    // Chargement des images
+    const spiderImg = new Image();
+    spiderImg.src = 'araignee.png'; // Image 3 (le perso)
 
-  // Configuration du personnage (araignée)
-  const spider = {
-    x: 50,
-    y: groundY,
-    width: 40,
-    height: 40,
-    dy: 0,
-    jumpForce: 12,
-    gravity: 0.6,
-    isJumping: false
-  };
+    const obstacleImg1 = new Image();
+    obstacleImg1.src = 'obstacle.png'; // Image 1
 
-  // Configuration des obstacles
-  let obstacles = [];
-  const obstacleFrequency = 1500; // en millisecondes (1,5 s entre chaque obstacle)
-  let lastObstacleTime = Date.now();
+    const obstacleImg2 = new Image();
+    obstacleImg2.src = 'ombrage.png'; // Image 2
 
-  // Gestion du saut avec la barre d'espace ou la flèche du haut
-  document.addEventListener('keydown', (e) => {
-    if (e.code === 'Space' || e.code === 'ArrowUp') {
-      if (!spider.isJumping) {
-        spider.dy = -spider.jumpForce;
-        spider.isJumping = true;
-      }
-    }
-  });
+    // Tableau d'images pour obstacles (pour un choix aléatoire)
+    const obstacleImages = [obstacleImg1, obstacleImg2];
 
-  // Fonction pour générer un obstacle
-  function spawnObstacle() {
-    const size = Math.random() * 20 + 20; // Largeur/hauteur entre 20 et 40
-    const obstacle = {
-      x: canvas.width,
-      y: groundY + spider.height - size, // Au niveau du sol
-      width: size,
-      height: size,
-      speed: 6,
-      // Choix aléatoire d'une des deux images d'obstacle
-      img: obstacleImages[Math.floor(Math.random() * obstacleImages.length)]
+    // Configuration générale
+    const groundY = 150;  // Coordonnée Y du sol
+    let score, obstacles, lastObstacleTime, gameActive;
+
+    // Configuration du personnage (araignée)
+    const spider = {
+      x: 50,
+      y: groundY,
+      width: 40,
+      height: 40,
+      dy: 0,
+      jumpForce: 12,
+      gravity: 0.6,
+      isJumping: false
     };
-    obstacles.push(obstacle);
-  }
 
-  // Boucle principale d'animation
-  function update() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Écoute du clavier pour le saut
+    document.addEventListener('keydown', (e) => {
+      if ((e.code === 'Space' || e.code === 'ArrowUp') && gameActive) {
+        if (!spider.isJumping) {
+          spider.dy = -spider.jumpForce;
+          spider.isJumping = true;
+        }
+      }
+    });
 
-    // Gravité et position de l'araignée
-    spider.dy += spider.gravity;
-    spider.y += spider.dy;
-
-    // Empêche l'araignée de passer sous le sol
-    if (spider.y > groundY) {
+    // Fonction pour initialiser ou réinitialiser le jeu
+    function initGame() {
+      score = 0;
+      obstacles = [];
+      lastObstacleTime = Date.now();
+      spider.x = 50;
       spider.y = groundY;
       spider.dy = 0;
       spider.isJumping = false;
+      gameActive = true;
+      restartBtn.style.display = 'none'; // Cache le bouton
+      update(); // Relance la boucle de jeu
     }
 
-    // Dessin de l'araignée
-    ctx.drawImage(spiderImg, spider.x, spider.y, spider.width, spider.height);
+    // Fonction de création d'un obstacle
+    function spawnObstacle() {
+      const size = Math.random() * 20 + 20; // Largeur/hauteur entre 20 et 40
+      const isAirObstacle = Math.random() < 0.5; // 50% de chance d'être en l'air
 
-    // Génération d'obstacles périodique
-    if (Date.now() - lastObstacleTime > obstacleFrequency) {
-      spawnObstacle();
-      lastObstacleTime = Date.now();
-    }
+      // Position de départ
+      const obstacle = {
+        x: canvas.width,
+        y: 0,  // Va être ajusté plus bas
+        width: size,
+        height: size,
+        speed: 6,
+        img: obstacleImages[Math.floor(Math.random() * obstacleImages.length)]
+      };
 
-    // Mise à jour et dessin des obstacles
-    for (let i = obstacles.length - 1; i >= 0; i--) {
-      const obs = obstacles[i];
-      obs.x -= obs.speed; // Déplacement vers la gauche
-
-      // Dessin de l'obstacle
-      ctx.drawImage(obs.img, obs.x, obs.y, obs.width, obs.height);
-
-      // Si l'obstacle sort de l'écran, on le retire et on augmente le score
-      if (obs.x + obs.width < 0) {
-        obstacles.splice(i, 1);
-        score++;
+      // Si obstacle au sol, on le positionne sur le sol.
+      // Sinon, on le place un peu plus haut (ex: 50px au-dessus du sol).
+      // Vous pouvez ajuster ce paramètre ou le randomiser davantage si souhaité.
+      if (!isAirObstacle) {
+        obstacle.y = groundY + spider.height - size;
+      } else {
+        obstacle.y = groundY - 50; // Par exemple 50px au-dessus du sol
       }
 
-      // Détection de collision (rectangle contre rectangle)
-      if (
-        spider.x < obs.x + obs.width &&
-        spider.x + spider.width > obs.x &&
-        spider.y < obs.y + obs.height &&
-        spider.y + spider.height > obs.y
-      ) {
-        gameOver();
-        return; // Stoppe la boucle pour figer le jeu
-      }
+      obstacles.push(obstacle);
     }
 
-    // Affichage du score
-    ctx.fillStyle = '#000';
-    ctx.font = '20px Arial';
-    ctx.fillText('Score: ' + score, 10, 20);
+    // Boucle de mise à jour
+    function update() {
+      if (!gameActive) return; // Si le jeu est terminé, on arrête la boucle
 
-    // Relance de la boucle
-    requestAnimationFrame(update);
-  }
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Affiche l'écran de fin et arrête le jeu
-  function gameOver() {
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#fff';
-    ctx.font = '40px Arial';
-    ctx.fillText('Game Over', canvas.width / 2 - 100, canvas.height / 2);
-  }
+      // Gravité et position de l'araignée
+      spider.dy += spider.gravity;
+      spider.y += spider.dy;
+      if (spider.y > groundY) {
+        spider.y = groundY;
+        spider.dy = 0;
+        spider.isJumping = false;
+      }
 
-  // Lancement du jeu
-  update();
-</script>
-</body>
-</html>
+      // Dessin de l'araignée
+      ctx.drawImage(spiderImg, spider.x, spider.y, spider.width, spider.height);
+
+      // Génération périodique d'obstacles
+      if (Date.now() - lastObstacleTime > 1500) { // 1500ms = 1,5s
+        spawnObstacle();
+        lastObstacleTime = Date.now();
+      }
+
+      // Mise à jour et dessin des obstacles
+      for (let i = obstacles.length - 1; i >= 0; i--) {
+        const obs = obstacles[i];
+        obs.x -= obs.speed; // Déplacement vers la gauche
+
+        ctx.drawImage(obs.img, obs.x, obs.y, obs.width, obs.height);
+
+        // Si l'obstacle sort de l'écran
+        if (obs.x + obs.width < 0) {
+          obstacles.splice(i, 1);
+          score++;
+        }
+
+        // Détection de collision (rectangle contre rectangle)
+        if (
+          spider.x < obs.x + obs.

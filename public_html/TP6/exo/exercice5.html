@@ -1,34 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>Exercice 5 : Calcul par Fonction</title>
+    <meta charset="utf-8">
+    <title>Exercice 5 : Fonction de calcul</title>
   <link rel="stylesheet" href="https://candicevialette.github.io/html/public_html/style.css">
 </head>
 <body>
   <a href=" https://candicevialette.github.io/html/public_html/TP6/presentation"> Retour au TP06 </a>
-  <script>
-    function rect(x, y) {
-      return x * y;
-    }
+    <h1>Calcul avec une fonction</h1>
+    <label for="x">Entrez la valeur de X :</label>
+    <input type="number" id="x"><br>
+    <label for="y">Entrez la valeur de Y :</label>
+    <input type="number" id="y"><br>
+    <button onclick="calculerAvecFonction()">Calculer</button>
+    <p id="result"></p>
 
-    var x, y, confirmation;
-    do {
-      do {
-        x = parseInt(prompt("Entrez la valeur de X (nombre positif) :"));
-      } while(isNaN(x) || x < 0);
-      
-      do {
-        y = parseInt(prompt("Entrez la valeur de Y (nombre positif) :"));
-      } while(isNaN(y) || y < 0);
-      
-      confirmation = confirm("Utiliser les valeurs X = " + x + " et Y = " + y + " ?");
-    } while (!confirmation);
-    
-    var surface = rect(x, y);
-    console.log("La surface du rectangle est : " + surface);
-    alert("La surface du rectangle est : " + surface);
-    document.write("La surface du rectangle est : " + surface);
-  </script>
+    <script>
+        function rect(x, y) {
+            return x * y;
+        }
+
+        function calculerAvecFonction() {
+            var x = parseInt(document.getElementById('x').value);
+            var y = parseInt(document.getElementById('y').value);
+            if (!isNaN(x) && !isNaN(y)) {
+                document.getElementById('result').innerText = "La surface du rectangle est : " + rect(x, y);
+            } else {
+                document.getElementById('result').innerText = "Veuillez entrer des valeurs valides.";
+            }
+        }
+    </script>
 </body>
 </html>

@@ -1,30 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>Exercice 4 : Affichage dans la Page</title>
+    <meta charset="utf-8">
+    <title>Exercice 4 : Affichage du résultat</title>
   <link rel="stylesheet" href="https://candicevialette.github.io/html/public_html/style.css">
 </head>
 <body>
   <a href=" https://candicevialette.github.io/html/public_html/TP6/presentation"> Retour au TP06 </a>
-  <script>
-    var x, y, confirmation;
-    do {
-      do {
-        x = parseInt(prompt("Entrez la valeur de X (nombre positif) :"));
-      } while(isNaN(x) || x < 0);
-      
-      do {
-        y = parseInt(prompt("Entrez la valeur de Y (nombre positif) :"));
-      } while(isNaN(y) || y < 0);
-      
-      confirmation = confirm("Utiliser les valeurs X = " + x + " et Y = " + y + " ?");
-    } while (!confirmation);
-    
-    var surface = x * y;
-    console.log("La surface du rectangle est : " + surface);
-    alert("La surface du rectangle est : " + surface);
-    document.write("La surface du rectangle est : " + surface);
-  </script>
+    <h1>Affichage du résultat dans la page</h1>
+    <label for="x">Entrez la valeur de X :</label>
+    <input type="number" id="x"><br>
+    <label for="y">Entrez la valeur de Y :</label>
+    <input type="number" id="y"><br>
+    <button onclick="calculer()">Afficher</button>
+    <p id="result"></p>
+
+    <script>
+        function calculer() {
+            var x = parseInt(document.getElementById('x').value);
+            var y = parseInt(document.getElementById('y').value);
+            if (!isNaN(x) && !isNaN(y)) {
+                document.getElementById('result').innerHTML = "La surface du rectangle est : " + (x * y);
+            } else {
+                document.getElementById('result').innerHTML = "Veuillez entrer des nombres valides.";
+            }
+        }
+    </script>
 </body>
 </html>

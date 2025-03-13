@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Jeu de l'araignée</title>
+  <title>Jeu de l'araignée - Avec position accroupie</title>
   <style>
     body {
       margin: 0;
@@ -36,9 +36,10 @@
   <div id="instructions">
     <h2>Jeu de l'araignée</h2>
     <p>
-      Utilisez la barre d’espace ou la flèche du haut pour sauter.<br>
-      Évitez les obstacles au sol et en l’air.<br>
-      Bonne chance !
+      - Barre d’espace ou flèche haut : Sauter<br>
+      - Flèche bas : Se baisser (uniquement au sol)<br>
+      - Les obstacles deviennent de plus en plus rapides et fréquents au fil du temps !<br>
+      Bonne chance !
     </p>
   </div>
 
@@ -49,53 +50,88 @@
   <button id="restartBtn" class="btn">Recommencer</button>
 
   <script>
-    // Récupération des éléments
+    // --- Récupération des éléments ---
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     const homeBtn = document.getElementById('homeBtn');
     const restartBtn = document.getElementById('restartBtn');
 
-    // Images
+    // --- Chargement des images ---
     const spiderImg = new Image();
     spiderImg.src = 'araignee.png'; // Personnage
+
     const obstacleImg1 = new Image();
     obstacleImg1.src = 'obstacle.png'; // Obstacle 1
+
     const obstacleImg2 = new Image();
     obstacleImg2.src = 'ombrage.png'; // Obstacle 2
 
     // Tableau d'images pour obstacles
     const obstacleImages = [obstacleImg1, obstacleImg2];
 
-    // Variables globales
-    const groundY = 150; // Coordonnée Y du sol
+    // --- Variables globales ---
+    const groundY = 150; // Coordonnée Y où l'araignée est "posée"
     let score, obstacles, lastObstacleTime, gameActive;
-    let highScore = 0;    // Meilleur score
-    let bestTime = 0;     // Meilleur temps de survie
-    let startTime = 0;    // Pour mesurer le temps de survie
+    let highScore = 0;   // Meilleur score
+    let bestTime = 0;    // Meilleur temps de survie
+    let startTime = 0;   // Pour mesurer le temps de survie
 
-    // Configuration du personnage
+    // --- Configuration du personnage ---
     const spider = {
       x: 50,
       y: groundY,
-      width: 40,
-      height: 40,
-      dy: 0,
+      width: 40,           // Largeur (inchangée)
+      normalHeight: 40,    // Hauteur quand debout
+      duckHeight: 20,      // Hauteur quand baissée
+      height: 40,          // Hauteur courante (change selon debout/baissée)
+      dy: 0,               // Vitesse verticale
       jumpForce: 12,
       gravity: 0.6,
-      isJumping: false
+      isJumping: false,
+      isDucking: false
     };
 
-    // Gestion du clavier pour sauter
+    // --- Gestion des entrées clavier ---
     document.addEventListener('keydown', (e) => {
-      if ((e.code === 'Space' || e.code === 'ArrowUp') && gameActive) {
-        if (!spider.isJumping) {
-          spider.dy = -spider.jumpForce;
-          spider.isJumping = true;
-        }
+      if (!gameActive) return;
+
+      switch (e.code) {
+        case 'Space':
+        case 'ArrowUp':
+          // Saut
+          if (!spider.isJumping) {
+            spider.dy = -spider.jumpForce;
+            spider.isJumping = true;
+            spider.isDucking = false; // Au cas où on appuie en même temps
+          }
+          break;
+
+        case 'ArrowDown':
+          // Se baisser seulement si on n'est pas en l'air
+          if (!spider.isJumping) {
+            spider.isDucking = true;
+          }
+          break;
       }
     });
 
-    // Initialisation du jeu
+    document.addEventListener('keyup', (e) => {
+      if (!gameActive) return;
+
+      if (e.code === 'ArrowDown') {
+        // Relâcher la touche bas => se relever
+        spider.isDucking = false;
+      }
+    });
+
+    // --- Facteur de difficulté (augmente avec le temps) ---
+    function getDifficultyFactor() {
+      const survivalTime = (Date.now() - startTime) / 1000;
+      // Exemple : on augmente la difficulté linéairement toutes les 30s
+      return 1 + survivalTime / 30;
+    }
+
+    // --- Initialisation du jeu ---
     function initGame() {
       score = 0;
       obstacles = [];
@@ -104,6 +140,8 @@
       spider.y = groundY;
       spider.dy = 0;
       spider.isJumping = false;
+      spider.isDucking = false;
+      spider.height = spider.normalHeight; // Par défaut, debout
       gameActive = true;
       startTime = Date.now();
 
@@ -114,8 +152,9 @@
       update();
     }
 
-    // Création d'obstacle
+    // --- Création d'obstacle ---
     function spawnObstacle() {
+      const difficultyFactor = getDifficultyFactor();
       const size = Math.random() * 20 + 20; // 20 à 40
       const isAirObstacle = Math.random() < 0.5; // 50% de chance d'être en l'air
 
@@ -124,41 +163,61 @@
         y: 0,
         width: size,
         height: size,
-        speed: 6,
+        // On applique la difficulté sur la vitesse
+        speed: 6 * difficultyFactor,
         img: obstacleImages[Math.floor(Math.random() * obstacleImages.length)]
       };
 
       if (!isAirObstacle) {
         // Obstacle au sol
-        obstacle.y = groundY + spider.height - size;
+        obstacle.y = groundY + spider.normalHeight - size;
       } else {
         // Obstacle en l'air
-        obstacle.y = groundY - 50; // Ajustez à volonté
+        obstacle.y = groundY - 50; // Ajustez selon vos goûts
       }
 
       obstacles.push(obstacle);
     }
 
-    // Boucle d'animation
+    // --- Boucle d'animation ---
     function update() {
-      if (!gameActive) return; // Si le jeu est terminé, on ne relance plus
+      if (!gameActive) return;
 
+      const difficultyFactor = getDifficultyFactor();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Gravité
+      // Gravité + saut
       spider.dy += spider.gravity;
       spider.y += spider.dy;
+
+      // Empêche de traverser le sol
       if (spider.y > groundY) {
         spider.y = groundY;
         spider.dy = 0;
         spider.isJumping = false;
       }
 
-      // Dessin du personnage
+      // Gérer la hauteur selon si on est baissé
+      if (!spider.isJumping && spider.isDucking) {
+        // Accroupi
+        spider.height = spider.duckHeight;
+        // On place la partie haute de l'araignée plus bas pour garder le bas au sol
+        spider.y = groundY + (spider.normalHeight - spider.height);
+      } else {
+        // Debout
+        spider.height = spider.normalHeight;
+        // Si on est sur le sol, s'assurer qu'on se remet bien à la position groundY
+        if (!spider.isJumping) {
+          spider.y = groundY;
+        }
+      }
+
+      // Dessin de l'araignée
       ctx.drawImage(spiderImg, spider.x, spider.y, spider.width, spider.height);
 
-      // Génération d'obstacles
-      if (Date.now() - lastObstacleTime > 1500) {
+      // Génération d'obstacles (avec intervalle réduit par la difficulté)
+      const spawnInterval = 1500 / difficultyFactor;
+      if (Date.now() - lastObstacleTime > spawnInterval) {
         spawnObstacle();
         lastObstacleTime = Date.now();
       }
@@ -170,7 +229,7 @@
 
         ctx.drawImage(obs.img, obs.x, obs.y, obs.width, obs.height);
 
-        // Sortie de l'écran => on supprime + score++
+        // Sortie de l'écran => suppression + score++
         if (obs.x + obs.width < 0) {
           obstacles.splice(i, 1);
           score++;
@@ -188,7 +247,7 @@
         }
       }
 
-      // Calcul du temps de survie (en secondes)
+      // Temps de survie
       const currentTime = (Date.now() - startTime) / 1000;
 
       // Affichage du score et du temps
@@ -197,15 +256,15 @@
       ctx.fillText('Score : ' + score, 10, 20);
       ctx.fillText('Temps : ' + currentTime.toFixed(2) + 's', 10, 40);
 
-      // Affichage du meilleur score et meilleur temps
+      // Meilleur score / temps
       ctx.fillText('Meilleur Score : ' + highScore, canvas.width - 150, 20);
       ctx.fillText('Meilleur Temps : ' + bestTime.toFixed(2) + 's', canvas.width - 160, 40);
 
-      // Boucle
+      // On boucle
       requestAnimationFrame(update);
     }
 
-    // Game Over
+    // --- Game Over ---
     function gameOver() {
       gameActive = false;
       const survivalTime = (Date.now() - startTime) / 1000;
@@ -226,15 +285,14 @@
       homeBtn.style.display = 'block';
     }
 
-    // Bouton Recommencer
+    // --- Boutons ---
     restartBtn.addEventListener('click', initGame);
-
-    // Bouton Accueil (changez la page cible si besoin)
     homeBtn.addEventListener('click', () => {
+      // Redirige vers une page d'accueil ou autre
       window.location.href = 'https://candicevialette.github.io/html/public_html/';
     });
 
-    // Lancement
+    // --- Lancement ---
     initGame();
   </script>
 </body>

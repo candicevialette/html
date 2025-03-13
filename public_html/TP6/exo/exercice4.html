@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Exercice 4 : Affichage dans la Page</title>
+  <link rel="stylesheet" href="https://candicevialette.github.io/html/public_html/style.css">
+</head>
+<body>
+  <a href=" https://candicevialette.github.io/html/public_html/TP6/presentation"> Retour au TP06 </a>
+  <script>
+    var x, y, confirmation;
+    do {
+      do {
+        x = parseInt(prompt("Entrez la valeur de X (nombre positif) :"));
+      } while(isNaN(x) || x < 0);
+      
+      do {
+        y = parseInt(prompt("Entrez la valeur de Y (nombre positif) :"));
+      } while(isNaN(y) || y < 0);
+      
+      confirmation = confirm("Utiliser les valeurs X = " + x + " et Y = " + y + " ?");
+    } while (!confirmation);
+    
+    var surface = x * y;
+    console.log("La surface du rectangle est : " + surface);
+    alert("La surface du rectangle est : " + surface);
+    document.write("La surface du rectangle est : " + surface);
+  </script>
+</body>
+</html>

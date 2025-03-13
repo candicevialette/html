@@ -58,9 +58,9 @@
 
     // --- Chargement des images ---
     const spiderImg = new Image();
-    spiderImg.src = 'araignee.png'; // Personnage
+    spiderImg.src = 'araignee.png'; // Image du personnage
 
-    // Nous utiliserons obstacle.png pour les obstacles bas et ombrage.png pour les obstacles hauts
+    // obstacle.png sera utilisé pour les obstacles bas et ombrage.png pour les obstacles hauts
     const lowObstacleImg = new Image();
     lowObstacleImg.src = 'obstacle.png';
 
@@ -68,7 +68,7 @@
     highObstacleImg.src = 'ombrage.png';
 
     // --- Variables globales ---
-    const groundY = 300; // Niveau de base (position où se situe le sol)
+    const groundY = 300; // Niveau du sol
     let score, obstacles, lastObstacleTime, gameActive;
     let highScore = 0;
     let bestTime = 0;
@@ -80,7 +80,7 @@
       y: groundY,
       width: 80,
       normalHeight: 80, // Hauteur debout
-      duckHeight: 40,   // Hauteur en position accroupie
+      duckHeight: 40,   // Hauteur en ducking
       height: 80,
       dy: 0,
       jumpForce: 16,
@@ -95,15 +95,13 @@
       switch (e.code) {
         case 'Space':
         case 'ArrowUp':
-          // Saut (impossible si déjà en l’air)
           if (!spider.isJumping) {
             spider.dy = -spider.jumpForce;
             spider.isJumping = true;
-            spider.isDucking = false; // On annule le duck si saut
+            spider.isDucking = false; // Annule le duck si saut
           }
           break;
         case 'ArrowDown':
-          // Se baisser uniquement au sol
           if (!spider.isJumping) {
             spider.isDucking = true;
           }
@@ -147,9 +145,13 @@
     // --- Création d'obstacle ---
     function spawnObstacle() {
       const difficultyFactor = getDifficultyFactor();
-      // Déterminer aléatoirement le type d'obstacle : "low" ou "high"
+      // Détermine aléatoirement le type d'obstacle : "low" ou "high"
       const obstacleType = Math.random() < 0.5 ? 'low' : 'high';
-      let obstacle = { x: canvas.width, speed: 8 * difficultyFactor, type: obstacleType };
+      let obstacle = { 
+        x: canvas.width, 
+        speed: 8 * difficultyFactor, 
+        type: obstacleType 
+      };
 
       if (obstacleType === 'low') {
         // Obstacle bas à sauter
@@ -160,20 +162,20 @@
         obstacle.y = groundY + spider.normalHeight - size;
         obstacle.img = lowObstacleImg;
       } else {
-        // Obstacle haut : il faut se baisser pour l'éviter.
-        // On le positionne de façon à couvrir la zone quand l'araignée est debout.
+        // Obstacle haut : l'araignée doit se baisser pour l'éviter.
+        // On augmente la hauteur pour empêcher tout passage par un saut.
         obstacle.width = Math.random() * 20 + 30; // Entre 30 et 50
-        obstacle.height = 50; // Hauteur plus importante
-        // On le place légèrement au-dessus du sol pour qu'en position debout, l'araignée entre en collision.
-        obstacle.y = groundY - 10; // De 290 à 340 (si l'araignée est debout, sa zone est de 300 à 380)
+        obstacle.height = 100; // Hauteur augmentée
+        // Positionné de sorte que son bord inférieur soit à 340 (la limite supérieure du personnage ducké)
+        obstacle.y = 340 - obstacle.height; // 340 - 100 = 240
         obstacle.img = highObstacleImg;
       }
 
       obstacles.push(obstacle);
 
-      // Avec une probabilité, créer un obstacle supplémentaire côte à côte (gap réduit)
+      // Avec une probabilité, générer un obstacle supplémentaire côte à côte
       if (Math.random() < 0.3) {
-        let gap = Math.random() * 20 + 10; // gap entre 10 et 30 pixels
+        let gap = Math.random() * 20 + 10; // Entre 10 et 30 pixels
         let additional = {
           x: obstacle.x + obstacle.width + gap,
           speed: 8 * difficultyFactor,
@@ -187,8 +189,8 @@
           additional.img = lowObstacleImg;
         } else {
           additional.width = Math.random() * 20 + 30;
-          additional.height = 50;
-          additional.y = groundY - 10;
+          additional.height = 100;
+          additional.y = 340 - additional.height; // Même logique pour les obstacles hauts
           additional.img = highObstacleImg;
         }
         obstacles.push(additional);
@@ -213,7 +215,7 @@
       // Ajustement de la taille et de la position en ducking
       if (!spider.isJumping && spider.isDucking) {
         spider.height = spider.duckHeight;
-        // On déplace l’araignée vers le bas pour garder le bas au sol
+        // Ajuste la position pour que le bas reste aligné au sol
         spider.y = groundY + (spider.normalHeight - spider.duckHeight);
       } else {
         spider.height = spider.normalHeight;
@@ -238,22 +240,21 @@
         obs.x -= obs.speed;
         ctx.drawImage(obs.img, obs.x, obs.y, obs.width, obs.height);
 
-        // Suppression si hors de l'écran et incrémentation du score
+        // Si l'obstacle sort de l'écran, on le supprime et on incrémente le score
         if (obs.x + obs.width < 0) {
           obstacles.splice(i, 1);
           score++;
         }
 
-        // Vérification de la collision
+        // Vérification de collision
         if (obs.type === 'high') {
-          // Pour un obstacle haut, la seule solution est de se baisser.
+          // Pour un obstacle haut, seule la position duckée (spider.isDucking) permet d'éviter la collision.
           if (!spider.isDucking) {
-            // Collision immédiate si l'araignée n'est pas en position ducking
             gameOver();
             return;
           }
         } else {
-          // Pour les obstacles bas, collision classique par détection de bounding box
+          // Collision par détection de bounding box pour les obstacles bas
           if (
             spider.x < obs.x + obs.width &&
             spider.x + spider.width > obs.x &&
@@ -303,7 +304,7 @@
       window.location.href = 'https://candicevialette.github.io/html/public_html/';
     });
 
-    // --- Lancement du jeu ---
+    // --- Lancement ---
     initGame();
   </script>
 </body>

@@ -1,18 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>Exercice 1 : Surface du Rectangle</title>
+    <meta charset="utf-8">
+    <title>Exercice 1 : Calcul de surface</title>
   <link real="stylesheet" href="https://candicevialette.github.io/html/public_html/style.css">
 </head>
 <body>
   <a href=" https://candicevialette.github.io/html/public_html/TP6/presentation"> Retour au TP06 </a>
-  <script>
-    var x = parseInt(prompt("Entrez la valeur de X :"));
-    var y = parseInt(prompt("Entrez la valeur de Y :"));
-    var surface = x * y;
-    console.log("La surface du rectangle est : " + surface);
-    alert("La surface du rectangle est : " + surface);
-  </script>
+    <h1>Calcul de la surface d'un rectangle</h1>
+    <label for="x">Entrez la valeur de X :</label>
+    <input type="number" id="x"><br>
+    <label for="y">Entrez la valeur de Y :</label>
+    <input type="number" id="y"><br>
+    <button onclick="calculerSurface()">Calculer</button>
+    <p id="result"></p>
+
+    <script>
+        function calculerSurface() {
+            var x = parseInt(document.getElementById('x').value);
+            var y = parseInt(document.getElementById('y').value);
+            if (!isNaN(x) && !isNaN(y)) {
+                var surface = x * y;
+                document.getElementById('result').innerText = "La surface du rectangle est : " + surface;
+            } else {
+                document.getElementById('result').innerText = "Veuillez entrer des valeurs valides.";
+            }
+        }
+    </script>
 </body>
 </html>
+

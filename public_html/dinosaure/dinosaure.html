@@ -60,7 +60,7 @@
     const spiderImg = new Image();
     spiderImg.src = 'araignee.png'; // Image du personnage
 
-    // obstacle.png sera utilisé pour les obstacles bas et ombrage.png pour les obstacles hauts
+    // lowObstacleImg sera utilisé pour les obstacles bas et highObstacleImg pour les obstacles hauts
     const lowObstacleImg = new Image();
     lowObstacleImg.src = 'obstacle.png';
 
@@ -98,7 +98,7 @@
           if (!spider.isJumping) {
             spider.dy = -spider.jumpForce;
             spider.isJumping = true;
-            spider.isDucking = false; // Annule le duck si saut
+            spider.isDucking = false; // Annule le duck en cas de saut
           }
           break;
         case 'ArrowDown':
@@ -119,7 +119,7 @@
     // --- Facteur de difficulté (augmente avec le temps) ---
     function getDifficultyFactor() {
       const survivalTime = (Date.now() - startTime) / 1000;
-      return 1 + survivalTime / 30; // Augmentation linéaire
+      return 1 + survivalTime / 30;
     }
 
     // --- Initialisation du jeu ---
@@ -145,7 +145,7 @@
     // --- Création d'obstacle ---
     function spawnObstacle() {
       const difficultyFactor = getDifficultyFactor();
-      // Détermine aléatoirement le type d'obstacle : "low" ou "high"
+      // Déterminer aléatoirement le type d'obstacle : "low" ou "high"
       const obstacleType = Math.random() < 0.5 ? 'low' : 'high';
       let obstacle = { 
         x: canvas.width, 
@@ -158,16 +158,15 @@
         const size = Math.random() * 20 + 30; // Entre 30 et 50
         obstacle.width = size;
         obstacle.height = size;
-        // Positionné pour toucher le sol (la partie basse de l'obstacle est alignée)
         obstacle.y = groundY + spider.normalHeight - size;
         obstacle.img = lowObstacleImg;
       } else {
-        // Obstacle haut : l'araignée doit se baisser pour l'éviter.
-        // On augmente la hauteur pour empêcher tout passage par un saut.
+        // Obstacle haut : on augmente sa taille pour que, même en sautant, 
+        // le bounding box du personnage chevauche l'obstacle si l'araignée n'est pas duckée.
         obstacle.width = Math.random() * 20 + 30; // Entre 30 et 50
         obstacle.height = 100; // Hauteur augmentée
-        // Positionné de sorte que son bord inférieur soit à 340 (la limite supérieure du personnage ducké)
-        obstacle.y = 340 - obstacle.height; // 340 - 100 = 240
+        // Positionné de sorte que son bord inférieur soit à 340 (donc son y = 340 - 100 = 240)
+        obstacle.y = 240;
         obstacle.img = highObstacleImg;
       }
 
@@ -190,7 +189,7 @@
         } else {
           additional.width = Math.random() * 20 + 30;
           additional.height = 100;
-          additional.y = 340 - additional.height; // Même logique pour les obstacles hauts
+          additional.y = 240;
           additional.img = highObstacleImg;
         }
         obstacles.push(additional);
@@ -215,7 +214,6 @@
       // Ajustement de la taille et de la position en ducking
       if (!spider.isJumping && spider.isDucking) {
         spider.height = spider.duckHeight;
-        // Ajuste la position pour que le bas reste aligné au sol
         spider.y = groundY + (spider.normalHeight - spider.duckHeight);
       } else {
         spider.height = spider.normalHeight;
@@ -240,37 +238,25 @@
         obs.x -= obs.speed;
         ctx.drawImage(obs.img, obs.x, obs.y, obs.width, obs.height);
 
-        // Si l'obstacle sort de l'écran, on le supprime et on incrémente le score
         if (obs.x + obs.width < 0) {
           obstacles.splice(i, 1);
           score++;
         }
 
-        // Vérification de collision
-        if (obs.type === 'high') {
-          // Pour un obstacle haut, seule la position duckée (spider.isDucking) permet d'éviter la collision.
-          if (!spider.isDucking) {
-            gameOver();
-            return;
-          }
-        } else {
-          // Collision par détection de bounding box pour les obstacles bas
-          if (
-            spider.x < obs.x + obs.width &&
-            spider.x + spider.width > obs.x &&
-            spider.y < obs.y + obs.height &&
-            spider.y + spider.height > obs.y
-          ) {
-            gameOver();
-            return;
-          }
+        // Vérification de collision pour tous les obstacles (bounding box)
+        if (
+          spider.x < obs.x + obs.width &&
+          spider.x + spider.width > obs.x &&
+          spider.y < obs.y + obs.height &&
+          spider.y + spider.height > obs.y
+        ) {
+          gameOver();
+          return;
         }
       }
 
-      // Calcul du temps de survie
+      // Affichage du score et du temps
       const currentTime = (Date.now() - startTime) / 1000;
-
-      // Affichage du score, du temps, du meilleur score et du meilleur temps
       ctx.fillStyle = '#000';
       ctx.font = '20px Arial';
       ctx.fillText('Score : ' + score, 10, 30);

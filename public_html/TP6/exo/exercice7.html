@@ -1,46 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="utf-8">
-    <title>Exercice 7 : Devis cimenterie</title>
-  <link rel="stylesheet" href="https://candicevialette.github.io/html/public_html/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Devis cimenterie</title>
+    <link rel="stylesheet" href="https://candicevialette.github.io/html/public_html/style.css">
 </head>
 <body>
-  <a href=" https://candicevialette.github.io/html/public_html/TP6/presentation"> Retour au TP06 </a>
     <h1>Calcul du devis pour la cimenterie</h1>
-    <label for="surface">Surface en m² :</label>
-    <input type="number" id="surface"><br>
-    <label for="epaisseur">Épaisseur de la dalle (cm) :</label>
-    <input type="number" id="epaisseur" min="15" max="35"><br>
-    <button onclick="calculerDevis()">Calculer</button>
+
+    <form onsubmit="event.preventDefault(); calculerDevis();">
+        <label for="surface">Surface en m² :</label>
+        <input type="number" id="surface" min="1" required><br>
+
+        <label for="epaisseur">Épaisseur de la dalle (cm) :</label>
+        <input type="number" id="epaisseur" min="15" max="35" required><br>
+
+        <button type="submit">Calculer</button>
+    </form>
+
     <div id="result"></div>
 
     <script>
         function calculerDevis() {
             var surface = parseFloat(document.getElementById('surface').value);
             var epaisseur = parseFloat(document.getElementById('epaisseur').value);
+            var resultDiv = document.getElementById('result');
 
+            // Réinitialisation du message d'erreur
+            resultDiv.innerHTML = "";
+
+            // Vérification des valeurs
             if (isNaN(surface) || surface <= 0 || isNaN(epaisseur) || epaisseur < 15 || epaisseur > 35) {
-                document.getElementById('result').innerHTML = "Veuillez entrer des valeurs valides.";
+                resultDiv.innerHTML = "<p style='color:red;'>Veuillez entrer des valeurs valides.</p>";
                 return;
             }
 
-            var epaisseurM = epaisseur / 100;
+            // Calcul du volume
+            var epaisseurM = epaisseur / 100;  // Conversion cm -> mètres
             var volume = surface * epaisseurM;
+
+            // Calcul de la quantité de ciment en tonnes
             var cimentTonne = (volume * 350) / 1000;
+
+            // Calcul du nombre de camions (arrondi à l'entier supérieur)
             var nbCamions = Math.ceil(volume / 9);
+
+            // Calcul des coûts
             var prixBetonHT = volume * 91;
             var coutTransportHT = nbCamions * 140;
             var totalHT = prixBetonHT + coutTransportHT;
-            var totalTTC = totalHT * 1.2; // TVA de 20%
+            var totalTTC = totalHT * 1.2; // Application de la TVA (20%)
 
-            document.getElementById('result').innerHTML =
-                "<h2>Résultats</h2>" +
-                "<p>Volume de béton nécessaire : " + volume.toFixed(2) + " m³</p>" +
-                "<p>Quantité de ciment : " + cimentTonne.toFixed(2) + " tonnes</p>" +
-                "<p>Nombre de camions nécessaires : " + nbCamions + "</p>" +
-                "<p>Prix HT : " + totalHT.toFixed(2) + " €</p>" +
-                "<p>Prix TTC : " + totalTTC.toFixed(2) + " €</p>";
+            // Affichage du résultat
+            resultDiv.innerHTML = `
+                <h2>Résultats</h2>
+                <p><strong>Volume de béton nécessaire :</strong> ${volume.toFixed(2)} m³</p>
+                <p><strong>Quantité de ciment :</strong> ${cimentTonne.toFixed(2)} tonnes</p>
+                <p><strong>Nombre de camions nécessaires :</strong> ${nbCamions}</p>
+                <p><strong>Prix HT :</strong> ${totalHT.toFixed(2)} €</p>
+                <p><strong>Prix TTC :</strong> ${totalTTC.toFixed(2)} €</p>
+            `;
         }
     </script>
 </body>

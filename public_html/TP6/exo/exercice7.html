@@ -5,16 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Devis cimenterie</title>
     <link rel="stylesheet" href="https://candicevialette.github.io/html/public_html/style.css">
+<style>
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .error-border {
+            border: 2px solid red;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            display: inline-block;
+            border-radius: 8px;
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
+    <a href=" https://candicevialette.github.io/html/public_html/TP6/presentation"> Retour au TP06 </a>
     <h1>Calcul du devis pour la cimenterie</h1>
 
     <form onsubmit="event.preventDefault(); calculerDevis();">
         <label for="surface">Surface en m² :</label>
-        <input type="number" id="surface" min="1" required><br>
+        <input type="number" id="surface" min="1"><br>
+        <span id="error-surface" class="error"></span><br>
 
         <label for="epaisseur">Épaisseur de la dalle (cm) :</label>
-        <input type="number" id="epaisseur" min="15" max="35" required><br>
+        <input type="number" id="epaisseur" min="15" max="35"><br>
+        <span id="error-epaisseur" class="error"></span><br>
 
         <button type="submit">Calculer</button>
     </form>
@@ -27,30 +48,44 @@
             var epaisseur = parseFloat(document.getElementById('epaisseur').value);
             var resultDiv = document.getElementById('result');
 
-            // Réinitialisation du message d'erreur
+            // Réinitialisation des erreurs et styles
+            document.getElementById('error-surface').innerHTML = "";
+            document.getElementById('error-epaisseur').innerHTML = "";
+            document.getElementById('surface').classList.remove('error-border');
+            document.getElementById('epaisseur').classList.remove('error-border');
             resultDiv.innerHTML = "";
 
-            // Vérification des valeurs
-            if (isNaN(surface) || surface <= 0 || isNaN(epaisseur) || epaisseur < 15 || epaisseur > 35) {
-                resultDiv.innerHTML = "<p style='color:red;'>Veuillez entrer des valeurs valides.</p>";
-                return;
+            var valid = true;
+
+            // Vérification des champs
+            if (isNaN(surface) || surface <= 0) {
+                document.getElementById('error-surface').innerHTML = "Veuillez entrer une surface valide.";
+                document.getElementById('surface').classList.add('error-border');
+                valid = false;
+            }
+            if (isNaN(epaisseur) || epaisseur < 15 || epaisseur > 35) {
+                document.getElementById('error-epaisseur').innerHTML = "L'épaisseur doit être entre 15 et 35 cm.";
+                document.getElementById('epaisseur').classList.add('error-border');
+                valid = false;
             }
 
+            if (!valid) return;
+
             // Calcul du volume
-            var epaisseurM = epaisseur / 100;  // Conversion cm -> mètres
+            var epaisseurM = epaisseur / 100;
             var volume = surface * epaisseurM;
 
             // Calcul de la quantité de ciment en tonnes
             var cimentTonne = (volume * 350) / 1000;
 
-            // Calcul du nombre de camions (arrondi à l'entier supérieur)
+            // Calcul du nombre de camions
             var nbCamions = Math.ceil(volume / 9);
 
             // Calcul des coûts
             var prixBetonHT = volume * 91;
             var coutTransportHT = nbCamions * 140;
             var totalHT = prixBetonHT + coutTransportHT;
-            var totalTTC = totalHT * 1.2; // Application de la TVA (20%)
+            var totalTTC = totalHT * 1.2;
 
             // Affichage du résultat
             resultDiv.innerHTML = `

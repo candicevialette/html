@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Exemple Devis</title>
+  <style>
+    /* Le devis est masqué par défaut */
+    #sectionDevis {
+      display: none;
+      border: 1px solid #ccc;
+      padding: 1rem;
+      margin-top: 1rem;
+      width: 400px;
+    }
+    .champ {
+      margin-bottom: 0.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .champ label {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <a href ="https://candicevialette.github.io/html/public_html/TP6/presentation.html">retour au TP06</a>
+  <h1>Formulaire de devis</h1>
+  <form id="formDevis">
+    <div class="champ">
+      <label for="nomClient">Nom du client :</label>
+      <input type="text" id="nomClient" name="nomClient" required>
+    </div>
+    <div class="champ">
+      <label for="telephone">Téléphone :</label>
+      <input type="text" id="telephone" name="telephone" required>
+    </div>
+    <div class="champ">
+      <label for="email">Email :</label>
+      <input type="email" id="email" name="email">
+    </div>
+    <div class="champ">
+      <label for="adresse">Adresse :</label>
+      <input type="text" id="adresse" name="adresse">
+    </div>
+    <div class="champ">
+      <label for="description">Description :</label>
+      <input type="text" id="description" name="description" required>
+    </div>
+    <div class="champ">
+      <label for="prix">Prix unitaire (€) :</label>
+      <input type="number" id="prix" name="prix" step="0.01" required>
+    </div>
+    <div class="champ">
+      <label for="quantite">Quantité :</label>
+      <input type="number" id="quantite" name="quantite" value="1" required>
+    </div>
+    <button type="button" onclick="afficherDevis()">Obtenir le devis</button>
+  </form>
+
+  <div id="sectionDevis">
+    <h2>Devis</h2>
+    <p id="infoClient"></p>
+    <p id="infoArticle"></p>
+    <p id="infoTotal"></p>
+    <p id="infoDate"></p>
+  </div>
+
+  <script>
+    function afficherDevis() {
+      // Récupération des valeurs du formulaire
+      const nomClient = document.getElementById('nomClient').value;
+      const telephone = document.getElementById('telephone').value;
+      const email     = document.getElementById('email').value;
+      const adresse   = document.getElementById('adresse').value;
+      const desc      = document.getElementById('description').value;
+      const prix      = parseFloat(document.getElementById('prix').value);
+      const quantite  = parseInt(document.getElementById('quantite').value);
+
+      // Calcul du total
+      const total = (prix * quantite).toFixed(2);
+
+      // Insertion dans les paragraphes
+      document.getElementById('infoClient').textContent  = `Client : ${nomClient} | Tél : ${telephone} | Email : ${email} | Adresse : ${adresse}`;
+      document.getElementById('infoArticle').textContent = `Description : ${desc} | Prix unitaire : ${prix.toFixed(2)} € | Quantité : ${quantite}`;
+      document.getElementById('infoTotal').textContent   = `Montant total : ${total} €`;
+
+      // Exemple pour la date de devis (facultatif)
+      const dateDevis = new Date().toLocaleDateString('fr-FR');
+      document.getElementById('infoDate').textContent    = `Date du devis : ${dateDevis}`;
+
+      // Affichage de la section devis
+      document.getElementById('sectionDevis').style.display = 'block';
+    }
+  </script>
+</body>
+</html>

@@ -1,270 +1,267 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Générateur de Devis - Béton</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Devis cimenterie</title>
+
+  <!-- Votre feuille de style externe (personnalisez si besoin) -->
+  <link rel="stylesheet" href="https://candicevialette.github.io/html/public_html/style.css">
+
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
+      background: #f9f9f9;
     }
 
     h1 {
-      text-transform: uppercase;
       text-align: center;
       margin-bottom: 30px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
-    /* Formulaire */
+    /* Formulaire simple */
     form {
       max-width: 500px;
-      margin: 0 auto 2rem auto;
-      padding: 1rem;
+      margin: 0 auto 30px auto;
+      padding: 20px;
+      background: #fff;
       border: 1px solid #ccc;
-    }
-    .champ {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 1rem;
-    }
-    .champ label {
-      font-weight: bold;
-      margin-bottom: 0.3rem;
-    }
-    .champ input {
-      padding: 0.4rem;
+      border-radius: 6px;
     }
 
-    /* Section Devis */
-    #sectionDevis {
-      display: none; /* masqué par défaut */
+    form label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+
+    form input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+
+    form button[type="submit"] {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #333;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    form button[type="submit"]:hover {
+      background: #555;
+    }
+
+    /* Conteneur du devis */
+    #devisContainer {
+      display: none; /* Masqué tant que l'utilisateur n'a pas cliqué */
       max-width: 700px;
       margin: 0 auto;
-      border: 1px solid #000;
-      padding: 20px;
+      background: #fff;
+      padding: 20px 30px;
+      border: 2px solid #000;
+      border-radius: 6px;
     }
-    .header-devis {
+
+    /* Entête du devis (titre, date, n° facture, etc.) */
+    .devis-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 1rem;
-    }
-    .header-devis div {
-      max-width: 50%;
-    }
-    .header-devis h2 {
-      margin: 0;
-      font-size: 1.8rem;
-      text-transform: uppercase;
-    }
-    .header-devis p {
-      margin: 0.2rem 0;
+      margin-bottom: 20px;
     }
 
+    .devis-header .titre-devis {
+      font-size: 2em;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .coordonnees {
+      text-align: right;
+      font-size: 0.9em;
+      line-height: 1.4em;
+    }
+
+    .coordonnees strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    /* Tableau des résultats */
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 1rem;
+      margin-top: 10px;
     }
-    table thead {
-      background: #f0f0f0;
-    }
+
     table th,
     table td {
       border: 1px solid #000;
-      padding: 8px;
+      padding: 8px 12px;
       text-align: left;
     }
+
+    table thead {
+      background: #f0f0f0;
+    }
+
+    /* Lignes de totals, etc. */
     .totaux {
-      margin-top: 1rem;
+      margin-top: 20px;
       text-align: right;
+      font-size: 1.1em;
     }
-    .totaux p {
-      margin: 0.3rem 0;
-    }
+
     .footer-devis {
       text-align: center;
-      margin-top: 2rem;
+      margin-top: 30px;
       font-weight: bold;
+      font-size: 1em;
+    }
+
+    /* Optionnel : un style "orange" pour rappeler votre deuxième capture */
+    .orange-section {
+      background: #f5e0c2; /* Couleur d'arrière-plan claire */
+      padding: 10px;
+      margin-top: 20px;
+      border: 1px solid #ccc;
+    }
+    .orange-section p {
+      margin: 6px 0;
     }
   </style>
 </head>
 <body>
 <a href ="https://candicevialette.github.io/html/public_html/TP6/presentation.html">retour au TP06</a>
-<a href="https://candicevialette.github.io/html/public_html/TP6/exo/exercice7.html">Si vous avez pas toutes les informations, on vous les calculs pour vous ici</a>
-<h1>Générateur de Devis</h1>
+  </a>
 
-<form id="formDevis">
-  <h2>Informations Client</h2>
-  <div class="champ">
-    <label for="nomClient">Nom du client <span style="color:red">*</span></label>
-    <input type="text" id="nomClient" name="nomClient" required>
-  </div>
-  <div class="champ">
-    <label for="telClient">Téléphone <span style="color:red">*</span></label>
-    <input type="tel" id="telClient" name="telClient" required pattern="^(\+?\d+)?$" 
-           placeholder="+33 6 12 34 56 78">
-  </div>
-  <div class="champ">
-    <label for="emailClient">Email</label>
-    <input type="email" id="emailClient" name="emailClient" placeholder="exemple@domaine.com">
-  </div>
-  <div class="champ">
-    <label for="adresseClient">Adresse</label>
-    <input type="text" id="adresseClient" name="adresseClient" placeholder="N° et rue, Ville, Code Postal">
-  </div>
+  <h1>Calcul du devis pour la cimenterie</h1>
 
-  <h2>Paramètres du Béton</h2>
-  <div class="champ">
-    <label for="longueur">Longueur (m) <span style="color:red">*</span></label>
-    <input type="number" step="0.01" id="longueur" name="longueur" min="0" required>
-  </div>
-  <div class="champ">
-    <label for="largeur">Largeur (m) <span style="color:red">*</span></label>
-    <input type="number" step="0.01" id="largeur" name="largeur" min="0" required>
-  </div>
-  <div class="champ">
-    <label for="hauteur">Hauteur/Épaisseur (m) <span style="color:red">*</span></label>
-    <input type="number" step="0.01" id="hauteur" name="hauteur" min="0" required>
-  </div>
-  <div class="champ">
-    <label for="densiteCiment">Densité de ciment (tonnes/m³) <span style="color:red">*</span></label>
-    <input type="number" step="0.01" id="densiteCiment" name="densiteCiment" min="0" required 
-           placeholder="Ex: 0.35 tonnes/m³">
-  </div>
-  <div class="champ">
-    <label for="capCamion">Capacité d'un camion (m³) <span style="color:red">*</span></label>
-    <input type="number" step="0.01" id="capCamion" name="capCamion" min="1" required value="6">
-  </div>
-  <div class="champ">
-    <label for="prixM3">Prix du béton (€/m³) <span style="color:red">*</span></label>
-    <input type="number" step="0.01" id="prixM3" name="prixM3" min="0" required value="100">
-  </div>
-  <div class="champ">
-    <label for="tva">Taux de TVA (%) <span style="color:red">*</span></label>
-    <input type="number" step="0.01" id="tva" name="tva" min="0" required value="20">
-  </div>
+  <!-- FORMULAIRE -->
+  <form onsubmit="event.preventDefault(); calculerDevis();">
+    <label for="surface">Surface en m² :</label>
+    <input type="number" id="surface" min="1" required>
 
-  <button type="button" onclick="genererDevis()">Obtenir le devis</button>
-</form>
+    <label for="epaisseur">Épaisseur de la dalle (cm) :</label>
+    <input type="number" id="epaisseur" min="15" max="250" required>
 
-<!-- Section Devis (masquée au départ) -->
-<div id="sectionDevis">
-  <div class="header-devis">
-    <div>
-      <h2>Devis</h2>
-      <p id="factureNum">Facture n°12345</p>
-      <p id="dateFacture"></p>
+    <button type="submit">Calculer</button>
+  </form>
+
+  <!-- SECTION DEVIS -->
+  <div id="devisContainer">
+    <!-- Entête du devis -->
+    <div class="devis-header">
+      <div>
+        <div class="titre-devis">Devis</div>
+        <div id="factureNum">Facture n°12345</div>
+        <div id="dateFacture"></div>
+      </div>
+      <div class="coordonnees">
+        <strong>Lafarge</strong>
+        01 58 00 60 00<br>
+        lafarge@mail.com<br>
+        lafarge.fr<br>
+        14-16 boulevard Garibaldi,<br>
+        92130 Issy-les-Moulineaux
+      </div>
     </div>
-    <div>
-      <p id="infoClient"></p>
+
+    <div class="coordonnees" style="text-align:left;">
+      <strong>À l'attention de :</strong>
+      Concordia<br>
+      123-456-7890<br>
+      Anywhere St., Any City
+    </div>
+
+    <!-- Tableau récapitulatif -->
+    <table>
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Valeur</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Volume de béton nécessaire</td>
+          <td id="valVolume"></td>
+        </tr>
+        <tr>
+          <td>Quantité de ciment</td>
+          <td id="valCiment"></td>
+        </tr>
+        <tr>
+          <td>Nombre de camions nécessaires</td>
+          <td id="valCamions"></td>
+        </tr>
+        <tr>
+          <td>Prix HT</td>
+          <td id="valHT"></td>
+        </tr>
+        <tr>
+          <td>Prix TTC</td>
+          <td id="valTTC"></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="footer-devis">
+      MERCI DE VOTRE CONFIANCE
     </div>
   </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Description</th>
-        <th>Valeur</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Volume de béton nécessaire</td>
-        <td id="valVolume"></td>
-      </tr>
-      <tr>
-        <td>Quantité de ciment</td>
-        <td id="valCiment"></td>
-      </tr>
-      <tr>
-        <td>Nombre de camions nécessaires</td>
-        <td id="valCamions"></td>
-      </tr>
-      <tr>
-        <td>Prix HT</td>
-        <td id="valHT"></td>
-      </tr>
-      <tr>
-        <td>Prix TTC</td>
-        <td id="valTTC"></td>
-      </tr>
-    </tbody>
-  </table>
+  <script>
+    function calculerDevis() {
+      var surface = parseFloat(document.getElementById('surface').value);
+      var epaisseur = parseFloat(document.getElementById('epaisseur').value);
+      var devisContainer = document.getElementById('devisContainer');
 
-  <div class="footer-devis">
-    <p>Merci de votre confiance</p>
-  </div>
-</div>
+      // Vérification
+      if (isNaN(surface) || surface <= 0 || isNaN(epaisseur) || epaisseur < 15 || epaisseur > 250) {
+        alert("Veuillez entrer des valeurs valides (Surface > 0, Épaisseur entre 15 et 250).");
+        return;
+      }
 
-<script>
-function genererDevis() {
-  // Récupération des champs
-  const nomClient   = document.getElementById('nomClient');
-  const telClient   = document.getElementById('telClient');
-  const emailClient = document.getElementById('emailClient');
-  const adrClient   = document.getElementById('adresseClient');
-  const longueur    = document.getElementById('longueur');
-  const largeur     = document.getElementById('largeur');
-  const hauteur     = document.getElementById('hauteur');
-  const densiteC    = document.getElementById('densiteCiment');
-  const capCamion   = document.getElementById('capCamion');
-  const prixM3      = document.getElementById('prixM3');
-  const tva         = document.getElementById('tva');
+      var epaisseurM = epaisseur / 100;  // Conversion cm -> mètres
+      var volume = surface * epaisseurM;
+      var cimentTonne = (volume * 350) / 1000;
+      var nbCamions = Math.ceil(volume / 9);
 
-  // Vérifications simples côté JS (en plus du "required" HTML)
-  if(!nomClient.value.trim() || !telClient.value.trim() ||
-     !longueur.value || !largeur.value || !hauteur.value ||
-     !densiteC.value || !capCamion.value || !prixM3.value || !tva.value) {
-    alert("Merci de remplir tous les champs obligatoires.");
-    return;
-  }
+      var prixBetonHT = volume * 91;
+      var coutTransportHT = nbCamions * 140;
+      var totalHT = prixBetonHT + coutTransportHT;
+      var totalTTC = totalHT * 1.2; // Application de la TVA (20%)
 
-  // Conversion numérique
-  const L = parseFloat(longueur.value);
-  const l = parseFloat(largeur.value);
-  const h = parseFloat(hauteur.value);
-  const d = parseFloat(densiteC.value);
-  const camion = parseFloat(capCamion.value);
-  const pM3 = parseFloat(prixM3.value);
-  const tvaVal = parseFloat(tva.value);
+      var dateNow = new Date().toLocaleDateString('fr-FR');
+      document.getElementById('dateFacture').textContent = "Date : " + dateNow;
 
-  // Vérifications de valeurs négatives ou nulles
-  if(L <= 0 || l <= 0 || h <= 0 || d < 0 || camion <= 0 || pM3 < 0 || tvaVal < 0) {
-    alert("Veuillez saisir des valeurs numériques positives.");
-    return;
-  }
+      // Insérer les résultats dans le tableau
+      document.getElementById('valVolume').textContent = volume.toFixed(2) + " m³";
+      document.getElementById('valCiment').textContent = cimentTonne.toFixed(2) + " tonnes";
+      document.getElementById('valCamions').textContent = nbCamions;
+      document.getElementById('valHT').textContent = totalHT.toFixed(2) + " €";
+      document.getElementById('valTTC').textContent = totalTTC.toFixed(2) + " €";
 
-  // Calculs
-  const volumeBeton = L * l * h;                      // m³
-  const quantiteCiment = volumeBeton * d;             // tonnes
-  const nbCamions = Math.ceil(volumeBeton / camion);  // arrondi supérieur
-  const prixHT = volumeBeton * pM3;                   // €
-  const prixTTC = prixHT * (1 + (tvaVal / 100));      // €
+      // Section orange en plus (récap)
+      document.getElementById('recapVolume').textContent = "Volume : " + volume.toFixed(2) + " m³";
+      document.getElementById('recapCiment').textContent = "Ciment : " + cimentTonne.toFixed(2) + " tonnes";
+      document.getElementById('recapCamions').textContent = "Camions : " + nbCamions;
+      document.getElementById('recapHT').textContent = "Prix HT : " + totalHT.toFixed(2) + " €";
+      document.getElementById('recapTTC').textContent = "Prix TTC : " + totalTTC.toFixed(2) + " €";
 
-  // Affichage dans le devis
-  document.getElementById('infoClient').innerHTML =
-    `<strong>A l'attention de :</strong><br>
-     ${nomClient.value}<br>
-     Tél : ${telClient.value}<br>
-     ${emailClient.value ? 'Email : ' + emailClient.value + '<br>' : ''}
-     ${adrClient.value ? 'Adresse : ' + adrClient.value : ''}`;
-
-  // Date du jour
-  const dateNow = new Date().toLocaleDateString('fr-FR');
-  document.getElementById('dateFacture').textContent = `Date : ${dateNow}`;
-
-  document.getElementById('valVolume').textContent = volumeBeton.toFixed(2) + " m³";
-  document.getElementById('valCiment').textContent = quantiteCiment.toFixed(2) + " tonnes";
-  document.getElementById('valCamions').textContent = nbCamions;
-  document.getElementById('valHT').textContent = prixHT.toFixed(2) + " €";
-  document.getElementById('valTTC').textContent = prixTTC.toFixed(2) + " €";
-
-  // Affichage de la section Devis
-  document.getElementById('sectionDevis').style.display = 'block';
-}
-</script>
+      // Afficher la section devis
+      devisContainer.style.display = 'block';
+    }
+  </script>
 
 </body>
 </html>
-

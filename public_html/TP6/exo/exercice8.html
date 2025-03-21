@@ -9,6 +9,9 @@
   <link rel="stylesheet" href="https://candicevialette.github.io/html/public_html/style.css">
 
   <style>
+    /* =============================
+       STYLE INTERNE (Personnalisable)
+       ============================= */
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
@@ -140,6 +143,27 @@
       font-weight: bold;
       font-size: 1em;
     }
+
+    /* Section des totaux (Sous-total, TVA, Total) */
+    .totaux {
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+
+    .totaux .sous-total,
+    .totaux .tva,
+    .totaux .total {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+    }
+
+    .totaux .total {
+      background-color: #333;
+      color: #fff;
+    }
+
   </style>
 </head>
 <body>
@@ -200,7 +224,7 @@
       <div class="coordonnees">
         <strong>Lafarge</strong>
         01 58 00 60 00<br>
-        lafarge@gmail.com<br>
+        lafarge@mail.com<br>
         lafarge.fr<br>
         14-16 boulevard Garibaldi,<br>
         92130 Issy-les-Moulineaux
@@ -213,7 +237,7 @@
       <span id="infoClient"></span>
     </div>
 
-    <!-- Tableau récapitulatif -->
+    <!-- Tableau des résultats -->
     <table>
       <thead>
         <tr>
@@ -234,23 +258,28 @@
           <td>Nombre de camions nécessaires</td>
           <td id="valCamions"></td>
         </tr>
-        <tr>
-          <td>Sous-total</td>
-          <td id="valSousTotal"></td>
-        </tr>
-        <tr>
-          <td>TVA (20%)</td>
-          <td id="valTVA"></td>
-        </tr>
-        <tr>
-          <td>Prix total TTC</td>
-          <td id="valTotalTTC"></td>
-        </tr>
       </tbody>
     </table>
 
+    <!-- Section des totaux -->
+    <div class="totaux">
+      <div class="sous-total">
+        <span>Sous total :</span>
+        <span id="valSousTotal"></span>
+      </div>
+      <div class="tva">
+        <span>TVA (20%) :</span>
+        <span id="valTVA"></span>
+      </div>
+      <div class="total">
+        <span>TOTAL :</span>
+        <span id="valTotalTTC"></span>
+      </div>
+    </div>
+
+    <!-- Conditions de paiement -->
     <div class="footer-devis">
-      MERCI DE VOTRE CONFIANCE
+      <p>Conditions de paiement : Paiement sous 30 jours</p>
     </div>
   </div>
 
@@ -268,7 +297,7 @@
         alert("Le nom ne peut contenir que des lettres.");
         return;
       }
- if (!/^[a-zA-Zéèàêëï]+$/.test(prenom)) {
+      if (!/^[a-zA-Zéèàêëï]+$/.test(prenom)) {
         alert("Le prénom ne peut contenir que des lettres.");
         return;
       }
@@ -308,8 +337,6 @@
       const nbCamions = Math.ceil(volume / 9);
 
       // 4) Coûts
-      //    - hypothèse : 91 € / m³
-      //    - hypothèse : 140 € / camion
       const prixBetonHT = volume * 91;
       const coutTransportHT = nbCamions * 140;
       const totalHT = prixBetonHT + coutTransportHT;
@@ -332,6 +359,8 @@
       document.getElementById('valVolume').textContent  = volume.toFixed(2) + " m³";
       document.getElementById('valCiment').textContent  = cimentTonne.toFixed(2) + " tonnes";
       document.getElementById('valCamions').textContent = nbCamions;
+
+      // Totaux
       document.getElementById('valSousTotal').textContent = totalHT.toFixed(2) + " €";
       document.getElementById('valTVA').textContent      = (totalHT * 0.2).toFixed(2) + " €";
       document.getElementById('valTotalTTC').textContent = totalTTC.toFixed(2) + " €";

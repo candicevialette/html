@@ -9,9 +9,6 @@
   <link rel="stylesheet" href="https://candicevialette.github.io/html/public_html/style.css">
 
   <style>
-    /* =============================
-       STYLE INTERNE (Personnalisable)
-       ============================= */
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
@@ -143,17 +140,6 @@
       font-weight: bold;
       font-size: 1em;
     }
-
-    /* Section orange optionnelle pour un récap */
-    .orange-section {
-      background: #f5e0c2; /* Couleur d'arrière-plan claire */
-      padding: 10px;
-      margin-top: 20px;
-      border: 1px solid #ccc;
-    }
-    .orange-section p {
-      margin: 6px 0;
-    }
   </style>
 </head>
 <body>
@@ -178,15 +164,15 @@
     </div>
     <div class="bloc-champ">
       <label for="clientTel">Téléphone :</label>
-      <input type="tel" id="clientTel" placeholder="ex: +33 6 12 34 56 78">
+      <input type="tel" id="clientTel" placeholder="ex: +33 6 12 34 56 78" required>
     </div>
     <div class="bloc-champ">
       <label for="clientEmail">Email :</label>
-      <input type="email" id="clientEmail" placeholder="ex: nom@domaine.com">
+      <input type="email" id="clientEmail" placeholder="ex: nom@domaine.com" required>
     </div>
     <div class="bloc-champ">
       <label for="clientAdresse">Adresse :</label>
-      <input type="text" id="clientAdresse" placeholder="N° et rue, Ville, Code Postal">
+      <input type="text" id="clientAdresse" placeholder="N° et rue, Ville, Code Postal" required>
     </div>
 
     <h2>Paramètres de la dalle</h2>
@@ -214,7 +200,7 @@
       <div class="coordonnees">
         <strong>Lafarge</strong>
         01 58 00 60 00<br>
-        lafarge@mail.com<br>
+        lafarge@gmail.com<br>
         lafarge.fr<br>
         14-16 boulevard Garibaldi,<br>
         92130 Issy-les-Moulineaux
@@ -249,25 +235,19 @@
           <td id="valCamions"></td>
         </tr>
         <tr>
-          <td>Prix HT</td>
-          <td id="valHT"></td>
+          <td>Sous-total</td>
+          <td id="valSousTotal"></td>
         </tr>
         <tr>
-          <td>Prix TTC</td>
-          <td id="valTTC"></td>
+          <td>TVA (20%)</td>
+          <td id="valTVA"></td>
+        </tr>
+        <tr>
+          <td>Prix total TTC</td>
+          <td id="valTotalTTC"></td>
         </tr>
       </tbody>
     </table>
-
-    <!-- Section orange pour un récap supplémentaire (optionnel) -->
-    <div class="orange-section">
-      <p><strong>Récapitulatif :</strong></p>
-      <p id="recapVolume"></p>
-      <p id="recapCiment"></p>
-      <p id="recapCamions"></p>
-      <p id="recapHT"></p>
-      <p id="recapTTC"></p>
-    </div>
 
     <div class="footer-devis">
       MERCI DE VOTRE CONFIANCE
@@ -283,11 +263,33 @@
       const email     = document.getElementById('clientEmail').value.trim();
       const adresse   = document.getElementById('clientAdresse').value.trim();
 
+      // Vérifications des informations client
+      if (!/^[a-zA-Zéèàêëï]+$/.test(nom)) {
+        alert("Le nom ne peut contenir que des lettres.");
+        return;
+      }
+ if (!/^[a-zA-Zéèàêëï]+$/.test(prenom)) {
+        alert("Le prénom ne peut contenir que des lettres.");
+        return;
+      }
+      if (!/^\+?[0-9]{10,15}$/.test(tel)) {
+        alert("Le numéro de téléphone doit être au format +33XXXXXXXXX ou 0XXXXXXXXX.");
+        return;
+      }
+      if (!/\S+@\S+\.\S+/.test(email)) {
+        alert("L'email doit être au format valide (ex: nom@domaine.com).");
+        return;
+      }
+      if (!/^\d+\s[A-Za-z]+/.test(adresse)) {
+        alert("L'adresse doit être sous la forme 'Numéro Rue, Ville, Code Postal'.");
+        return;
+      }
+
       // Récupération des valeurs pour le calcul
       const surface   = parseFloat(document.getElementById('surface').value);
       const epaisseur = parseFloat(document.getElementById('epaisseur').value);
 
-      // Vérification
+      // Vérification des valeurs
       if (isNaN(surface) || surface <= 0 ||
           isNaN(epaisseur) || epaisseur < 15 || epaisseur > 250) {
         alert("Veuillez entrer des valeurs valides (Surface > 0, Épaisseur entre 15 et 250).");
@@ -319,7 +321,6 @@
       document.getElementById('dateFacture').textContent = "Date : " + dateNow;
 
       // Coordonnées client (bloc "À l'attention de")
-      // On assemble nom, prénom, tel, email, adresse
       let clientHTML = "";
       if (nom || prenom) clientHTML += nom + " " + prenom + "<br>";
       if (tel)           clientHTML += tel + "<br>";
@@ -331,15 +332,9 @@
       document.getElementById('valVolume').textContent  = volume.toFixed(2) + " m³";
       document.getElementById('valCiment').textContent  = cimentTonne.toFixed(2) + " tonnes";
       document.getElementById('valCamions').textContent = nbCamions;
-      document.getElementById('valHT').textContent      = totalHT.toFixed(2) + " €";
-      document.getElementById('valTTC').textContent     = totalTTC.toFixed(2) + " €";
-
-      // Section orange (récap)
-      document.getElementById('recapVolume').textContent  = "Volume : " + volume.toFixed(2) + " m³";
-      document.getElementById('recapCiment').textContent  = "Ciment : " + cimentTonne.toFixed(2) + " tonnes";
-      document.getElementById('recapCamions').textContent = "Camions : " + nbCamions;
-      document.getElementById('recapHT').textContent      = "Prix HT : " + totalHT.toFixed(2) + " €";
-      document.getElementById('recapTTC').textContent     = "Prix TTC : " + totalTTC.toFixed(2) + " €";
+      document.getElementById('valSousTotal').textContent = totalHT.toFixed(2) + " €";
+      document.getElementById('valTVA').textContent      = (totalHT * 0.2).toFixed(2) + " €";
+      document.getElementById('valTotalTTC').textContent = totalTTC.toFixed(2) + " €";
 
       // Afficher la section devis
       document.getElementById('devisContainer').style.display = 'block';

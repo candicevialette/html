@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Devis cimenterie</title>
+  <title>Devis Couture</title>
 
   <!-- Votre feuille de style externe (personnalisez si besoin) -->
   <link rel="stylesheet" href="https://candicevialette.github.io/html/public_html/style.css">
@@ -173,7 +173,7 @@
     Retour au TP06
   </a>
 
-  <h1>Calcul du devis pour la cimenterie</h1>
+  <h1>Calcul du devis pour l'entreprise de couture</h1>
 
   <!-- FORMULAIRE -->
   <form onsubmit="event.preventDefault(); genererDevis();">
@@ -199,14 +199,22 @@
       <input type="text" id="clientAdresse" placeholder="N° et rue, Ville, Code Postal" required>
     </div>
 
-    <h2>Paramètres de la dalle</h2>
+    <!-- Choix des services de couture -->
+    <h2>Services de Couture</h2>
     <div class="bloc-champ">
-      <label for="surface">Surface en m² :</label>
-      <input type="number" id="surface" min="1" required>
+      <label for="serviceRetouche">Retouche de vêtements (40€ par article) :</label>
+      <input type="checkbox" id="serviceRetouche">
+      <input type="number" id="quantiteRetouche" min="1" placeholder="Quantité" disabled>
     </div>
     <div class="bloc-champ">
-      <label for="epaisseur">Épaisseur de la dalle (cm) :</label>
-      <input type="number" id="epaisseur" min="15" max="250" required>
+      <label for="serviceCoutureBouton">Couture de bouton (30€ par bouton) :</label>
+      <input type="checkbox" id="serviceCoutureBouton">
+      <input type="number" id="quantiteCoutureBouton" min="1" placeholder="Quantité" disabled>
+    </div>
+    <div class="bloc-champ">
+      <label for="serviceHaut">Création de haut personnalisé (90€ par article) :</label>
+      <input type="checkbox" id="serviceHaut">
+      <input type="number" id="quantiteHaut" min="1" placeholder="Quantité" disabled>
     </div>
 
     <button type="submit">Calculer et générer le devis</button>
@@ -222,12 +230,12 @@
         <div id="dateFacture"></div>
       </div>
       <div class="coordonnees">
-        <strong>Lafarge</strong>
+        <strong>Couture & Co</strong>
         01 58 00 60 00<br>
-        lafarge@mail.com<br>
-        lafarge.fr<br>
-        14-16 boulevard Garibaldi,<br>
-        92130 Issy-les-Moulineaux
+        couture@gmail.com<br>
+        couture.fr<br>
+        14-16 rue de la Couture,<br>
+        92130 Paris
       </div>
     </div>
 
@@ -242,21 +250,29 @@
       <thead>
         <tr>
           <th>Description</th>
-          <th>Valeur</th>
+          <th>Prix Unitaire</th>
+          <th>Quantité</th>
+          <th>Total</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Volume de béton nécessaire</td>
-          <td id="valVolume"></td>
+          <td>Retouche de vêtements</td>
+          <td id="prixRetouche"></td>
+          <td id="quantiteRetouche">0</td>
+          <td id="totalRetouche">0</td>
         </tr>
         <tr>
-          <td>Quantité de ciment</td>
-          <td id="valCiment"></td>
+          <td>Couture de bouton</td>
+          <td id="prixCoutureBouton"></td>
+          <td id="quantiteCoutureBouton">0</td>
+          <td id="totalCoutureBouton">0</td>
         </tr>
         <tr>
-          <td>Nombre de camions nécessaires</td>
-          <td id="valCamions"></td>
+          <td>Création de haut personnalisé</td>
+          <td id="prixHaut"></td>
+          <td id="quantiteHaut">0</td>
+          <td id="totalHaut">0</td>
         </tr>
       </tbody>
     </table>
@@ -265,15 +281,15 @@
     <div class="totaux">
       <div class="sous-total">
         <span>Sous total :</span>
-        <span id="valSousTotal"></span>
+        <span id="valSousTotal">0</span>
       </div>
       <div class="tva">
         <span>TVA (20%) :</span>
-        <span id="valTVA"></span>
+        <span id="valTVA">0</span>
       </div>
       <div class="total">
         <span>TOTAL :</span>
-        <span id="valTotalTTC"></span>
+        <span id="valTotalTTC">0</span>
       </div>
     </div>
 
@@ -314,33 +330,25 @@
         return;
       }
 
-      // Récupération des valeurs pour le calcul
-      const surface   = parseFloat(document.getElementById('surface').value);
-      const epaisseur = parseFloat(document.getElementById('epaisseur').value);
+      // Services proposés
+      const prixRetouche = 40; // Exemple de prix pour la retouche
+      const prixCoutureBouton = 30; // Prix pour la couture d'un bouton
+      const prixHaut = 90; // Prix pour la création d'un haut personnalisé
 
-      // Vérification des valeurs
-      if (isNaN(surface) || surface <= 0 ||
-          isNaN(epaisseur) || epaisseur < 15 || epaisseur > 250) {
-        alert("Veuillez entrer des valeurs valides (Surface > 0, Épaisseur entre 15 et 250).");
-        return;
-      }
+      // Quantité des services choisis
+      const quantiteRetouche = document.getElementById('quantiteRetouche').value || 0;
+      const quantiteCoutureBouton = document.getElementById('quantiteCoutureBouton').value || 0;
+      const quantiteHaut = document.getElementById('quantiteHaut').value || 0;
 
-      // ----- Calculs -----
-      // 1) Volume (m³)
-      const epaisseurM = epaisseur / 100;  // Conversion cm -> mètres
-      const volume = surface * epaisseurM;
+      // Calcul des totaux pour chaque service
+      const totalRetouche = prixRetouche * quantiteRetouche;
+      const totalCoutureBouton = prixCoutureBouton * quantiteCoutureBouton;
+      const totalHaut = prixHaut * quantiteHaut;
 
-      // 2) Quantité de ciment (tonnes) - hypothèse 350 kg/m³
-      const cimentTonne = (volume * 350) / 1000;
-
-      // 3) Nombre de camions (arrondi supérieur) - hypothèse 9 m³ par camion
-      const nbCamions = Math.ceil(volume / 9);
-
-      // 4) Coûts
-      const prixBetonHT = volume * 91;
-      const coutTransportHT = nbCamions * 140;
-      const totalHT = prixBetonHT + coutTransportHT;
-      const totalTTC = totalHT * 1.2; // Application de la TVA (20%)
+      // Calculs du sous-total, de la TVA et du total TTC
+      const sousTotal = totalRetouche + totalCoutureBouton + totalHaut;
+      const tva = sousTotal * 0.2;
+      const totalTTC = sousTotal + tva;
 
       // ----- Affichage dans le devis -----
       // Date
@@ -355,14 +363,17 @@
       if (adresse)       clientHTML += adresse;
       document.getElementById('infoClient').innerHTML = clientHTML;
 
-      // Table
-      document.getElementById('valVolume').textContent  = volume.toFixed(2) + " m³";
-      document.getElementById('valCiment').textContent  = cimentTonne.toFixed(2) + " tonnes";
-      document.getElementById('valCamions').textContent = nbCamions;
+      // Table des résultats
+      document.getElementById('prixRetouche').textContent = prixRetouche + " €";
+      document.getElementById('totalRetouche').textContent = totalRetouche.toFixed(2) + " €";
+      document.getElementById('prixCoutureBouton').textContent = prixCoutureBouton + " €";
+      document.getElementById('totalCoutureBouton').textContent = totalCoutureBouton.toFixed(2) + " €";
+      document.getElementById('prixHaut').textContent = prixHaut + " €";
+      document.getElementById('totalHaut').textContent = totalHaut.toFixed(2) + " €";
 
       // Totaux
-      document.getElementById('valSousTotal').textContent = totalHT.toFixed(2) + " €";
-      document.getElementById('valTVA').textContent      = (totalHT * 0.2).toFixed(2) + " €";
+      document.getElementById('valSousTotal').textContent = sousTotal.toFixed(2) + " €";
+      document.getElementById('valTVA').textContent = tva.toFixed(2) + " €";
       document.getElementById('valTotalTTC').textContent = totalTTC.toFixed(2) + " €";
 
       // Afficher la section devis

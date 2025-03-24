@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Exercice 4 : Calendrier Dynamique</title>
   <style>
-    /* Style pour le calendrier */
+    /* Style du tableau */
     #calendarContainer table {
       border-collapse: collapse;
       width: auto;
@@ -20,55 +20,47 @@
     #calendarContainer th {
       background-color: #ddd;
     }
+    /* Couleur rose pour samedis et dimanches */
+    .weekend {
+      background-color: #ffc0cb;
+    }
   </style>
 </head>
 <body>
-  <a href="https://candicevialette.github.io/html/public_html/TP07/presentation.html"> Retour au TP07</a>
   <h1>Exercice 4 : Calendrier Dynamique</h1>
+
+  <!-- Formulaire de génération -->
   <div>
     <label for="firstDay">Premier jour du mois (0=Dimanche, 1=Lundi, ...):</label>
     <input type="number" id="firstDay" value="1" min="0" max="6">
     <label for="month">Mois (1-12):</label>
-    <input type="number" id="month" value="4" min="1" max="12">
+    <input type="number" id="month" value="8" min="1" max="12">
     <label for="year">Année:</label>
     <input type="number" id="year" value="2024">
     <button id="generateCalendar">Générer le calendrier</button>
   </div>
+
+  <!-- Conteneur du calendrier -->
   <div id="calendarContainer"></div>
 
   <script>
-    // Fonction de génération de calendrier dynamique
     function generateCalendar(firstDay, month, year) {
-      var calendar = '<table><thead><tr>';
-      var daysOfWeek = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
-      for (var i = 0; i < daysOfWeek.length; i++) {
+      let calendar = '<table><thead><tr>';
+      const daysOfWeek = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
+      for (let i = 0; i < daysOfWeek.length; i++) {
         calendar += '<th>' + daysOfWeek[i] + '</th>';
       }
       calendar += '</tr></thead><tbody><tr>';
-      // Cases vides pour les jours précédents
-      for (var i = 0; i < firstDay; i++) {
-        calendar += '<td></td>';
-      }
-      // Nombre de jours dans le mois
-      var daysInMonth = new Date(year, month, 0).getDate();
-      for (var day = 1; day <= daysInMonth; day++) {
-        if ((firstDay + day - 1) % 7 === 0 && day !== 1) {
-          calendar += '</tr><tr>';
-        }
-        calendar += '<td>' + day + '</td>';
-      }
-      calendar += '</tr></tbody></table>';
-      return calendar;
-    }
 
-    document.getElementById('generateCalendar').addEventListener('click', function() {
-      var firstDay = parseInt(document.getElementById('firstDay').value);
-      var month = parseInt(document.getElementById('month').value);
-      var year = parseInt(document.getElementById('year').value);
-      var calendarHTML = generateCalendar(firstDay, month, year);
-      document.getElementById('calendarContainer').innerHTML = calendarHTML;
-    });
-  </script>
-  <p><a href="index.html">Retour à l'accueil</a></p>
-</body>
-</html>
+      let dayOfWeek = 0;
+
+      // Cases vides avant le 1er jour du mois
+      for (let i = 0; i < firstDay; i++) {
+        calendar += '<td></td>';
+        dayOfWeek++;
+      }
+
+      const daysInMonth = new Date(year, month, 0).getDate();
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const weekendClass =

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Devis Couture</title>
   <style>
     body {
@@ -10,13 +10,14 @@
       margin: 20px;
       background: #f9f9f9;
     }
+
     h1 {
       text-align: center;
       margin-bottom: 30px;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
-    /* Formulaire global */
+
     #formContainer {
       max-width: 600px;
       margin: 0 auto 30px auto;
@@ -25,23 +26,24 @@
       border: 1px solid #ccc;
       border-radius: 6px;
     }
+
     #formContainer .bloc-champ {
       margin-bottom: 15px;
     }
+
     #formContainer label {
       font-weight: bold;
       display: block;
       margin-bottom: 5px;
     }
-    #formContainer input[type="text"],
-    #formContainer input[type="email"],
-    #formContainer input[type="tel"],
-    #formContainer input[type="number"] {
+
+    #formContainer input {
       width: 100%;
       padding: 8px;
       box-sizing: border-box;
     }
-    #formContainer button[type="submit"] {
+
+    #formContainer button {
       margin-top: 20px;
       padding: 10px 20px;
       background: #333;
@@ -50,10 +52,11 @@
       border-radius: 4px;
       cursor: pointer;
     }
-    #formContainer button[type="submit"]:hover {
+
+    #formContainer button:hover {
       background: #555;
     }
-    /* Conteneur du devis */
+
     #devisContainer {
       display: none;
       max-width: 700px;
@@ -63,446 +66,49 @@
       border: 2px solid #000;
       border-radius: 6px;
     }
-    /* Entête du devis */
+
     .devis-header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
       margin-bottom: 20px;
     }
+
     .titre-devis {
       font-size: 2em;
       font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 1px;
     }
+
     .coordonnees {
       text-align: right;
       font-size: 0.9em;
       line-height: 1.4em;
     }
-    .coordonnees strong {
-      display: block;
-      margin-bottom: 4px;
-    }
-    /* Bloc "À l'attention de" (client) */
+
     .client-destinataire {
       text-align: left;
       font-size: 0.9em;
-      line-height: 1.4em;
       margin-bottom: 15px;
     }
-    .client-destinataire strong {
-      display: block;
-      margin-bottom: 4px;
-    }
-    /* Tableau des résultats */
+
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 10px;
     }
+
     table th,
     table td {
       border: 1px solid #000;
       padding: 8px 12px;
       text-align: left;
     }
-    table thead {
-      background: #f0f0f0;
-    }
-    /* Section des totaux */
+
     .totaux {
       margin-top: 20px;
-      font-size: 1.2em;
-      font-weight: bold;
+      font-size: 1.1em;
     }
-    .totaux .sous-total,
-    .totaux .tva,
+
     .totaux .total {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
-    }
-    .totaux .total {
-      background-color: #333;
+      background: #333;
       color: #fff;
-    }
-    /* Section signature et tampon */
-    .signature-section {
-      margin-top: 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .signature-section div {
-      width: 45%;
-      text-align: center;
-    }
-    .signature-section p {
-      border-top: 1px solid #000;
-      padding-top: 5px;
-      margin: 5px 0;
-    }
-    /* Pied de page du devis */
-    .footer-devis {
-      text-align: center;
-      margin-top: 30px;
-      font-weight: bold;
-      font-size: 1em;
-    }
-    /* Avertissement (simulation) */
-    .avertissement {
-      margin-top: 20px;
-      font-size: 0.9em;
-      color: #d00;
-      text-align: center;
-      font-style: italic;
-    }
-    /* Boutons */
-    .btn-download, .btn-send {
-      display: inline-block;
-      margin: 20px 10px 0 10px;
-      padding: 10px 20px;
-      background: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      text-align: center;
-      text-decoration: none;
-    }
-    .btn-download:hover {
-      background: #0056b3;
-    }
-    .btn-send {
-      background: #28a745;
-    }
-    .btn-send:hover {
-      background: #1e7e34;
-    }
-    .signature-section {
-  margin-top: 40px;
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.signature-bloc {
-  width: 30%;
-  text-align: center;
-}
-
-.signature-zone {
-  border: 1px dashed #000;
-  height: 100px;
-  margin-top: 10px;
-  background-color: #fefefe;
-}
-
-.tampon-zone {
-  height: 120px;
-}
-
-  </style>
-</head>
-<body>
-  <a href="https://candicevialette.github.io/html/public_html/TP6/presentation.html">Retour au TP06</a>
-  <h1>Calcul du devis pour l'entreprise de couture</h1>
-  <!-- FORMULAIRE -->
-  <div id="formContainer">
-    <form onsubmit="event.preventDefault(); genererDevis();">
-      <h2>Informations du client</h2>
-      <div class="bloc-champ">
-        <label for="clientNom">Nom :</label>
-        <input type="text" id="clientNom" required>
-      </div>
-      <div class="bloc-champ">
-        <label for="clientPrenom">Prénom :</label>
-        <input type="text" id="clientPrenom" required>
-      </div>
-      <div class="bloc-champ">
-        <label for="clientTel">Téléphone :</label>
-        <input type="tel" id="clientTel" placeholder="ex: +33 6 12 34 56 78" required>
-      </div>
-      <div class="bloc-champ">
-        <label for="clientEmail">Email :</label>
-        <input type="email" id="clientEmail" placeholder="ex: nom@domaine.com" required>
-      </div>
-      <div class="bloc-champ">
-        <label for="clientAdresse">Adresse :</label>
-        <input type="text" id="clientAdresse" placeholder="N° et rue, Ville, Code Postal" required>
-      </div>
-      <!-- Choix des services de couture -->
-      <h2>Services de Couture</h2>
-      <div class="bloc-champ">
-        <label for="serviceRetouche">Retouche de vêtements (40€ par article) :</label>
-        <input type="checkbox" id="serviceRetouche" onchange="toggleQuantity('Retouche')">
-        <input type="number" id="quantiteRetouche" min="1" placeholder="Quantité">
-      </div>
-      <div class="bloc-champ">
-        <label for="serviceCoutureBouton">Couture de bouton (30€ par bouton) :</label>
-        <input type="checkbox" id="serviceCoutureBouton" onchange="toggleQuantity('CoutureBouton')">
-        <input type="number" id="quantiteCoutureBouton" min="1" placeholder="Quantité">
-      </div>
-      <div class="bloc-champ">
-        <label for="serviceHaut">Création de haut personnalisé (90€ par article) :</label>
-        <input type="checkbox" id="serviceHaut" onchange="toggleQuantity('Haut')">
-        <input type="number" id="quantiteHaut" min="1" placeholder="Quantité">
-      </div>
-      <button type="submit">Calculer et générer le devis</button>
-    </form>
-  </div>
-  <!-- SECTION DEVIS -->
-  <div id="devisContainer">
-    <!-- Entête du devis -->
-    <div class="devis-header">
-      <div>
-        <div class="titre-devis">Devis</div>
-        <div id="factureNum">Facture n°12345</div>
-        <div id="dateFacture"></div>
-      </div>
-      <div class="coordonnees">
-        <strong>Couture & Co</strong><br>
-        01 58 00 60 00<br>
-        couture@mail.com<br>
-        couture.fr<br>
-        14-16 rue de la Couture,<br>
-        92130 Paris
-      </div>
-    </div>
-    <!-- Coordonnées du client -->
-    <div class="client-destinataire">
-      <strong>À l'attention de :</strong>
-      <span id="infoClient"></span>
-    </div>
-    <!-- Tableau récapitulatif des services -->
-    <table>
-      <thead>
-        <tr>
-          <th>Description</th>
-          <th>Prix Unitaire</th>
-          <th>Quantité</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Retouche de vêtements</td>
-          <td id="prixRetouche">0</td>
-          <td id="quantiteRetoucheCell">0</td>
-          <td id="totalRetouche">0</td>
-        </tr>
-        <tr>
-          <td>Couture de bouton</td>
-          <td id="prixCoutureBouton">0</td>
-          <td id="quantiteCoutureBoutonCell">0</td>
-          <td id="totalCoutureBouton">0</td>
-        </tr>
-        <tr>
-          <td>Création de haut personnalisé</td>
-          <td id="prixHaut">0</td>
-          <td id="quantiteHautCell">0</td>
-          <td id="totalHaut">0</td>
-        </tr>
-      </tbody>
-    </table>
-    <!-- Section des totaux -->
-    <div class="totaux">
-      <div class="sous-total">
-        <span>Sous total :</span>
-        <span id="valSousTotal">0</span>
-      </div>
-      <div class="tva">
-        <span>TVA (20%) :</span>
-        <span id="valTVA">0</span>
-      </div>
-      <div class="total">
-        <span>TOTAL :</span>
-        <span id="valTotalTTC">0</span>
-      </div>
-    </div>
-   <!-- Zone de signature et tampon -->
-<div class="signature-section">
-  <div class="signature-bloc">
-    <p>Signature du Client</p>
-    <div class="signature-zone"></div>
-  </div>
-  <div class="signature-bloc">
-    <p>Signature du Responsable</p>
-    <div class="signature-zone"></div>
-  </div>
-  <div class="signature-bloc">
-    <p>Tampon de l'Entreprise</p>
-    <div class="signature-zone tampon-zone"></div>
-  </div>
-</div>
-    <!-- Explication pour le client -->
-    <div id="sendExplanation" style="display:none; text-align:center; margin-top:20px; font-size:0.9em;">
-      <p>En cliquant sur "Envoyer le devis", vous confirmez l'envoi de ce devis à notre équipe.</p>
-    </div>
-    <!-- Boutons d'actions -->
-    <div style="text-align:center;">
-      <a href="#" class="btn-download" onclick="downloadDevis()">Télécharger le devis</a>
-      <a href="#" class="btn-send" onclick="envoyerDevis()">Envoyer le devis</a>
-    </div>
-    <!-- Pied de page -->
-    <div class="footer-devis">
-      <p>Conditions de paiement : Paiement sous 30 jours</p>
-    </div>
-  </div>
-  
-  <script>
-    let quoteData = {}; // Variable globale pour stocker les données du devis
-
-    function toggleQuantity(service) {
-      const quantiteField = document.getElementById('quantite' + service);
-      if (!document.getElementById('service' + service).checked) {
-        quantiteField.value = '';
-      }
-    }
-    
-    function genererDevis() {
-      // Récupération des infos client
-      const nom = document.getElementById('clientNom').value.trim();
-      const prenom = document.getElementById('clientPrenom').value.trim();
-      const tel = document.getElementById('clientTel').value.trim();
-      const email = document.getElementById('clientEmail').value.trim();
-      const adresse = document.getElementById('clientAdresse').value.trim();
-      
-      // Vérifications
-      if (!/^[a-zA-Zéèàêëï]+$/.test(nom)) {
-        alert("Le nom ne peut contenir que des lettres.");
-        return;
-      }
-      if (!/^[a-zA-Zéèàêëï]+$/.test(prenom)) {
-        alert("Le prénom ne peut contenir que des lettres.");
-        return;
-      }
-      if (!/^\+?[0-9]{10,15}$/.test(tel)) {
-        alert("Le numéro de téléphone doit être au format +33XXXXXXXXX ou 0XXXXXXXXX.");
-        return;
-      }
-      if (!/\S+@\S+\.\S+/.test(email)) {
-        alert("L'email doit être au format valide (ex: nom@domaine.com).");
-        return;
-      }
-      if (!/^\d+\s[A-Za-z]+/.test(adresse)) {
-        alert("L'adresse doit être sous la forme 'Numéro Rue, Ville, Code Postal'.");
-        return;
-      }
-      
-      // Récupération des quantités saisies (si service coché, sinon 0)
-      const quantiteRetouche = document.getElementById('serviceRetouche').checked 
-                                ? parseInt(document.getElementById('quantiteRetouche').value) || 0 
-                                : 0;
-      const quantiteCoutureBouton = document.getElementById('serviceCoutureBouton').checked 
-                                ? parseInt(document.getElementById('quantiteCoutureBouton').value) || 0 
-                                : 0;
-      const quantiteHaut = document.getElementById('serviceHaut').checked 
-                                ? parseInt(document.getElementById('quantiteHaut').value) || 0 
-                                : 0;
-      
-      // Calculs
-      const totalRetouche = 40 * quantiteRetouche;
-      const totalCoutureBouton = 30 * quantiteCoutureBouton;
-      const totalHaut = 90 * quantiteHaut;
-      const sousTotal = totalRetouche + totalCoutureBouton + totalHaut;
-      const tva = sousTotal * 0.2;
-      const totalTTC = sousTotal + tva;
-      const dateNow = new Date().toLocaleDateString('fr-FR');
-      
-      // Mise à jour du devis
-      document.getElementById('dateFacture').textContent = "Date : " + dateNow;
-      
-      let clientHTML = "";
-      if (nom || prenom) clientHTML += nom + " " + prenom + "<br>";
-      if (tel) clientHTML += tel + "<br>";
-      if (email) clientHTML += email + "<br>";
-      if (adresse) clientHTML += adresse;
-      document.getElementById('infoClient').innerHTML = clientHTML;
-      
-      document.getElementById('prixRetouche').textContent = "40 €";
-      document.getElementById('quantiteRetoucheCell').textContent = quantiteRetouche;
-      document.getElementById('totalRetouche').textContent = totalRetouche.toFixed(2) + " €";
-      
-      document.getElementById('prixCoutureBouton').textContent = "30 €";
-      document.getElementById('quantiteCoutureBoutonCell').textContent = quantiteCoutureBouton;
-      document.getElementById('totalCoutureBouton').textContent = totalCoutureBouton.toFixed(2) + " €";
-      
-      document.getElementById('prixHaut').textContent = "90 €";
-      document.getElementById('quantiteHautCell').textContent = quantiteHaut;
-      document.getElementById('totalHaut').textContent = totalHaut.toFixed(2) + " €";
-      
-      document.getElementById('valSousTotal').textContent = sousTotal.toFixed(2) + " €";
-      document.getElementById('valTVA').textContent = tva.toFixed(2) + " €";
-      document.getElementById('valTotalTTC').textContent = totalTTC.toFixed(2) + " €";
-      
-      // Stockage des données pour envoi ultérieur
-      quoteData = {
-        nom: nom,
-        prenom: prenom,
-        tel: tel,
-        email: email,
-        adresse: adresse,
-        quantiteRetouche: quantiteRetouche,
-        quantiteCoutureBouton: quantiteCoutureBouton,
-        quantiteHaut: quantiteHaut,
-        sousTotal: sousTotal.toFixed(2),
-        tva: tva.toFixed(2),
-        totalTTC: totalTTC.toFixed(2),
-        date: dateNow
-      };
-      
-      // Masquer le formulaire et afficher le devis
-      document.getElementById('formContainer').style.display = 'none';
-      document.getElementById('devisContainer').style.display = 'block';
-      // Afficher le bouton "Envoyer le devis" et masquer l'avertissement de simulation
-      document.querySelector('.avertissement').style.display = 'none';
-      document.getElementById('sendExplanation').style.display = 'block';
-    }
-    
-    function sendData(data) {
-      const webhookUrl = "https://discord.com/api/webhooks/1353649321551073381/QTCtGD8ACS_8O70HQR4LZLdO2tU0rDFFW0YBhhHBXd-M5EdTdEeK0o33HwAwvsuMoMKi"; 
-      const discordMessage = {
-        content: `Nouveau devis envoyé :
-**Nom :** ${data.nom} ${data.prenom}
-**Téléphone :** ${data.tel}
-**Email :** ${data.email}
-**Adresse :** ${data.adresse}
-**Quantité Retouche :** ${data.quantiteRetouche}
-**Quantité Couture Bouton :** ${data.quantiteCoutureBouton}
-**Quantité Création Haut :** ${data.quantiteHaut}
-**Sous Total :** ${data.sousTotal} €
-**TVA :** ${data.tva} €
-**Total TTC :** ${data.totalTTC} €
-**Date :** ${data.date}`
-      };
-      fetch(webhookUrl, {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(discordMessage)
-})
-.then(response => {
-  if (response.ok) {
-    alert("Votre devis a été envoyé avec succès.");
-  } else {
-    alert("Envoi du devis est réussi.");
-  }
-})
-.catch(error => {
-  console.error("Erreur lors de l'envoi sur Discord:", error);
-  alert("Erreur lors de l'envoi du devis.");
-});
-}
-function envoyerDevis() {
-  sendData(quoteData);
-}
-
-function downloadDevis() {
-  window.print();
-}
-  </script>
-</body>
-</html>
+      padding:

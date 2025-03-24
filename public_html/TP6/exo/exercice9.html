@@ -9,9 +9,6 @@
   <link rel="stylesheet" href="https://candicevialette.github.io/html/public_html/style.css">
 
   <style>
-    /* =============================
-       STYLE INTERNE (Personnalisable)
-       ============================= */
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
@@ -167,8 +164,6 @@
   </style>
 </head>
 <body>
-
-  <!-- Lien de retour (optionnel) -->
   <a href="https://candicevialette.github.io/html/public_html/TP6/presentation.html">
     Retour au TP06
   </a>
@@ -203,17 +198,17 @@
     <h2>Services de Couture</h2>
     <div class="bloc-champ">
       <label for="serviceRetouche">Retouche de vêtements (40€ par article) :</label>
-      <input type="checkbox" id="serviceRetouche">
+      <input type="checkbox" id="serviceRetouche" onchange="toggleQuantity('Retouche')">
       <input type="number" id="quantiteRetouche" min="1" placeholder="Quantité" disabled>
     </div>
     <div class="bloc-champ">
       <label for="serviceCoutureBouton">Couture de bouton (30€ par bouton) :</label>
-      <input type="checkbox" id="serviceCoutureBouton">
+      <input type="checkbox" id="serviceCoutureBouton" onchange="toggleQuantity('CoutureBouton')">
       <input type="number" id="quantiteCoutureBouton" min="1" placeholder="Quantité" disabled>
     </div>
     <div class="bloc-champ">
       <label for="serviceHaut">Création de haut personnalisé (90€ par article) :</label>
-      <input type="checkbox" id="serviceHaut">
+      <input type="checkbox" id="serviceHaut" onchange="toggleQuantity('Haut')">
       <input type="number" id="quantiteHaut" min="1" placeholder="Quantité" disabled>
     </div>
 
@@ -232,7 +227,7 @@
       <div class="coordonnees">
         <strong>Couture & Co</strong>
         01 58 00 60 00<br>
-        couture@gmail.com<br>
+        couture@mail.com<br>
         couture.fr<br>
         14-16 rue de la Couture,<br>
         92130 Paris
@@ -300,6 +295,18 @@
   </div>
 
   <script>
+    function toggleQuantity(service) {
+      // Active ou désactive la quantité en fonction du service choisi
+      const quantiteField = document.getElementById(`quantite${service}`);
+      const serviceCheckbox = document.getElementById(`service${service}`);
+      if (serviceCheckbox.checked) {
+        quantiteField.disabled = false;
+      } else {
+        quantiteField.disabled = true;
+        quantiteField.value = ''; // Réinitialiser la quantité
+      }
+    }
+
     function genererDevis() {
       // Récupération des infos client
       const nom       = document.getElementById('clientNom').value.trim();

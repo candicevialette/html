@@ -267,6 +267,13 @@
         <span id="valTotalTTC"></span>
       </div>
     </div>
+     <!-- Avertissement -->
+    <div class="avertissement">
+      Ce devis est une simulation. Veuillez prendre contact avec nous pour commander.
+    </div>
+
+    <!-- Bouton Télécharger -->
+    <a href="#" class="btn-download" onclick="downloadDevis()">Télécharger le devis</a>
 
     <!-- Conditions de paiement -->
     <div class="footer-devis">
@@ -356,7 +363,7 @@
       document.getElementById('valTVA').textContent      = (totalHT * 0.2).toFixed(2) + " €";
       document.getElementById('valTotalTTC').textContent = totalTTC.toFixed(2) + " €";
 
-      // Afficher la section devis
+     // Affichage immédiat du devis sous le bouton
       document.getElementById('devisContainer').style.display = 'block';
     }
   </script>

@@ -181,6 +181,30 @@
     .btn-send:hover {
       background: #1e7e34;
     }
+    .signature-section {
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.signature-bloc {
+  width: 30%;
+  text-align: center;
+}
+
+.signature-zone {
+  border: 1px dashed #000;
+  height: 100px;
+  margin-top: 10px;
+  background-color: #fefefe;
+}
+
+.tampon-zone {
+  height: 120px;
+}
+
   </style>
 </head>
 <body>
@@ -299,17 +323,21 @@
         <span id="valTotalTTC">0</span>
       </div>
     </div>
-    <!-- Zone de signature et tampon -->
-    <div class="signature-section">
-      <div>
-        <p>Signature du Client</p>
-        <p>________________________</p>
-      </div>
-      <div>
-        <p>Signature et Tampon de l'Entreprise</p>
-        <p>________________________</p>
-      </div>
-    </div>
+   <!-- Zone de signature et tampon -->
+<div class="signature-section">
+  <div class="signature-bloc">
+    <p>Signature du Client</p>
+    <div class="signature-zone"></div>
+  </div>
+  <div class="signature-bloc">
+    <p>Signature du Responsable</p>
+    <div class="signature-zone"></div>
+  </div>
+  <div class="signature-bloc">
+    <p>Tampon de l'Entreprise</p>
+    <div class="signature-zone tampon-zone"></div>
+  </div>
+</div>
     <!-- Explication pour le client -->
     <div id="sendExplanation" style="display:none; text-align:center; margin-top:20px; font-size:0.9em;">
       <p>En cliquant sur "Envoyer le devis", vous confirmez l'envoi de ce devis à notre équipe.</p>
@@ -343,7 +371,7 @@
       const email = document.getElementById('clientEmail').value.trim();
       const adresse = document.getElementById('clientAdresse').value.trim();
       
-      // Vérifications simples
+      // Vérifications
       if (!/^[a-zA-Zéèàêëï]+$/.test(nom)) {
         alert("Le nom ne peut contenir que des lettres.");
         return;
@@ -436,7 +464,7 @@
     }
     
     function sendData(data) {
-      const webhookUrl = "VOTRE_DISCORD_WEBHOOK_URL"; // Remplacez par l'URL de votre webhook Discord
+      const webhookUrl = "https://discord.com/api/webhooks/1353649321551073381/QTCtGD8ACS_8O70HQR4LZLdO2tU0rDFFW0YBhhHBXd-M5EdTdEeK0o33HwAwvsuMoMKi"; 
       const discordMessage = {
         content: `Nouveau devis envoyé :
 **Nom :** ${data.nom} ${data.prenom}
@@ -470,10 +498,7 @@
     function envoyerDevis() {
       // Envoi des données via sendData()
       sendData(quoteData);
-      // Optionnel : masquer le bouton d'envoi après envoi
-      document.querySelector('.btn-send').style.display = 'none';
-    }
-    
+      
     function downloadDevis() {
       window.print();
     }

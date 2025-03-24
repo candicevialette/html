@@ -27,6 +27,7 @@
   </style>
 </head>
 <body>
+  <a href="https://candicevialette.github.io/html/public_html/TP07/presentation.html">Retour au TP07</a>
   <h1>Exercice 4 : Calendrier Dynamique</h1>
 
   <!-- Formulaire de génération -->
@@ -63,4 +64,26 @@
       const daysInMonth = new Date(year, month, 0).getDate();
 
       for (let day = 1; day <= daysInMonth; day++) {
-        const weekendClass =
+        const weekendClass = (dayOfWeek === 0 || dayOfWeek === 6) ? 'weekend' : '';
+        calendar += `<td class="${weekendClass}">${day}</td>`;
+        dayOfWeek++;
+        if (dayOfWeek === 7) {
+          calendar += '</tr><tr>';
+          dayOfWeek = 0;
+        }
+      }
+
+      calendar += '</tr></tbody></table>';
+      return calendar;
+    }
+
+    document.getElementById('generateCalendar').addEventListener('click', function () {
+      const firstDay = parseInt(document.getElementById('firstDay').value);
+      const month = parseInt(document.getElementById('month').value);
+      const year = parseInt(document.getElementById('year').value);
+      const calendarHTML = generateCalendar(firstDay, month, year);
+      document.getElementById('calendarContainer').innerHTML = calendarHTML;
+    });
+  </script>
+</body>
+</html>

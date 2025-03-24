@@ -480,21 +480,21 @@
 **Date :** ${data.date}`
       };
       fetch(webhookUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(discordMessage)
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Message envoyé sur Discord:', data);
-        alert("Votre devis a été envoyé avec succès.");
-      })
-      .catch(error => {
-        console.error('Erreur lors de l\'envoi sur Discord:', error);
-        alert("Erreur lors de l'envoi du devis.");
-      });
-    }
-    
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(discordMessage)
+})
+.then(response => {
+  if (response.ok) {
+    alert("Votre devis a été envoyé avec succès.");
+  } else {
+    alert("Erreur lors de l'envoi du devis.");
+  }
+})
+.catch(error => {
+  console.error("Erreur lors de l'envoi sur Discord:", error);
+  alert("Erreur lors de l'envoi du devis.");
+});
    function envoyerDevis() {
   // Envoi des données via sendData()
   sendData(quoteData);

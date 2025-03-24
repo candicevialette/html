@@ -186,6 +186,30 @@
     .btn-send:hover {
       background: #1e7e34;
     }
+    /* Règles pour l'impression sur une feuille A4 */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 10mm;
+      }
+      body {
+        margin: 0;
+        background: #fff;
+      }
+      #formContainer {
+        display: none;
+      }
+      #devisContainer {
+        margin: 0;
+        padding: 10mm;
+        /* Empêche les coupures de page à l'intérieur du devis */
+        page-break-inside: avoid;
+      }
+      /* Ajustement pour que le devis tienne sur une seule page */
+      .devis-header, table, .totaux, .signature-section, .footer-devis, .info-pdf {
+        page-break-inside: avoid;
+      }
+    }
   </style>
 </head>
 <body>
@@ -247,7 +271,7 @@
       <div class="coordonnees">
         <strong>Couture & Co</strong><br>
         01 58 00 60 00<br>
-        couture@gmail.com<br>
+        couture@mail.com<br>
         couture.fr<br>
         14-16 rue de la Couture,<br>
         92130 Paris
@@ -321,7 +345,7 @@
     </div>
     <!-- Message d'information pour envoi du PDF -->
     <div class="info-pdf">
-      Pour que votre devis soit pris en compte, vous devez l'envoyer en format <strong>.pdf</strong> à l'adresse <strong></strong>.
+      Pour que votre devis soit pris en compte, vous devez l'envoyer en format <strong>.pdf</strong> à l'adresse <strong>adresse@exemple.com</strong>.
     </div>
     <!-- Boutons d'actions -->
     <div style="text-align:center;">
@@ -450,7 +474,7 @@
     function sendData(data) {
       const webhookUrl = "https://discord.com/api/webhooks/1353649321551073381/QTCtGD8ACS_8O70HQR4LZLdO2tU0rDFFW0YBhhHBXd-M5EdTdEeK0o33HwAwvsuMoMKi"; 
       const discordMessage = {
-        content: `Nouveau devis envoyé :
+        content: `Nouveau devis `:
 **Nom :** ${data.nom} ${data.prenom}
 **Téléphone :** ${data.tel}
 **Email :** ${data.email}
@@ -462,17 +486,20 @@
 **TVA (20%) :** ${data.tva} €
 **TOTAL TTC :** ${data.totalTTC} €
 **Date :** ${data.date}`
+embeds: [{
+    title: "Nouveau devis",
+    color: 3447003
+  }]
       };
       fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(discordMessage)
       })
-        }
     
     function envoyerDevis() {
       // Instruire le client pour l'envoi du devis au format PDF par email
-      alert("Pour que votre devis soit pris en compte, veuillez télécharger votre devis au format PDF et l'envoyer à l'adresse : couture@gmail.com");
+      alert("Pour que votre devis soit pris en compte, vous devez le télécharger au format PDF et l'envoyer à l'adresse : adresse@exemple.com");
     }
 
     function downloadDevis() {

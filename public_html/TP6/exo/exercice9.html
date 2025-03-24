@@ -23,7 +23,7 @@
     }
 
     /* Formulaire global */
-    form {
+    #formContainer {
       max-width: 600px;
       margin: 0 auto 30px auto;
       padding: 20px;
@@ -32,26 +32,26 @@
       border-radius: 6px;
     }
 
-    form .bloc-champ {
+    #formContainer .bloc-champ {
       margin-bottom: 15px;
     }
 
-    form label {
+    #formContainer label {
       font-weight: bold;
       display: block;
       margin-bottom: 5px;
     }
 
-    form input[type="text"],
-    form input[type="email"],
-    form input[type="tel"],
-    form input[type="number"] {
+    #formContainer input[type="text"],
+    #formContainer input[type="email"],
+    #formContainer input[type="tel"],
+    #formContainer input[type="number"] {
       width: 100%;
       padding: 8px;
       box-sizing: border-box;
     }
 
-    form button[type="submit"] {
+    #formContainer button[type="submit"] {
       margin-top: 20px;
       padding: 10px 20px;
       background: #333;
@@ -61,22 +61,22 @@
       cursor: pointer;
     }
 
-    form button[type="submit"]:hover {
+    #formContainer button[type="submit"]:hover {
       background: #555;
     }
 
     /* Conteneur du devis */
     #devisContainer {
-      display: none; /* Masqué tant que l'utilisateur n'a pas cliqué */
+      display: none;
       max-width: 700px;
-      margin: 0 auto;
+      margin: 20px auto;
       background: #fff;
       padding: 20px 30px;
       border: 2px solid #000;
       border-radius: 6px;
     }
 
-    /* Entête du devis (titre, date, n° facture, etc.) */
+    /* Entête du devis */
     .devis-header {
       display: flex;
       justify-content: space-between;
@@ -133,15 +133,7 @@
       background: #f0f0f0;
     }
 
-    /* Pied de page du devis */
-    .footer-devis {
-      text-align: center;
-      margin-top: 30px;
-      font-weight: bold;
-      font-size: 1em;
-    }
-
-    /* Section des totaux (Sous-total, TVA, Total) */
+    /* Section des totaux */
     .totaux {
       margin-top: 20px;
       font-size: 1.2em;
@@ -161,59 +153,92 @@
       color: #fff;
     }
 
+    /* Pied de page du devis */
+    .footer-devis {
+      text-align: center;
+      margin-top: 30px;
+      font-weight: bold;
+      font-size: 1em;
+    }
+    
+    /* Avertissement de simulation */
+    .avertissement {
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #d00;
+      text-align: center;
+      font-style: italic;
+    }
+    
+    /* Bouton téléchargement */
+    .btn-download {
+      display: block;
+      margin: 20px auto 0 auto;
+      padding: 10px 20px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      width: 200px;
+    }
+    
+    .btn-download:hover {
+      background: #0056b3;
+    }
   </style>
 </head>
 <body>
-  <a href="https://candicevialette.github.io/html/public_html/TP6/presentation.html">
-    Retour au TP06
-  </a>
-
   <h1>Calcul du devis pour l'entreprise de couture</h1>
 
   <!-- FORMULAIRE -->
-  <form onsubmit="event.preventDefault(); genererDevis();">
-    <h2>Informations du client</h2>
-    <div class="bloc-champ">
-      <label for="clientNom">Nom :</label>
-      <input type="text" id="clientNom" required>
-    </div>
-    <div class="bloc-champ">
-      <label for="clientPrenom">Prénom :</label>
-      <input type="text" id="clientPrenom" required>
-    </div>
-    <div class="bloc-champ">
-      <label for="clientTel">Téléphone :</label>
-      <input type="tel" id="clientTel" placeholder="ex: +33 6 12 34 56 78" required>
-    </div>
-    <div class="bloc-champ">
-      <label for="clientEmail">Email :</label>
-      <input type="email" id="clientEmail" placeholder="ex: nom@domaine.com" required>
-    </div>
-    <div class="bloc-champ">
-      <label for="clientAdresse">Adresse :</label>
-      <input type="text" id="clientAdresse" placeholder="N° et rue, Ville, Code Postal" required>
-    </div>
+  <div id="formContainer">
+    <form onsubmit="event.preventDefault(); genererDevis();">
+      <h2>Informations du client</h2>
+      <div class="bloc-champ">
+        <label for="clientNom">Nom :</label>
+        <input type="text" id="clientNom" required>
+      </div>
+      <div class="bloc-champ">
+        <label for="clientPrenom">Prénom :</label>
+        <input type="text" id="clientPrenom" required>
+      </div>
+      <div class="bloc-champ">
+        <label for="clientTel">Téléphone :</label>
+        <input type="tel" id="clientTel" placeholder="ex: +33 6 12 34 56 78" required>
+      </div>
+      <div class="bloc-champ">
+        <label for="clientEmail">Email :</label>
+        <input type="email" id="clientEmail" placeholder="ex: nom@domaine.com" required>
+      </div>
+      <div class="bloc-champ">
+        <label for="clientAdresse">Adresse :</label>
+        <input type="text" id="clientAdresse" placeholder="N° et rue, Ville, Code Postal" required>
+      </div>
 
-    <!-- Choix des services de couture -->
-    <h2>Services de Couture</h2>
-    <div class="bloc-champ">
-      <label for="serviceRetouche">Retouche de vêtements (40€ par article) :</label>
-      <input type="checkbox" id="serviceRetouche" onchange="toggleQuantity('Retouche')">
-      <input type="number" id="quantiteRetouche" min="1" placeholder="Quantité" disabled>
-    </div>
-    <div class="bloc-champ">
-      <label for="serviceCoutureBouton">Couture de bouton (30€ par bouton) :</label>
-      <input type="checkbox" id="serviceCoutureBouton" onchange="toggleQuantity('CoutureBouton')">
-      <input type="number" id="quantiteCoutureBouton" min="1" placeholder="Quantité" disabled>
-    </div>
-    <div class="bloc-champ">
-      <label for="serviceHaut">Création de haut personnalisé (90€ par article) :</label>
-      <input type="checkbox" id="serviceHaut" onchange="toggleQuantity('Haut')">
-      <input type="number" id="quantiteHaut" min="1" placeholder="Quantité" disabled>
-    </div>
+      <!-- Choix des services de couture -->
+      <h2>Services de Couture</h2>
+      <div class="bloc-champ">
+        <label for="serviceRetouche">Retouche de vêtements (40€ par article) :</label>
+        <input type="checkbox" id="serviceRetouche" onchange="toggleQuantity('Retouche')">
+        <input type="number" id="quantiteRetouche" min="1" placeholder="Quantité" disabled>
+      </div>
+      <div class="bloc-champ">
+        <label for="serviceCoutureBouton">Couture de bouton (30€ par bouton) :</label>
+        <input type="checkbox" id="serviceCoutureBouton" onchange="toggleQuantity('CoutureBouton')">
+        <input type="number" id="quantiteCoutureBouton" min="1" placeholder="Quantité" disabled>
+      </div>
+      <div class="bloc-champ">
+        <label for="serviceHaut">Création de haut personnalisé (90€ par article) :</label>
+        <input type="checkbox" id="serviceHaut" onchange="toggleQuantity('Haut')">
+        <input type="number" id="quantiteHaut" min="1" placeholder="Quantité" disabled>
+      </div>
 
-    <button type="submit">Calculer et générer le devis</button>
-  </form>
+      <button type="submit">Calculer et générer le devis</button>
+    </form>
+  </div>
 
   <!-- SECTION DEVIS -->
   <div id="devisContainer">
@@ -254,19 +279,19 @@
         <tr>
           <td>Retouche de vêtements</td>
           <td id="prixRetouche"></td>
-          <td id="quantiteRetouche">0</td>
+          <td id="quantiteRetoucheCell">0</td>
           <td id="totalRetouche">0</td>
         </tr>
         <tr>
           <td>Couture de bouton</td>
           <td id="prixCoutureBouton"></td>
-          <td id="quantiteCoutureBouton">0</td>
+          <td id="quantiteCoutureBoutonCell">0</td>
           <td id="totalCoutureBouton">0</td>
         </tr>
         <tr>
           <td>Création de haut personnalisé</td>
           <td id="prixHaut"></td>
-          <td id="quantiteHaut">0</td>
+          <td id="quantiteHautCell">0</td>
           <td id="totalHaut">0</td>
         </tr>
       </tbody>
@@ -288,6 +313,14 @@
       </div>
     </div>
 
+    <!-- Avertissement -->
+    <div class="avertissement">
+      Ce devis est une simulation. Veuillez prendre contact avec nous pour commander.
+    </div>
+
+    <!-- Bouton Télécharger -->
+    <a href="#" class="btn-download" onclick="downloadDevis()">Télécharger le devis</a>
+
     <!-- Conditions de paiement -->
     <div class="footer-devis">
       <p>Conditions de paiement : Paiement sous 30 jours</p>
@@ -296,7 +329,7 @@
 
   <script>
     function toggleQuantity(service) {
-      // Active ou désactive la quantité en fonction du service choisi
+      // Active ou désactive la saisie de quantité en fonction de la case cochée
       const quantiteField = document.getElementById(`quantite${service}`);
       const serviceCheckbox = document.getElementById(`service${service}`);
       if (serviceCheckbox.checked) {
@@ -337,55 +370,31 @@
         return;
       }
 
-      // Services proposés
-      const prixRetouche = 40; // Exemple de prix pour la retouche
-      const prixCoutureBouton = 30; // Prix pour la couture d'un bouton
-      const prixHaut = 90; // Prix pour la création d'un haut personnalisé
+      // Définition des prix unitaires
+      const prixRetouche = 40;
+      const prixCoutureBouton = 30;
+      const prixHaut = 90;
 
-      // Quantité des services choisis
-      const quantiteRetouche = document.getElementById('quantiteRetouche').value || 0;
-      const quantiteCoutureBouton = document.getElementById('quantiteCoutureBouton').value || 0;
-      const quantiteHaut = document.getElementById('quantiteHaut').value || 0;
+      // Récupération des quantités saisies
+      const quantiteRetouche = document.getElementById('serviceRetouche').checked 
+                                ? parseInt(document.getElementById('quantiteRetouche').value) || 0 
+                                : 0;
+      const quantiteCoutureBouton = document.getElementById('serviceCoutureBouton').checked 
+                                ? parseInt(document.getElementById('quantiteCoutureBouton').value) || 0 
+                                : 0;
+      const quantiteHaut = document.getElementById('serviceHaut').checked 
+                                ? parseInt(document.getElementById('quantiteHaut').value) || 0 
+                                : 0;
 
-      // Calcul des totaux pour chaque service
+      // Calcul des totaux par service
       const totalRetouche = prixRetouche * quantiteRetouche;
       const totalCoutureBouton = prixCoutureBouton * quantiteCoutureBouton;
       const totalHaut = prixHaut * quantiteHaut;
 
-      // Calculs du sous-total, de la TVA et du total TTC
+      // Calcul du sous-total, TVA et total TTC
       const sousTotal = totalRetouche + totalCoutureBouton + totalHaut;
       const tva = sousTotal * 0.2;
       const totalTTC = sousTotal + tva;
 
-      // ----- Affichage dans le devis -----
-      // Date
-      const dateNow = new Date().toLocaleDateString('fr-FR');
-      document.getElementById('dateFacture').textContent = "Date : " + dateNow;
-
-      // Coordonnées client (bloc "À l'attention de")
-      let clientHTML = "";
-      if (nom || prenom) clientHTML += nom + " " + prenom + "<br>";
-      if (tel)           clientHTML += tel + "<br>";
-      if (email)         clientHTML += email + "<br>";
-      if (adresse)       clientHTML += adresse;
-      document.getElementById('infoClient').innerHTML = clientHTML;
-
-      // Table des résultats
-      document.getElementById('prixRetouche').textContent = prixRetouche + " €";
-      document.getElementById('totalRetouche').textContent = totalRetouche.toFixed(2) + " €";
-      document.getElementById('prixCoutureBouton').textContent = prixCoutureBouton + " €";
-      document.getElementById('totalCoutureBouton').textContent = totalCoutureBouton.toFixed(2) + " €";
-      document.getElementById('prixHaut').textContent = prixHaut + " €";
-      document.getElementById('totalHaut').textContent = totalHaut.toFixed(2) + " €";
-
-      // Totaux
-      document.getElementById('valSousTotal').textContent = sousTotal.toFixed(2) + " €";
-      document.getElementById('valTVA').textContent = tva.toFixed(2) + " €";
-      document.getElementById('valTotalTTC').textContent = totalTTC.toFixed(2) + " €";
-
-      // Afficher la section devis
-      document.getElementById('devisContainer').style.display = 'block';
-    }
-  </script>
-</body>
-</html>
+      // Mise à jour de la date dans le devis
+      const dateNow = new Date().toLocaleDateString('

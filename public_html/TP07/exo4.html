@@ -10,6 +10,114 @@
       width: auto;
       margin-top: 10px;
     }
+    #calendarContainer th {
+      border: 1px solid #666;
+      padding: 5px;
+      text-align: center;
+      background-color: #ddd;
+    }
+  </style>
+</head>
+<body>
+  <a href="https://candicevialette.github.io/html/public_html/TP07/presentation.html">Retour au TP07</a>
+  <h1>Exercice 4 : Calendrier Dynamique</h1>
+
+  <!-- Formulaire de génération -->
+  <div>
+    <label for="firstDay">Premier jour du mois (0 = Lun, 6 = Dim):</label>
+    <input type="number" id="firstDay" value="0" min="0" max="6">
+    <label for="month">Mois (1-12):</label>
+    <input type="number" id="month" value="8" min="1" max="12">
+    <label for="year">Année:</label>
+    <input type="number" id="year" value="2024">
+    <br><br>
+    <label for="calendarSize">Taille du calendrier :</label>
+    <select id="calendarSize">
+      <option value="petit">Petit</option>
+      <option value="moyen" selected>Moyen</option>
+      <option value="grand">Grand</option>
+    </select>
+    <br><br>
+    <label for="weekdayColor">Couleur des jours de semaine :</label>
+    <input type="color" id="weekdayColor" value="#ffffff">
+    <label for="weekendColor">Couleur des weekends :</label>
+    <input type="color" id="weekendColor" value="#ffc0cb">
+    <br><br>
+    <button id="generateCalendar">Générer le calendrier</button>
+  </div>
+
+  <!-- Conteneur du calendrier -->
+  <div id="calendarContainer"></div>
+
+  <script>
+    function generateCalendar(firstDay, month, year, cellSize, weekdayColor, weekendColor) {
+      let calendar = '<table><thead><tr>';
+      // Ordre des jours : du lundi au dimanche
+      const daysOfWeek = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+      for (let i = 0; i < daysOfWeek.length; i++) {
+        calendar += '<th style="padding:5px; text-align: center; border: 1px solid #666;">' + daysOfWeek[i] + '</th>';
+      }
+      calendar += '</tr></thead><tbody><tr>';
+
+      let dayOfWeek = firstDay; // firstDay correspond à l'index dans daysOfWeek
+
+      // Cases vides avant le 1er jour du mois
+      for (let i = 0; i < firstDay; i++) {
+        calendar += '<td style="width:' + cellSize + 'px; height:' + cellSize + 'px; padding:5px; text-align: center; border:1px solid #666;"></td>';
+      }
+
+      const daysInMonth = new Date(year, month, 0).getDate();
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        // Indique weekend si Samedi (index 5) ou Dimanche (index 6)
+        let bgColor = (dayOfWeek === 5 || dayOfWeek === 6) ? weekendColor : weekdayColor;
+        calendar += '<td style="width:' + cellSize + 'px; height:' + cellSize + 'px; padding:5px; text-align: center; border:1px solid #666; background-color:' + bgColor + ';">' + day + '</td>';
+        dayOfWeek++;
+        if (dayOfWeek === 7) {
+          calendar += '</tr><tr>';
+          dayOfWeek = 0;
+        }
+      }
+
+      calendar += '</tr></tbody></table>';
+      return calendar;
+    }
+
+    document.getElementById('generateCalendar').addEventListener('click', function () {
+      const firstDay = parseInt(document.getElementById('firstDay').value);
+      const month = parseInt(document.getElementById('month').value);
+      const year = parseInt(document.getElementById('year').value);
+      const sizeOption = document.getElementById('calendarSize').value;
+      const weekdayColor = document.getElementById('weekdayColor').value;
+      const weekendColor = document.getElementById('weekendColor').value;
+
+      let cellSize;
+      if (sizeOption === "petit") {
+        cellSize = 30;
+      } else if (sizeOption === "moyen") {
+        cellSize = 50;
+      } else if (sizeOption === "grand") {
+        cellSize = 70;
+      }
+
+      const calendarHTML = generateCalendar(firstDay, month, year, cellSize, weekdayColor, weekendColor);
+      document.getElementById('calendarContainer').innerHTML = calendarHTML;
+    });
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Exercice 4</title>
+  <style>
+    /* Style du tableau */
+    #calendarContainer table {
+      border-collapse: collapse;
+      width: auto;
+      margin-top: 10px;
+    }
     #calendarContainer th, #calendarContainer td {
       border: 1px solid #666;
       padding: 5px;

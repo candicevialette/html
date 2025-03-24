@@ -344,23 +344,24 @@
       document.getElementById('formContainer').style.display = 'none';
       document.getElementById('devisContainer').style.display = 'block';
     }
-
+function envoyerDevis() {
+  fetch('http://localhost:3000/sendQuote', {  // adapte l'URL en production
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(quoteData)
+  })
     function envoyerDevis() {
       const webhookUrl = "TON_WEBHOOK_DISCORD_ICI";
       const message = {
         content: `Nouveau devis :
 **Nom :** ${quoteData.nom} ${quoteData.prenom}
-**Téléphone :** ${quoteData.tel}
-**Email :** ${quoteData.email}
-**Adresse :** ${quoteData.adresse}
-**Retouches :** ${quoteData.qR}
-**Boutons :** ${quoteData.qB}
-**Hauts :** ${quoteData.qH}
-**Sous-total :** ${quoteData.sousTotal} €
-**TVA :** ${quoteData.tva} €
-**Total TTC :** ${quoteData.total} €
-**Date :** ${quoteData.date}`
-      };
+**Email :** ${quoteData.email}}
+function envoyerDevis() {
+  fetch('http://localhost:3000/sendQuote', {  // adapte l'URL en production
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(quoteData)
+  })
       fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

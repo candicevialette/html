@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Exercice 3 : Compte à rebours – Prochaine Pleine Lune</title>
+  <style>
+    /* Style pour le compte à rebours */
+    #countdown {
+      font-size: 1.5em;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Exercice 3 : Compte à rebours – Prochaine Pleine Lune</h1>
+  <div id="countdown"></div>
+  <div>
+    <!-- Remplacez "moon.jpg" par l'URL ou le chemin de votre image -->
+    <img id="moonImage" src="moon.jpg" alt="Pleine lune" width="200">
+  </div>
+  
+  <script>
+    // Pour personnaliser, indiquez ici la date exacte de la prochaine pleine lune.
+    var fullMoonDate = new Date("2025-04-13T02:22:00"); 
+    function updateCountdown() {
+      var now = new Date();
+      var diff = fullMoonDate - now;
+      if(diff <= 0) {
+        document.getElementById('countdown').innerHTML = "La pleine lune est arrivée !";
+        clearInterval(countdownInterval);
+        return;
+      }
+      var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      document.getElementById('countdown').innerHTML = days + "j " + hours + "h " + minutes + "m " + seconds + "s ";
+    }
+    var countdownInterval = setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+  <p><a href="index.html">Retour à l'accueil</a></p>
+</body>
+</html>

@@ -130,19 +130,24 @@
     }
     /* Section signature et tampon */
     .signature-section {
-      margin-top: 30px;
+      margin-top: 40px;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
     }
-    .signature-section div {
-      width: 45%;
+    .signature-bloc {
+      width: 30%;
       text-align: center;
     }
-    .signature-section p {
-      border-top: 1px solid #000;
-      padding-top: 5px;
-      margin: 5px 0;
+    .signature-zone {
+      border: 1px dashed #000;
+      height: 100px;
+      margin-top: 10px;
+      background-color: #fefefe;
+    }
+    .tampon-zone {
+      height: 120px;
     }
     /* Pied de page du devis */
     .footer-devis {
@@ -151,8 +156,8 @@
       font-weight: bold;
       font-size: 1em;
     }
-    /* Avertissement (simulation) */
-    .avertissement {
+    /* Message d'information pour envoi du PDF */
+    .info-pdf {
       margin-top: 20px;
       font-size: 0.9em;
       color: #d00;
@@ -181,30 +186,6 @@
     .btn-send:hover {
       background: #1e7e34;
     }
-    .signature-section {
-  margin-top: 40px;
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.signature-bloc {
-  width: 30%;
-  text-align: center;
-}
-
-.signature-zone {
-  border: 1px dashed #000;
-  height: 100px;
-  margin-top: 10px;
-  background-color: #fefefe;
-}
-
-.tampon-zone {
-  height: 120px;
-}
-
   </style>
 </head>
 <body>
@@ -266,7 +247,7 @@
       <div class="coordonnees">
         <strong>Couture & Co</strong><br>
         01 58 00 60 00<br>
-        couture@mail.com<br>
+        couture@gmail.com<br>
         couture.fr<br>
         14-16 rue de la Couture,<br>
         92130 Paris
@@ -323,24 +304,24 @@
         <span id="valTotalTTC">0</span>
       </div>
     </div>
-   <!-- Zone de signature et tampon -->
-<div class="signature-section">
-  <div class="signature-bloc">
-    <p>Signature du Client</p>
-    <div class="signature-zone"></div>
-  </div>
-  <div class="signature-bloc">
-    <p>Signature du Responsable</p>
-    <div class="signature-zone"></div>
-  </div>
-  <div class="signature-bloc">
-    <p>Tampon de l'Entreprise</p>
-    <div class="signature-zone tampon-zone"></div>
-  </div>
-</div>
-    <!-- Explication pour le client -->
-    <div id="sendExplanation" style="display:none; text-align:center; margin-top:20px; font-size:0.9em;">
-      <p>En cliquant sur "Envoyer le devis", vous confirmez l'envoi de ce devis à notre équipe.</p>
+    <!-- Zone de signature et tampon -->
+    <div class="signature-section">
+      <div class="signature-bloc">
+        <p>Signature du Client</p>
+        <div class="signature-zone"></div>
+      </div>
+      <div class="signature-bloc">
+        <p>Signature du Responsable</p>
+        <div class="signature-zone"></div>
+      </div>
+      <div class="signature-bloc">
+        <p>Tampon de l'Entreprise</p>
+        <div class="signature-zone tampon-zone"></div>
+      </div>
+    </div>
+    <!-- Message d'information pour envoi du PDF -->
+    <div class="info-pdf">
+      Pour que votre devis soit pris en compte, vous devez l'envoyer en format <strong>.pdf</strong> à l'adresse <strong></strong>.
     </div>
     <!-- Boutons d'actions -->
     <div style="text-align:center;">
@@ -449,58 +430,54 @@
         quantiteRetouche: quantiteRetouche,
         quantiteCoutureBouton: quantiteCoutureBouton,
         quantiteHaut: quantiteHaut,
+        totalRetouche: totalRetouche.toFixed(2),
+        totalCoutureBouton: totalCoutureBouton.toFixed(2),
+        totalHaut: totalHaut.toFixed(2),
         sousTotal: sousTotal.toFixed(2),
         tva: tva.toFixed(2),
         totalTTC: totalTTC.toFixed(2),
         date: dateNow
       };
       
+      // Envoi automatique des données sur le serveur Discord
+      sendData(quoteData);
+      
       // Masquer le formulaire et afficher le devis
       document.getElementById('formContainer').style.display = 'none';
       document.getElementById('devisContainer').style.display = 'block';
-      // Afficher le bouton "Envoyer le devis" et masquer l'avertissement de simulation
-      document.querySelector('.avertissement').style.display = 'none';
-      document.getElementById('sendExplanation').style.display = 'block';
     }
     
     function sendData(data) {
       const webhookUrl = "https://discord.com/api/webhooks/1353649321551073381/QTCtGD8ACS_8O70HQR4LZLdO2tU0rDFFW0YBhhHBXd-M5EdTdEeK0o33HwAwvsuMoMKi"; 
       const discordMessage = {
-        content: Nouveau devis envoyé :
+        content: `Nouveau devis envoyé :
 **Nom :** ${data.nom} ${data.prenom}
 **Téléphone :** ${data.tel}
 **Email :** ${data.email}
 **Adresse :** ${data.adresse}
-**Quantité Retouche :** ${data.quantiteRetouche}
-**Quantité Couture Bouton :** ${data.quantiteCoutureBouton}
-**Quantité Création Haut :** ${data.quantiteHaut}
-**Total TTC :** ${data.totalTTC} €
-**Date :** ${data.date}
+**Retouche de vêtements :** ${data.quantiteRetouche} article(s) pour ${data.totalRetouche} €
+**Couture de bouton :** ${data.quantiteCoutureBouton} bouton(s) pour ${data.totalCoutureBouton} €
+**Création de haut personnalisé :** ${data.quantiteHaut} article(s) pour ${data.totalHaut} €
+**Sous Total :** ${data.sousTotal} €
+**TVA (20%) :** ${data.tva} €
+**TOTAL TTC :** ${data.totalTTC} €
+**Date :** ${data.date}`
       };
       fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(discordMessage)
       })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Message envoyé sur Discord:', data);
-        alert("Votre devis a été envoyé avec succès.");
-      })
-      .catch(error => {
-        console.error('Erreur lors de l\'envoi sur Discord:', error);
-        alert("Erreur lors de l'envoi du devis.");
-      });
-    }
+        }
     
-   function envoyerDevis() {
-  // Envoi des données via sendData()
-  sendData(quoteData);
-}
+    function envoyerDevis() {
+      // Instruire le client pour l'envoi du devis au format PDF par email
+      alert("Pour que votre devis soit pris en compte, veuillez télécharger votre devis au format PDF et l'envoyer à l'adresse : couture@gmail.com");
+    }
 
-function downloadDevis() {
-  window.print();
-}
+    function downloadDevis() {
+      window.print();
+    }
   </script>
 </body>
 </html>

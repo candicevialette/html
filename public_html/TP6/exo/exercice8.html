@@ -267,7 +267,7 @@
         <span id="valTotalTTC"></span>
       </div>
     </div>
-     <!-- Avertissement -->
+    <!-- Avertissement -->
     <div class="avertissement">
       Ce devis est une simulation. Veuillez prendre contact avec nous pour commander.
     </div>
@@ -353,7 +353,7 @@
       if (adresse)       clientHTML += adresse;
       document.getElementById('infoClient').innerHTML = clientHTML;
 
-      // Table
+      // Tableau
       document.getElementById('valVolume').textContent  = volume.toFixed(2) + " m³";
       document.getElementById('valCiment').textContent  = cimentTonne.toFixed(2) + " tonnes";
       document.getElementById('valCamions').textContent = nbCamions;
@@ -363,8 +363,14 @@
       document.getElementById('valTVA').textContent      = (totalHT * 0.2).toFixed(2) + " €";
       document.getElementById('valTotalTTC').textContent = totalTTC.toFixed(2) + " €";
 
-     // Affichage immédiat du devis sous le bouton
+      // Affichage du devis et masquage du formulaire
       document.getElementById('devisContainer').style.display = 'block';
+      document.querySelector('form').style.display = 'none';
+    }
+
+    function downloadDevis() {
+      // Utilisation de la fonction d'impression du navigateur pour télécharger/print le devis
+      window.print();
     }
   </script>
 </body>

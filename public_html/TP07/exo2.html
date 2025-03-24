@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Exercice 2 : Formulaire de visite</title>
+  <style>
+    /* Style pour le formulaire et le tableau */
+    form, table {
+      margin-top: 10px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 10px;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+      padding: 5px;
+      text-align: center;
+    }
+    th {
+      background-color: #eee;
+    }
+  </style>
+</head>
+<body>
+  <h1>Exercice 2 : Formulaire de visite</h1>
+  <form id="visitForm">
+    <label for="nom">Nom :</label>
+    <input type="text" id="nom" name="nom" required>
+    <label for="prenom">Prénom :</label>
+    <input type="text" id="prenom" name="prenom" required>
+    <label for="etude">Étude suivie :</label>
+    <select id="etude" name="etude">
+      <option value="Bac pro">Bac pro</option>
+      <option value="STI">STI</option>
+      <option value="STMG">STMG</option>
+      <option value="Général">Général</option>
+    </select>
+    <button type="submit">Valider</button>
+  </form>
+  <table id="visitorsTable">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Étude</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    // Gestion du formulaire de visite
+    document.getElementById('visitForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var nom = document.getElementById('nom').value;
+      var prenom = document.getElementById('prenom').value;
+      var etude = document.getElementById('etude').value;
+      var tableBody = document.getElementById('visitorsTable').querySelector('tbody');
+      var newRow = document.createElement('tr');
+      newRow.innerHTML = '<td>' + nom + '</td><td>' + prenom + '</td><td>' + etude + '</td>';
+      tableBody.appendChild(newRow);
+      this.reset();
+    });
+  </script>
+  <p><a href="https://candicevialette.github.io/html/public_html/TP07/presentation.html">Retour à l'accueil</a></p>
+</body>
+</html>

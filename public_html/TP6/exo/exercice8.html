@@ -72,7 +72,7 @@
       border-radius: 6px;
     }
 
-    /* Entête du devis (titre, date, n° facture, etc.) */
+    /* Entête du devis */
     .devis-header {
       display: flex;
       justify-content: space-between;
@@ -129,15 +129,7 @@
       background: #f0f0f0;
     }
 
-    /* Pied de page du devis */
-    .footer-devis {
-      text-align: center;
-      margin-top: 30px;
-      font-weight: bold;
-      font-size: 1em;
-    }
-
-    /* Section des totaux (Sous-total, TVA, Total) */
+    /* Section des totaux */
     .totaux {
       margin-top: 20px;
       font-size: 1.2em;
@@ -156,7 +148,30 @@
       background-color: #333;
       color: #fff;
     }
-  /* Avertissement de simulation */
+
+    /* Zone de signature et tampon */
+    .signature-section {
+      margin-top: 40px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .signature-bloc {
+      width: 30%;
+      text-align: center;
+    }
+    .signature-zone {
+      border: 1px dashed #000;
+      height: 100px;
+      margin-top: 10px;
+      background-color: #fefefe;
+    }
+    .tampon-zone {
+      height: 120px;
+    }
+
+    /* Avertissement de simulation */
     .avertissement {
       margin-top: 20px;
       font-size: 0.9em;
@@ -164,6 +179,7 @@
       text-align: center;
       font-style: italic;
     }
+
     /* Bouton Télécharger */
     .btn-download {
       display: block;
@@ -180,6 +196,37 @@
     }
     .btn-download:hover {
       background: #7191e7;
+    }
+
+    /* Pied de page du devis */
+    .footer-devis {
+      text-align: center;
+      margin-top: 30px;
+      font-weight: bold;
+      font-size: 1em;
+    }
+
+    /* Impression sur une seule page A4 */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 10mm;
+      }
+      body {
+        margin: 0;
+        background: #fff;
+      }
+      form {
+        display: none;
+      }
+      #devisContainer {
+        margin: 0;
+        padding: 10mm;
+        page-break-inside: avoid;
+      }
+      .devis-header, table, .totaux, .signature-section, .footer-devis, .avertissement {
+        page-break-inside: avoid;
+      }
     }
   </style>
 </head>
@@ -291,7 +338,24 @@
         <span id="valTotalTTC"></span>
       </div>
     </div>
-      <!-- Avertissement -->
+
+    <!-- Zones de signature et tampon -->
+    <div class="signature-section">
+      <div class="signature-bloc">
+        <p>Signature du Client</p>
+        <div class="signature-zone"></div>
+      </div>
+      <div class="signature-bloc">
+        <p>Signature du Responsable</p>
+        <div class="signature-zone"></div>
+      </div>
+      <div class="signature-bloc">
+        <p>Tampon de l'Entreprise</p>
+        <div class="signature-zone tampon-zone"></div>
+      </div>
+    </div>
+
+    <!-- Avertissement -->
     <div class="avertissement">
       Ce devis est une simulation. Veuillez prendre contact avec nous pour commander.
     </div>
@@ -299,7 +363,7 @@
     <!-- Bouton Télécharger -->
     <a href="#" class="btn-download" onclick="downloadDevis()">Télécharger le devis</a>
 
-    <!-- Conditions de paiement -->
+    <!-- Pied de page -->
     <div class="footer-devis">
       <p>Conditions de paiement : Paiement sous 30 jours</p>
     </div>
@@ -349,7 +413,7 @@
 
       // ----- Calculs -----
       // 1) Volume (m³)
-      const epaisseurM = epaisseur / 100;  // Conversion cm -> mètres
+      const epaisseurM = epaisseur / 100;  // Conversion cm -> mètre
       const volume = surface * epaisseurM;
 
       // 2) Quantité de ciment (tonnes) - hypothèse 350 kg/m³
@@ -362,14 +426,14 @@
       const prixBetonHT = volume * 91;
       const coutTransportHT = nbCamions * 140;
       const totalHT = prixBetonHT + coutTransportHT;
-      const totalTTC = totalHT * 1.2; // Application de la TVA (20%)
+      const totalTTC = totalHT * 1.2; // TVA 20%
 
       // ----- Affichage dans le devis -----
       // Date
       const dateNow = new Date().toLocaleDateString('fr-FR');
       document.getElementById('dateFacture').textContent = "Date : " + dateNow;
 
-      // Coordonnées client (bloc "À l'attention de")
+      // Coordonnées client
       let clientHTML = "";
       if (nom || prenom) clientHTML += nom + " " + prenom + "<br>";
       if (tel)           clientHTML += tel + "<br>";
@@ -377,7 +441,7 @@
       if (adresse)       clientHTML += adresse;
       document.getElementById('infoClient').innerHTML = clientHTML;
 
-      // Tableau
+      // Tableau des résultats
       document.getElementById('valVolume').textContent  = volume.toFixed(2) + " m³";
       document.getElementById('valCiment').textContent  = cimentTonne.toFixed(2) + " tonnes";
       document.getElementById('valCamions').textContent = nbCamions;
@@ -391,9 +455,13 @@
       document.getElementById('devisContainer').style.display = 'block';
       document.querySelector('form').style.display = 'none';
     }
+    function envoyerDevis() {
+      // Instruire le client pour l'envoi du devis au format PDF par email
+      alert("Pour que votre devis soit pris en compte, vous devez le télécharger au format PDF et l'envoyer à l'adresse : lafarge@gmail.com");
+    }
+
 
     function downloadDevis() {
-      // Utilisation de la fonction d'impression du navigateur pour télécharger/print le devis
       window.print();
     }
   </script>

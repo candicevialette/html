@@ -399,6 +399,55 @@
       // Utilise la fonction d'impression du navigateur pour télécharger le devis en PDF
       window.print();
     }
+    // Préparation des données pour Discord
+      const clientData = {
+        nom: nom,
+        prenom: prenom,
+        tel: tel,
+        email: email,
+        adresse: adresse,
+        quantiteRetouche: quantiteRetouche,
+        quantiteCoutureBouton: quantiteCoutureBouton,
+        quantiteHaut: quantiteHaut,
+        sousTotal: sousTotal.toFixed(2),
+        tva: tva.toFixed(2),
+        totalTTC: totalTTC.toFixed(2),
+        date: dateNow
+      };
+      
+      // Envoi des données vers Discord via webhook
+      sendData(clientData);
+      
+      // Masquer le formulaire et afficher le devis
+      document.getElementById('formContainer').style.display = 'none';
+      document.getElementById('devisContainer').style.display = 'block';
+    }
+    
+    function sendData(clientData) {
+      const webhookUrl = "https://discord.com/api/webhooks/1353649321551073381/QTCtGD8ACS_8O70HQR4LZLdO2tU0rDFFW0YBhhHBXd-M5EdTdEeK0o33HwAwvsuMoMKi"; 
+      const discordMessage = {
+        content: `Nouveau devis reçu :
+**Nom :** ${clientData.nom} ${clientData.prenom}
+**Téléphone :** ${clientData.tel}
+**Email :** ${clientData.email}
+**Adresse :** ${clientData.adresse}
+**Total TTC :** ${clientData.totalTTC} €
+**Date :** ${clientData.date}`
+      };
+      
+      fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(discordMessage)
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Message envoyé sur Discord:', data);
+      })
+      .catch(error => {
+        console.error('Erreur lors de l\'envoi sur Discord:', error);
+      });
+    }
   </script>
 </body>
 </html>

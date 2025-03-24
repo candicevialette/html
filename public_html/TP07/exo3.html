@@ -20,7 +20,6 @@
   </div>
   
   <script>
-    // Pour personnaliser, indiquez ici la date exacte de la prochaine pleine lune.
     var fullMoonDate = new Date("2025-04-13T02:22:00"); 
     function updateCountdown() {
       var now = new Date();
@@ -34,7 +33,7 @@
       var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((diff % (1000 * 60)) / 1000);
-      document.getElementById('countdown').innerHTML = days + "j " + hours + "h " + minutes + "m " + seconds + "s ";
+      document.getElementById('countdown').innerHTML = days + "jours " + hours + "heures " + minutes + "minutes " + seconds + "secondes ";
     }
     var countdownInterval = setInterval(updateCountdown, 1000);
     updateCountdown();

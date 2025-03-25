@@ -4,27 +4,17 @@
   <meta charset="UTF-8">
   <title>Exercice 3</title>
   <style>
-    /* Style global de la page */
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-    a {
-      display: inline-block;
-      margin-bottom: 20px;
-    }
-
-    /* Conteneur général pour chaque compte à rebours */
+      /* Conteneur général pour chaque compte à rebours */
     .countdown-container {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 20px; /* Espace entre les blocs */
+      gap: 30px; /* Espace entre les blocs */
       background-color: #ccff99; /* Couleur de fond vert clair */
-      padding: 15px;
-      border-radius: 10px;
-      margin-bottom: 30px; /* Espace entre les deux compteurs */
-      max-width: 500px;
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 40px;
+      max-width: 600px;
       margin-left: auto;
       margin-right: auto;
     }
@@ -34,77 +24,102 @@
       background-color: #ffffff;
       color: #6b3f0b; /* Couleur du texte (marron) */
       text-align: center;
-      padding: 15px 25px;
-      border-radius: 5px;
-      width: 80px; /* Largeur fixe pour harmoniser l'affichage */
+      padding: 20px;
+      border-radius: 10px;
+      width: 100px; /* Largeur fixe pour harmoniser l'affichage */
     }
 
     /* Le nombre (jours, heures, etc.) */
     .countdown-number {
-      font-size: 2em;
+      font-size: 2.5em;
       font-weight: bold;
     }
 
     /* Le label (Days, Hours, Minutes, etc.) */
     .countdown-label {
-      font-size: 0.8em;
+      font-size: 1em;
       margin-top: 5px;
       display: block;
     }
+
+    /* Ajout d'un peu de style aux images */
+    .countdown-image {
+      max-width: 200px;
+      border-radius: 10px;
+    }
+
+    /* Séparation des sections */
+    .section-title {
+      text-align: center;
+      font-size: 1.5em;
+      color: #6b3f0b;
+      margin-bottom: 15px;
+    }
+
+    /* Espacement entre les sections */
+    .countdown-section {
+      margin-bottom: 50px;
+    }
+
   </style>
 </head>
 <body>
   <a href="https://candicevialette.github.io/html/public_html/TP07/presentation.html">
     Retour au TP07
   </a>
+  
   <h1>Exercice 3 : Compte à rebours</h1>
-  <h2>Prochaine lune</h2>
-  <!-- Premier compte à rebours -->
-  <div class="countdown-container">
-    <div class="countdown-box">
-      <div class="countdown-number" id="days1">00</div>
-      <span class="countdown-label">Days</span>
+
+  <div class="countdown-section">
+    <h2 class="section-title">Prochaine lune</h2>
+    <!-- Premier compte à rebours -->
+    <div class="countdown-container">
+      <div class="countdown-box">
+        <div class="countdown-number" id="days1">00</div>
+        <span class="countdown-label">Jours</span>
+      </div>
+      <div class="countdown-box">
+        <div class="countdown-number" id="hours1">00</div>
+        <span class="countdown-label">Heures</span>
+      </div>
+      <div class="countdown-box">
+        <div class="countdown-number" id="minutes1">00</div>
+        <span class="countdown-label">Minutes</span>
+      </div>
+      <div class="countdown-box">
+        <div class="countdown-number" id="seconds1">00</div>
+        <span class="countdown-label">Secondes</span>
+      </div>
+      <div>
+        <img class="countdown-image" src="https://candicevialette.github.io/html/public_html/TP07/lune.png" alt="Pleine lune">
+      </div>
     </div>
-    <div class="countdown-box">
-      <div class="countdown-number" id="hours1">00</div>
-      <span class="countdown-label">Hours</span>
-    </div>
-    <div class="countdown-box">
-      <div class="countdown-number" id="minutes1">00</div>
-      <span class="countdown-label">Minutes</span>
-    </div>
-    <div class="countdown-box">
-      <div class="countdown-number" id="seconds1">00</div>
-      <span class="countdown-label">Seconds</span>
-    </div>
-     <div><img src="https://candicevialette.github.io/html/public_html/TP07/lune.png"
-         alt="Pleine lune" width="200"></dive>
-  </div>
-<h2>Prochaine fête des mères</h2>
-  <!-- Deuxième compte à rebours -->
-  <div class="countdown-container">
-    <div class="countdown-box">
-      <div class="countdown-number" id="days2">00</div>
-      <span class="countdown-label">Days</span>
-    </div>
-    <div class="countdown-box">
-      <div class="countdown-number" id="hours2">00</div>
-      <span class="countdown-label">Hours</span>
-    </div>
-    <div class="countdown-box">
-      <div class="countdown-number" id="minutes2">00</div>
-      <span class="countdown-label">Minutes</span>
-    </div>
-    <div class="countdown-box">
-      <div class="countdown-number" id="seconds2">00</div>
-      <span class="countdown-label">Seconds</span>
-    </div>
-    <div><img src="https://candicevialette.github.io/html/public_html/TP07/fleur.png"
-         alt="Bouquet de fleurs" width="200"></dive>
   </div>
 
-  <div>
-   
+  <div class="countdown-section">
+    <h2 class="section-title">Prochaine fête des mères</h2>
+    <!-- Deuxième compte à rebours -->
+    <div class="countdown-container">
+      <div class="countdown-box">
+        <div class="countdown-number" id="days2">00</div>
+        <span class="countdown-label">Jours</span>
+      </div>
+      <div class="countdown-box">
+        <div class="countdown-number" id="hours2">00</div>
+        <span class="countdown-label">Heures</span>
+      </div>
+      <div class="countdown-box">
+        <div class="countdown-number" id="minutes2">00</div>
+        <span class="countdown-label">Minutes</span>
+      </div>
+      <div class="countdown-box">
+        <div class="countdown-number" id="seconds2">00</div>
+        <span class="countdown-label">Secondes</span>
+      </div>
+      <div>
+        <img class="countdown-image" src="https://candicevialette.github.io/html/public_html/TP07/fleurs.png" alt="Bouquet de fleurs">
+      </div>
+    </div>
   </div>
 
   <script>

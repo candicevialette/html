@@ -27,6 +27,32 @@
     .tooltip:hover .popup {
       display: block;
     }
+    
+    /* Style pour l'affichage des images dans le popup */
+    .image-popup {
+      display: none;
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(0,0,0,0.8);
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 80%;
+      z-index: 200;
+    }
+    .image-popup img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .image-popup .close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 25px;
+      color: white;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -83,5 +109,46 @@
       </span>
     </span> mais parfois le chemin nous choisit sans que nous ayons notre mot à dire. 
   </p>
+    <!-- Popup pour afficher les images -->
+  <div id="popup-consectetur" class="image-popup">
+    <span class="close" onclick="closePopup('consectetur')">&times;</span>
+    <img src="https://candicevialette.github.io/html/public_html/TP07/image/consectetur.png" alt="Image Consectetur">
+  </div>
+  <div id="popup-confer" class="image-popup">
+    <span class="close" onclick="closePopup('confer')">&times;</span>
+    <img src="https://candicevialette.github.io/html/public_html/TP07/image/confer.png" alt="Image Confer">
+  </div>
+  <div id="popup-incipit" class="image-popup">
+    <span class="close" onclick="closePopup('incipit')">&times;</span>
+    <img src="https://candicevialette.github.io/html/public_html/TP07/image/incipit.png" alt="Image Incipit">
+  </div>
+  <div id="popup-item" class="image-popup">
+    <span class="close" onclick="closePopup('item')">&times;</span>
+    <img src="https://candicevialette.github.io/html/public_html/TP07/image/item.png" alt="Image Item">
+  </div>
+  <div id="popup-obiit" class="image-popup">
+    <span class="close" onclick="closePopup('obiit')">&times;</span>
+    <img src="https://candicevialette.github.io/html/public_html/TP07/image/obiit.png" alt="Image Obiit">
+  </div>
+  <div id="popup-statim" class="image-popup">
+    <span class="close" onclick="closePopup('statim')">&times;</span>
+    <img src="https://candicevialette.github.io/html/public_html/TP07/image/statim.png" alt="Image Statim">
+  </div>
+  <div id="popup-via" class="image-popup">
+    <span class="close" onclick="closePopup('via')">&times;</span>
+    <img src="chemin/vers/https://candicevialette.github.io/html/public_html/TP07/image/via.png" alt="Image Via">
+  </div>
+
+  <script>
+    // Fonction pour afficher l'image dans le popup
+    function showImage(word) {
+      document.getElementById("popup-" + word).style.display = "block";
+    }
+
+    // Fonction pour fermer le popup
+    function closePopup(word) {
+      document.getElementById("popup-" + word).style.display = "none";
+    }
+  </script>
 </body>
 </html>

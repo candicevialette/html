@@ -51,59 +51,70 @@
   <div id="calendarContainer"></div>
 
   <script>
-    function generateCalendar(firstDay, month, year, cellSize, weekdayColor, weekendColor) {
-      let calendar = '<table><thead><tr>';
-      // Ordre des jours : du lundi au dimanche
-      const daysOfWeek = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
-      for (let i = 0; i < daysOfWeek.length; i++) {
-        calendar += '<th style="padding:5px; text-align: center; border: 1px solid #666;">' + daysOfWeek[i] + '</th>';
-      }
-      calendar += '</tr></thead><tbody><tr>';
+  function generateCalendar(firstDay, month, year, cellSize, weekdayColor, weekendColor) {
+    let calendar = '<table><thead><tr>';
+    // Ordre des jours : du lundi au dimanche
+    const daysOfWeek = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+    for (let i = 0; i < daysOfWeek.length; i++) {
+      calendar += '<th style="padding:5px; text-align: center; border: 1px solid #666;">' + daysOfWeek[i] + '</th>';
+    }
+    calendar += '</tr></thead><tbody><tr>';
 
-      let dayOfWeek = firstDay; // firstDay correspond à l'index dans daysOfWeek
+    let dayOfWeek = firstDay; // firstDay correspond à l'index dans daysOfWeek
 
-      // Cases vides avant le 1er jour du mois
-      for (let i = 0; i < firstDay; i++) {
-        calendar += '<td style="width:' + cellSize + 'px; height:' + cellSize + 'px; padding:5px; text-align: center; border:1px solid #666;"></td>';
-      }
-
-      const daysInMonth = new Date(year, month, 0).getDate();
-
-      for (let day = 1; day <= daysInMonth; day++) {
-        // Indique weekend si Samedi (index 5) ou Dimanche (index 6)
-        let bgColor = (dayOfWeek === 5 || dayOfWeek === 6) ? weekendColor : weekdayColor;
-        calendar += '<td style="width:' + cellSize + 'px; height:' + cellSize + 'px; padding:5px; text-align: center; border:1px solid #666; background-color:' + bgColor + ';">' + day + '</td>';
-        dayOfWeek++;
-        if (dayOfWeek === 7) {
-          calendar += '</tr><tr>';
-          dayOfWeek = 0;
-        }
-      }
-
-      calendar += '</tr></tbody></table>';
-      return calendar;
+    // Cases vides avant le 1er jour du mois
+    for (let i = 0; i < firstDay; i++) {
+      calendar += '<td style="width:' + cellSize + 'px; height:' + cellSize + 'px; padding:5px; text-align: center; border:1px solid #666;"></td>';
     }
 
-    document.getElementById('generateCalendar').addEventListener('click', function () {
-      const firstDay = parseInt(document.getElementById('firstDay').value);
-      const month = parseInt(document.getElementById('month').value);
-      const year = parseInt(document.getElementById('year').value);
-      const sizeOption = document.getElementById('calendarSize').value;
-      const weekdayColor = document.getElementById('weekdayColor').value;
-      const weekendColor = document.getElementById('weekendColor').value;
+    const daysInMonth = new Date(year, month, 0).getDate();
 
-      let cellSize;
-      if (sizeOption === "petit") {
-        cellSize = 30;
-      } else if (sizeOption === "moyen") {
-        cellSize = 50;
-      } else if (sizeOption === "grand") {
-        cellSize = 70;
+    for (let day = 1; day <= daysInMonth; day++) {
+      // Indique weekend si Samedi (index 5) ou Dimanche (index 6)
+      let bgColor = (dayOfWeek === 5 || dayOfWeek === 6) ? weekendColor : weekdayColor;
+      calendar += '<td style="width:' + cellSize + 'px; height:' + cellSize + 'px; padding:5px; text-align: center; border:1px solid #666; background-color:' + bgColor + ';">' + day + '</td>';
+      dayOfWeek++;
+      if (dayOfWeek === 7) {
+        calendar += '</tr><tr>';
+        dayOfWeek = 0;
       }
+    }
 
-      const calendarHTML = generateCalendar(firstDay, month, year, cellSize, weekdayColor, weekendColor);
-      document.getElementById('calendarContainer').innerHTML = calendarHTML;
-    });
-  </script>
+    calendar += '</tr></tbody></table>';
+    return calendar;
+  }
+
+  document.getElementById('generateCalendar').addEventListener('click', function () {
+    let firstDay = parseInt(document.getElementById('firstDay').value);
+    let month = parseInt(document.getElementById('month').value);
+    let year = parseInt(document.getElementById('year').value);
+    const sizeOption = document.getElementById('calendarSize').value;
+    const weekdayColor = document.getElementById('weekdayColor').value;
+    const weekendColor = document.getElementById('weekendColor').value;
+
+    // Vérification des valeurs
+    if (firstDay < 0 || firstDay > 6) {
+      alert('Le premier jour de la semaine doit être entre 0 (Lun) et 6 (Dim)');
+      return;
+    }
+
+    if (month < 1 || month > 12) {
+      alert('Le mois doit être entre 1 et 12');
+      return;
+    }
+
+    let cellSize;
+    if (sizeOption === "petit") {
+      cellSize = 30;
+    } else if (sizeOption === "moyen") {
+      cellSize = 50;
+    } else if (sizeOption === "grand") {
+      cellSize = 70;
+    }
+
+    const calendarHTML = generateCalendar(firstDay, month, year, cellSize, weekdayColor, weekendColor);
+    document.getElementById('calendarContainer').innerHTML = calendarHTML;
+  });
+</script>
 </body>
 </html>

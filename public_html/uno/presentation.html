@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Jeu de Uno Authentique</title>
+  <title>Jeu de Uno Authentique - Cartes adversaires cachées</title>
   <style>
     /* Styles généraux */
     body {
@@ -75,12 +75,22 @@
       transition: transform 0.15s;
     }
     .card:hover { transform: scale(1.05); }
-    /* Couleurs (classes mises à jour en français) */
+    /* Couleurs en français */
     .rouge { background-color: #ff9999; }
     .bleu  { background-color: #99ccff; }
     .vert  { background-color: #99ff99; }
     .jaune { background-color: #ffff99; }
     .black { background-color: #ccc; color: #000; }
+    /* Style pour les cartes adverses (dos de carte) */
+    .card-back {
+      width: 45px;
+      height: 65px;
+      background-color: #555;
+      border: 2px solid #444;
+      border-radius: 8px;
+      display: inline-block;
+      margin: 2px;
+    }
     #message {
       margin: 20px;
       font-size: 20px;
@@ -111,7 +121,7 @@
       <br><br>
       <label>
         Nombre de cartes distribuées :
-        <input type="number" id="numCards" value="7" min="1">
+        <input type="number" id="numCards" value="30" min="1">
       </label>
       <br><br>
       <input type="submit" value="Démarrer la partie">
@@ -212,7 +222,6 @@
       // Départ avec la première carte de la pioche
       if (deck.length === 0) reshuffleDeck();
       let firstCard = deck.pop();
-      // Si une carte neutre est tirée en premier, attribuer une couleur par défaut
       if (firstCard.value === "Joker" || firstCard.value === "+4") {
         firstCard.chosenColor = colors[0];
       }
@@ -246,7 +255,7 @@
     function updateDiscardPile() {
       const topCard = discardPile[discardPile.length - 1];
       let displayText = "";
-      if(topCard.value === "Joker" || topCard.value === "+4") {
+      if (topCard.value === "Joker" || topCard.value === "+4") {
         displayText = (topCard.chosenColor || "Joker") + " " + topCard.value;
       } else {
         displayText = topCard.color + " " + topCard.value;
@@ -260,38 +269,29 @@
       }
     }
 
-    // Affichage complet des mains adverses
+    // Affichage des informations des adversaires sans dévoiler leurs cartes
     function updateOpponentInfo() {
       let container = document.getElementById("opponent-info");
       container.innerHTML = "";
       for (let i = 1; i < players.length; i++) {
         let div = document.createElement("div");
         div.className = "opponent";
-        div.id = "opponent-" + i;
         let header = document.createElement("div");
         header.innerText = players[i].name + " (Cartes : " + players[i].hand.length + ")";
         div.appendChild(header);
+        // Pour chaque carte de l'adversaire, afficher un dos de carte générique
         let handDiv = document.createElement("div");
-        players[i].hand.forEach(card => {
-          let cardDiv = document.createElement("div");
-          cardDiv.className = "card " + (card.color === "black" ? "black" : card.color);
-          cardDiv.style.width = "45px";
-          cardDiv.style.height = "65px";
-          cardDiv.style.fontSize = "12px";
-          cardDiv.style.margin = "2px";
-          if(card.value === "Joker" || card.value === "+4") {
-            cardDiv.innerText = (card.chosenColor || "Joker") + " " + card.value;
-          } else {
-            cardDiv.innerText = card.value;
-          }
-          handDiv.appendChild(cardDiv);
-        });
+        for (let j = 0; j < players[i].hand.length; j++) {
+          let cardBack = document.createElement("div");
+          cardBack.className = "card-back";
+          handDiv.appendChild(cardBack);
+        }
         div.appendChild(handDiv);
         container.appendChild(div);
       }
     }
 
-    // Affichage de la main du joueur humain
+    // Affichage de la main du joueur humain ; la carte cliquée disparaît immédiatement
     function renderPlayerHand() {
       const handContainer = document.getElementById("player-hand");
       handContainer.innerHTML = "";
@@ -302,9 +302,10 @@
         cardDiv.innerText = card.value;
         cardDiv.onclick = () => {
           if (isValidMove(card)) {
+            // Supprime la carte jouée de la main et mets à jour l'affichage immédiatement
             let playedCard = playCard(humanPlayer, index);
-            // Arrêter la partie si le joueur n'a plus de cartes
-            if(humanPlayer.hand.length === 0){
+            renderPlayerHand(); // Mise à jour immédiate de la main
+            if (humanPlayer.hand.length === 0) {
               endGame(humanPlayer);
               return;
             }
@@ -320,7 +321,6 @@
     // Vérification d'un coup valide
     function isValidMove(card) {
       const topCard = discardPile[discardPile.length - 1];
-      // Les cartes Joker et +4 sont jouables à tout moment
       if (card.value === "Joker" || card.value === "+4") return true;
       const effectiveColor = ((topCard.value === "Joker" || topCard.value === "+4") && topCard.chosenColor) ? topCard.chosenColor : topCard.color;
       return (card.color === effectiveColor || card.value === topCard.value);
@@ -329,7 +329,6 @@
     // Jouer une carte depuis la main
     function playCard(player, cardIndex) {
       let card = player.hand.splice(cardIndex, 1)[0];
-      // Pour les cartes Joker et +4, demander le choix de couleur
       if (card.value === "Joker" || card.value === "+4") {
         let chosenColor;
         if (player.isHuman) {
@@ -379,8 +378,7 @@
 
     // Gestion des effets des cartes spéciales
     function handleCardEffect(card, player) {
-      // Fin de partie immédiate si aucun carte restante
-      if(player.hand.length === 0){
+      if (player.hand.length === 0) {
         endGame(player);
         return;
       }

@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Jeu de Uno Authentique - Cartes adversaires cachées</title>
+  <title>Jeu de Uno Authentique - Disposition améliorée</title>
   <style>
     /* Styles généraux */
     body {
@@ -44,7 +44,8 @@
     #game-area {
       text-align: center;
     }
-    #discard-pile, #draw-pile {
+    /* Conteneurs pour la pioche et la défausse */
+    #draw-pile, #discard-pile {
       display: inline-block;
       border: 2px solid #444;
       border-radius: 8px;
@@ -55,6 +56,17 @@
       font-size: 22px;
       font-weight: bold;
       background: #fff;
+    }
+    /* Design spécifique de la carte sur la défausse */
+    .discard-card {
+      position: relative;
+      border: 3px solid #222;
+      box-shadow: 5px 5px 10px rgba(0,0,0,0.5);
+      border-radius: 12px;
+      transition: transform 0.2s;
+    }
+    .discard-card:hover {
+      transform: scale(1.05);
     }
     #player-hand {
       margin-top: 20px;
@@ -81,7 +93,7 @@
     .vert  { background-color: #99ff99; }
     .jaune { background-color: #ffff99; }
     .black { background-color: #ccc; color: #000; }
-    /* Style pour les cartes adverses (dos de carte) */
+    /* Style pour les dos de cartes adverses */
     .card-back {
       width: 45px;
       height: 65px;
@@ -121,7 +133,7 @@
       <br><br>
       <label>
         Nombre de cartes distribuées :
-        <input type="number" id="numCards" value="30" min="1">
+        <input type="number" id="numCards" value="7" min="1">
       </label>
       <br><br>
       <input type="submit" value="Démarrer la partie">
@@ -134,6 +146,7 @@
     <div id="game-area">
       <div>
         <div id="draw-pile">Pioche</div>
+        <!-- Le conteneur de défausse se verra attribuer la classe "discard-card" dans la fonction updateDiscardPile -->
         <div id="discard-pile">Défausse</div>
       </div>
       <div id="message"></div>
@@ -165,7 +178,6 @@
     // Création d'un deck Uno authentique
     function createDeck() {
       let newDeck = [];
-      // Pour chaque couleur
       colors.forEach(color => {
         // Ajouter le "0" (unique)
         newDeck.push({ color: color, value: '0' });
@@ -246,12 +258,12 @@
       shuffle(deck);
     }
 
-    // Mise à jour du message d'information
+    // Mise à jour du message
     function updateMessage(msg) {
       document.getElementById("message").innerText = msg;
     }
 
-    // Affichage de la défausse
+    // Affichage de la défausse avec design
     function updateDiscardPile() {
       const topCard = discardPile[discardPile.length - 1];
       let displayText = "";
@@ -262,14 +274,15 @@
       }
       const discardElem = document.getElementById("discard-pile");
       discardElem.innerText = displayText;
+      // Ajout de la classe "discard-card" pour un design amélioré
       if (topCard.value === "Joker" || topCard.value === "+4") {
-        discardElem.className = "card " + (topCard.chosenColor || "black");
+        discardElem.className = "card discard-card " + (topCard.chosenColor || "black");
       } else {
-        discardElem.className = "card " + topCard.color;
+        discardElem.className = "card discard-card " + topCard.color;
       }
     }
 
-    // Affichage des informations des adversaires sans dévoiler leurs cartes
+    // Affichage des informations des adversaires (cartes cachées)
     function updateOpponentInfo() {
       let container = document.getElementById("opponent-info");
       container.innerHTML = "";
@@ -279,7 +292,6 @@
         let header = document.createElement("div");
         header.innerText = players[i].name + " (Cartes : " + players[i].hand.length + ")";
         div.appendChild(header);
-        // Pour chaque carte de l'adversaire, afficher un dos de carte générique
         let handDiv = document.createElement("div");
         for (let j = 0; j < players[i].hand.length; j++) {
           let cardBack = document.createElement("div");
@@ -291,7 +303,7 @@
       }
     }
 
-    // Affichage de la main du joueur humain ; la carte cliquée disparaît immédiatement
+    // Affichage de la main du joueur humain ; la carte jouée disparaît immédiatement
     function renderPlayerHand() {
       const handContainer = document.getElementById("player-hand");
       handContainer.innerHTML = "";
@@ -302,7 +314,6 @@
         cardDiv.innerText = card.value;
         cardDiv.onclick = () => {
           if (isValidMove(card)) {
-            // Supprime la carte jouée de la main et mets à jour l'affichage immédiatement
             let playedCard = playCard(humanPlayer, index);
             renderPlayerHand(); // Mise à jour immédiate de la main
             if (humanPlayer.hand.length === 0) {
@@ -358,7 +369,7 @@
       nextTurn();
     }
 
-    // Passage au tour suivant, en vérifiant si le joueur courant n'a pas terminé
+    // Passage au tour suivant, en vérifiant que le joueur courant a encore des cartes
     function nextTurn() {
       currentPlayerIndex = (currentPlayerIndex + direction + players.length) % players.length;
       if (!gameInProgress) return;

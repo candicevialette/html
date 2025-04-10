@@ -2,12 +2,12 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Jeu de Uno Amélioré</title>
+  <title>Jeu de Uno Authentique</title>
   <style>
-    /* Styles de base */
+    /* Styles généraux */
     body {
       font-family: Arial, sans-serif;
-      background: #f7f7f7;
+      background: #e0e0e0;
       margin: 0;
       padding: 20px;
     }
@@ -15,39 +15,44 @@
       text-align: center;
     }
     #setup, #game {
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
       background: #fff;
       padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
     }
     #opponent-info {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-around;
       margin-bottom: 20px;
     }
     .opponent {
-      border: 1px solid #ccc;
+      border: 2px solid #444;
       padding: 10px;
-      border-radius: 5px;
-      width: 120px;
+      border-radius: 8px;
+      width: 220px;
       text-align: center;
-      background: #eee;
-      white-space: pre-line;
+      background: #f0f0f0;
+      margin: 10px;
+    }
+    .opponent > div:first-child {
+      margin-bottom: 5px;
+      font-weight: bold;
     }
     #game-area {
       text-align: center;
     }
     #discard-pile, #draw-pile {
       display: inline-block;
-      border: 1px solid #333;
-      border-radius: 5px;
-      width: 80px;
-      height: 120px;
-      line-height: 120px;
+      border: 2px solid #444;
+      border-radius: 8px;
+      width: 90px;
+      height: 130px;
+      line-height: 130px;
       margin: 10px;
-      font-size: 20px;
+      font-size: 22px;
       font-weight: bold;
       background: #fff;
     }
@@ -59,47 +64,45 @@
       display: inline-block;
       margin: 5px;
       padding: 10px;
-      width: 60px;
-      height: 90px;
-      border: 1px solid #333;
-      border-radius: 5px;
+      width: 70px;
+      height: 110px;
+      border: 2px solid #444;
+      border-radius: 8px;
       cursor: pointer;
       font-weight: bold;
       line-height: 1.2;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+      transition: transform 0.15s;
     }
-    .red { background-color: #ff9999; }
-    .blue { background-color: #99ccff; }
-    .green { background-color: #99ff99; }
-    .yellow { background-color: #ffff99; }
+    .card:hover { transform: scale(1.05); }
+    /* Couleurs (classes mises à jour en français) */
+    .rouge { background-color: #ff9999; }
+    .bleu  { background-color: #99ccff; }
+    .vert  { background-color: #99ff99; }
+    .jaune { background-color: #ffff99; }
     .black { background-color: #ccc; color: #000; }
     #message {
       margin: 20px;
-      font-size: 18px;
-      min-height: 24px;
+      font-size: 20px;
+      min-height: 30px;
     }
     #controls {
       margin-top: 10px;
     }
     #draw-button {
-      padding: 10px 20px;
-      font-size: 16px;
+      padding: 10px 25px;
+      font-size: 18px;
       cursor: pointer;
     }
-    input[type="number"] {
-      padding: 5px;
-      font-size: 16px;
-      width: 60px;
-    }
-    input[type="submit"] {
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
+    input[type="number"], input[type="submit"] {
+      padding: 8px;
+      font-size: 18px;
     }
   </style>
 </head>
 <body>
   <div id="setup">
-    <h1>Jeu de Uno Amélioré</h1>
+    <h1>Jeu de Uno Authentique</h1>
     <form id="setupForm">
       <label>
         Nombre d'adversaires :
@@ -140,31 +143,36 @@
     let numOpponents = 0;
     let numCards = 0;
     let gameInProgress = false;
-    let direction = 1; // 1 pour avancer, -1 pour inverser
+    let direction = 1; // 1 = sens normal, -1 = sens inversé
 
-    // Cartes de base
-    const colors = ['red', 'blue', 'green', 'yellow'];
+    // Couleurs en français
+    const colors = ['rouge', 'bleu', 'vert', 'jaune'];
+    // Cartes numériques et copies (0 unique, 1-9 deux fois)
     const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-    // Cartes d'action par couleur
-    const actions = ['skip', 'reverse', '+2'];
+    // Cartes d'action (deux copies par couleur)
+    const actions = ['Passe', 'Inversion', '+2'];
 
-    // Création d'un jeu de Uno amélioré
+    // Création d'un deck Uno authentique
     function createDeck() {
       let newDeck = [];
-      // Pour chaque couleur, ajoutez les cartes numériques et d'action
-      for (let color of colors) {
-        // Cartes numériques
-        for (let num of numbers) {
+      // Pour chaque couleur
+      colors.forEach(color => {
+        // Ajouter le "0" (unique)
+        newDeck.push({ color: color, value: '0' });
+        // Ajouter deux copies des cartes 1 à 9
+        numbers.slice(1).forEach(num => {
           newDeck.push({ color: color, value: num });
-        }
-        // Cartes d'action (une copie de chacune pour simplifier)
+          newDeck.push({ color: color, value: num });
+        });
+        // Ajouter deux copies des cartes d'action
         actions.forEach(action => {
           newDeck.push({ color: color, value: action });
+          newDeck.push({ color: color, value: action });
         });
-      }
-      // Cartes "wild" (joker) et "+4", sans couleur initiale (on utilise "black")
+      });
+      // Ajouter les cartes neutres : 4 "Joker" et 4 "+4"
       for (let i = 0; i < 4; i++) {
-        newDeck.push({ color: "black", value: "wild" });
+        newDeck.push({ color: "black", value: "Joker" });
         newDeck.push({ color: "black", value: "+4" });
       }
       return newDeck;
@@ -183,27 +191,29 @@
       deck = createDeck();
       shuffle(deck);
       discardPile = [];
-
       players = [];
       direction = 1;
+
       // Création du joueur humain
       players.push({ name: "Vous", hand: [], isHuman: true });
       // Création des adversaires
       for (let i = 1; i <= numOpponents; i++) {
         players.push({ name: "Adversaire " + i, hand: [], isHuman: false });
       }
-      // Distribution des cartes
+
+      // Distribution initiale des cartes
       for (let i = 0; i < numCards; i++) {
-        for (let player of players) {
+        players.forEach(player => {
           if (deck.length === 0) reshuffleDeck();
           player.hand.push(deck.pop());
-        }
+        });
       }
-      // Début de la défausse avec une carte du deck
+
+      // Départ avec la première carte de la pioche
       if (deck.length === 0) reshuffleDeck();
       let firstCard = deck.pop();
-      // Si le premier tirage est une carte wild ou +4, on lui attribue une couleur par défaut
-      if(firstCard.value === "wild" || firstCard.value === "+4"){
+      // Si une carte neutre est tirée en premier, attribuer une couleur par défaut
+      if (firstCard.value === "Joker" || firstCard.value === "+4") {
         firstCard.chosenColor = colors[0];
       }
       discardPile.push(firstCard);
@@ -213,13 +223,13 @@
       updateDiscardPile();
       updateMessage("C'est à " + players[currentPlayerIndex].name + " de jouer.");
       if (!players[currentPlayerIndex].isHuman) {
-        setTimeout(aiTurn, 1000);
+        setTimeout(aiTurn, 2000);
       } else {
         renderPlayerHand();
       }
     }
 
-    // Reconstituer le deck si vide (en recyclant la défausse sauf la dernière carte)
+    // Reconstituer le deck si vide
     function reshuffleDeck() {
       let top = discardPile.pop();
       deck = discardPile;
@@ -232,26 +242,25 @@
       document.getElementById("message").innerText = msg;
     }
 
-    // Affichage de la carte visible dans la défausse
+    // Affichage de la défausse
     function updateDiscardPile() {
       const topCard = discardPile[discardPile.length - 1];
       let displayText = "";
-      if(topCard.value === "wild" || topCard.value === "+4") {
-        displayText = (topCard.chosenColor || "wild") + " " + topCard.value;
+      if(topCard.value === "Joker" || topCard.value === "+4") {
+        displayText = (topCard.chosenColor || "Joker") + " " + topCard.value;
       } else {
         displayText = topCard.color + " " + topCard.value;
       }
       const discardElem = document.getElementById("discard-pile");
       discardElem.innerText = displayText;
-      // Pour les cartes wild, on affiche la couleur choisie s'il existe
-      if (topCard.value === "wild" || topCard.value === "+4") {
+      if (topCard.value === "Joker" || topCard.value === "+4") {
         discardElem.className = "card " + (topCard.chosenColor || "black");
       } else {
         discardElem.className = "card " + topCard.color;
       }
     }
 
-    // Affichage du nombre de cartes restantes pour chaque adversaire
+    // Affichage complet des mains adverses
     function updateOpponentInfo() {
       let container = document.getElementById("opponent-info");
       container.innerHTML = "";
@@ -259,7 +268,25 @@
         let div = document.createElement("div");
         div.className = "opponent";
         div.id = "opponent-" + i;
-        div.innerText = players[i].name + "\nCartes: " + players[i].hand.length;
+        let header = document.createElement("div");
+        header.innerText = players[i].name + " (Cartes : " + players[i].hand.length + ")";
+        div.appendChild(header);
+        let handDiv = document.createElement("div");
+        players[i].hand.forEach(card => {
+          let cardDiv = document.createElement("div");
+          cardDiv.className = "card " + (card.color === "black" ? "black" : card.color);
+          cardDiv.style.width = "45px";
+          cardDiv.style.height = "65px";
+          cardDiv.style.fontSize = "12px";
+          cardDiv.style.margin = "2px";
+          if(card.value === "Joker" || card.value === "+4") {
+            cardDiv.innerText = (card.chosenColor || "Joker") + " " + card.value;
+          } else {
+            cardDiv.innerText = card.value;
+          }
+          handDiv.appendChild(cardDiv);
+        });
+        div.appendChild(handDiv);
         container.appendChild(div);
       }
     }
@@ -276,6 +303,11 @@
         cardDiv.onclick = () => {
           if (isValidMove(card)) {
             let playedCard = playCard(humanPlayer, index);
+            // Arrêter la partie si le joueur n'a plus de cartes
+            if(humanPlayer.hand.length === 0){
+              endGame(humanPlayer);
+              return;
+            }
             handleCardEffect(playedCard, humanPlayer);
           } else {
             updateMessage("Carte non valide. Choisissez une carte qui correspond.");
@@ -288,21 +320,20 @@
     // Vérification d'un coup valide
     function isValidMove(card) {
       const topCard = discardPile[discardPile.length - 1];
-      // Les cartes wild et +4 sont toujours jouables
-      if (card.value === "wild" || card.value === "+4") return true;
-      // Si le haut de la défausse est un wild avec une couleur choisie, on utilise cette couleur effective
-      const effectiveColor = (topCard.value === "wild" || topCard.value === "+4") && topCard.chosenColor ? topCard.chosenColor : topCard.color;
+      // Les cartes Joker et +4 sont jouables à tout moment
+      if (card.value === "Joker" || card.value === "+4") return true;
+      const effectiveColor = ((topCard.value === "Joker" || topCard.value === "+4") && topCard.chosenColor) ? topCard.chosenColor : topCard.color;
       return (card.color === effectiveColor || card.value === topCard.value);
     }
 
-    // Jouer une carte
+    // Jouer une carte depuis la main
     function playCard(player, cardIndex) {
       let card = player.hand.splice(cardIndex, 1)[0];
-      // Si la carte est une carte wild ou +4, demander le choix de couleur
-      if (card.value === "wild" || card.value === "+4") {
+      // Pour les cartes Joker et +4, demander le choix de couleur
+      if (card.value === "Joker" || card.value === "+4") {
         let chosenColor;
         if (player.isHuman) {
-          chosenColor = prompt("Choisissez la couleur (red, blue, green, yellow):", "red");
+          chosenColor = prompt("Choisissez la couleur (rouge, bleu, vert, jaune):", "rouge");
           if (!colors.includes(chosenColor)) {
             chosenColor = colors[0];
           }
@@ -316,19 +347,19 @@
       return card;
     }
 
-    // Fonction utilitaire pour obtenir le prochain joueur selon la direction
+    // Détermine le prochain joueur selon le sens de jeu
     function getNextPlayer() {
       let nextIndex = (currentPlayerIndex + direction + players.length) % players.length;
       return players[nextIndex];
     }
 
-    // Saute le tour du joueur suivant et passe au tour d'après
+    // Passe le tour du joueur suivant puis appelle nextTurn()
     function skipNextTurn() {
       currentPlayerIndex = (currentPlayerIndex + direction + players.length) % players.length;
       nextTurn();
     }
 
-    // Passage au tour suivant en tenant compte du changement de sens
+    // Passage au tour suivant, en vérifiant si le joueur courant n'a pas terminé
     function nextTurn() {
       currentPlayerIndex = (currentPlayerIndex + direction + players.length) % players.length;
       if (!gameInProgress) return;
@@ -342,12 +373,17 @@
         updateMessage("C'est à vous de jouer.");
         renderPlayerHand();
       } else {
-        setTimeout(aiTurn, 1000);
+        setTimeout(aiTurn, 2000);
       }
     }
 
     // Gestion des effets des cartes spéciales
     function handleCardEffect(card, player) {
+      // Fin de partie immédiate si aucun carte restante
+      if(player.hand.length === 0){
+        endGame(player);
+        return;
+      }
       if (card.value === "+2") {
         let nextPlayer = getNextPlayer();
         for (let i = 0; i < 2; i++) {
@@ -366,17 +402,17 @@
         updateMessage(player.name + " a joué +4. " + nextPlayer.name + " pioche 4 cartes.");
         skipNextTurn();
         return;
-      } else if (card.value === "skip") {
-        updateMessage(player.name + " a joué Skip. Le tour de " + getNextPlayer().name + " est sauté.");
+      } else if (card.value === "Passe") {
+        updateMessage(player.name + " a joué Passe. Le tour de " + getNextPlayer().name + " est sauté.");
         skipNextTurn();
         return;
-      } else if (card.value === "reverse") {
+      } else if (card.value === "Inversion") {
         direction *= -1;
-        updateMessage(player.name + " a joué Reverse. Changement de sens.");
+        updateMessage(player.name + " a joué Inversion. Changement de sens.");
         nextTurn();
         return;
-      } else if (card.value === "wild") {
-        updateMessage(player.name + " a joué Wild. La couleur est maintenant " + card.chosenColor + ".");
+      } else if (card.value === "Joker") {
+        updateMessage(player.name + " a joué Joker. La couleur est maintenant " + card.chosenColor + ".");
       }
       nextTurn();
     }
@@ -389,30 +425,28 @@
       return card;
     }
 
-    // Tour de l'adversaire (IA)
+    // Tour de l'adversaire (IA) avec délai prolongé
     function aiTurn() {
       let aiPlayer = players[currentPlayerIndex];
       updateMessage(aiPlayer.name + " joue...");
-      // Cherche une carte valide dans la main
       let validCardIndex = aiPlayer.hand.findIndex(card => isValidMove(card));
       if (validCardIndex !== -1) {
         let playedCard = playCard(aiPlayer, validCardIndex);
         updateMessage(aiPlayer.name + " a joué " + playedCard.value + ".");
         setTimeout(() => {
           handleCardEffect(playedCard, aiPlayer);
-        }, 500);
+        }, 2000);
       } else {
         let drawn = drawCard(aiPlayer);
         updateMessage(aiPlayer.name + " pioche une carte.");
         if (isValidMove(drawn)) {
           setTimeout(() => {
-            // Jouer la carte piochée
             let idx = aiPlayer.hand.length - 1;
             let playedCard = playCard(aiPlayer, idx);
             updateMessage(aiPlayer.name + " a joué la carte piochée (" + playedCard.value + ").");
             updateOpponentInfo();
             handleCardEffect(playedCard, aiPlayer);
-          }, 1000);
+          }, 2000);
           return;
         }
         updateOpponentInfo();
@@ -420,7 +454,7 @@
       }
     }
 
-    // Vérifie si un joueur a gagné (main vide)
+    // Fin de partie lorsqu'un joueur a terminé ses cartes
     function endGame(winner) {
       gameInProgress = false;
       updateMessage(winner.name + " a gagné !");

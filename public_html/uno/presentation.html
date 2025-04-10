@@ -1,5 +1,450 @@
-<script>
-    function showImage() {
-        document.getElementById("image-container").style.display = "block";
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Jeu de Uno Amélioré</title>
+  <style>
+    /* Styles de base */
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      margin: 0;
+      padding: 20px;
     }
-</script>
+    h1, h2 {
+      text-align: center;
+    }
+    #setup, #game {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    #opponent-info {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+    }
+    .opponent {
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 5px;
+      width: 120px;
+      text-align: center;
+      background: #eee;
+      white-space: pre-line;
+    }
+    #game-area {
+      text-align: center;
+    }
+    #discard-pile, #draw-pile {
+      display: inline-block;
+      border: 1px solid #333;
+      border-radius: 5px;
+      width: 80px;
+      height: 120px;
+      line-height: 120px;
+      margin: 10px;
+      font-size: 20px;
+      font-weight: bold;
+      background: #fff;
+    }
+    #player-hand {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .card {
+      display: inline-block;
+      margin: 5px;
+      padding: 10px;
+      width: 60px;
+      height: 90px;
+      border: 1px solid #333;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      line-height: 1.2;
+    }
+    .red { background-color: #ff9999; }
+    .blue { background-color: #99ccff; }
+    .green { background-color: #99ff99; }
+    .yellow { background-color: #ffff99; }
+    .black { background-color: #ccc; color: #000; }
+    #message {
+      margin: 20px;
+      font-size: 18px;
+      min-height: 24px;
+    }
+    #controls {
+      margin-top: 10px;
+    }
+    #draw-button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    input[type="number"] {
+      padding: 5px;
+      font-size: 16px;
+      width: 60px;
+    }
+    input[type="submit"] {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="setup">
+    <h1>Jeu de Uno Amélioré</h1>
+    <form id="setupForm">
+      <label>
+        Nombre d'adversaires :
+        <input type="number" id="numOpponents" value="2" min="1">
+      </label>
+      <br><br>
+      <label>
+        Nombre de cartes distribuées :
+        <input type="number" id="numCards" value="7" min="1">
+      </label>
+      <br><br>
+      <input type="submit" value="Démarrer la partie">
+    </form>
+  </div>
+
+  <div id="game" style="display:none;">
+    <h2>Partie en cours</h2>
+    <div id="opponent-info"></div>
+    <div id="game-area">
+      <div>
+        <div id="draw-pile">Pioche</div>
+        <div id="discard-pile">Défausse</div>
+      </div>
+      <div id="message"></div>
+      <div id="player-hand"></div>
+      <div id="controls">
+        <button id="draw-button">Piochez</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Variables globales
+    let deck = [];
+    let discardPile = [];
+    let players = [];
+    let currentPlayerIndex = 0;
+    let numOpponents = 0;
+    let numCards = 0;
+    let gameInProgress = false;
+    let direction = 1; // 1 pour avancer, -1 pour inverser
+
+    // Cartes de base
+    const colors = ['red', 'blue', 'green', 'yellow'];
+    const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    // Cartes d'action par couleur
+    const actions = ['skip', 'reverse', '+2'];
+
+    // Création d'un jeu de Uno amélioré
+    function createDeck() {
+      let newDeck = [];
+      // Pour chaque couleur, ajoutez les cartes numériques et d'action
+      for (let color of colors) {
+        // Cartes numériques
+        for (let num of numbers) {
+          newDeck.push({ color: color, value: num });
+        }
+        // Cartes d'action (une copie de chacune pour simplifier)
+        actions.forEach(action => {
+          newDeck.push({ color: color, value: action });
+        });
+      }
+      // Cartes "wild" (joker) et "+4", sans couleur initiale (on utilise "black")
+      for (let i = 0; i < 4; i++) {
+        newDeck.push({ color: "black", value: "wild" });
+        newDeck.push({ color: "black", value: "+4" });
+      }
+      return newDeck;
+    }
+
+    // Mélange (algorithme de Fisher-Yates)
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    // Initialisation de la partie
+    function initializeGame() {
+      deck = createDeck();
+      shuffle(deck);
+      discardPile = [];
+
+      players = [];
+      direction = 1;
+      // Création du joueur humain
+      players.push({ name: "Vous", hand: [], isHuman: true });
+      // Création des adversaires
+      for (let i = 1; i <= numOpponents; i++) {
+        players.push({ name: "Adversaire " + i, hand: [], isHuman: false });
+      }
+      // Distribution des cartes
+      for (let i = 0; i < numCards; i++) {
+        for (let player of players) {
+          if (deck.length === 0) reshuffleDeck();
+          player.hand.push(deck.pop());
+        }
+      }
+      // Début de la défausse avec une carte du deck
+      if (deck.length === 0) reshuffleDeck();
+      let firstCard = deck.pop();
+      // Si le premier tirage est une carte wild ou +4, on lui attribue une couleur par défaut
+      if(firstCard.value === "wild" || firstCard.value === "+4"){
+        firstCard.chosenColor = colors[0];
+      }
+      discardPile.push(firstCard);
+      currentPlayerIndex = 0;
+      gameInProgress = true;
+      updateOpponentInfo();
+      updateDiscardPile();
+      updateMessage("C'est à " + players[currentPlayerIndex].name + " de jouer.");
+      if (!players[currentPlayerIndex].isHuman) {
+        setTimeout(aiTurn, 1000);
+      } else {
+        renderPlayerHand();
+      }
+    }
+
+    // Reconstituer le deck si vide (en recyclant la défausse sauf la dernière carte)
+    function reshuffleDeck() {
+      let top = discardPile.pop();
+      deck = discardPile;
+      discardPile = [top];
+      shuffle(deck);
+    }
+
+    // Mise à jour du message d'information
+    function updateMessage(msg) {
+      document.getElementById("message").innerText = msg;
+    }
+
+    // Affichage de la carte visible dans la défausse
+    function updateDiscardPile() {
+      const topCard = discardPile[discardPile.length - 1];
+      let displayText = "";
+      if(topCard.value === "wild" || topCard.value === "+4") {
+        displayText = (topCard.chosenColor || "wild") + " " + topCard.value;
+      } else {
+        displayText = topCard.color + " " + topCard.value;
+      }
+      const discardElem = document.getElementById("discard-pile");
+      discardElem.innerText = displayText;
+      // Pour les cartes wild, on affiche la couleur choisie s'il existe
+      if (topCard.value === "wild" || topCard.value === "+4") {
+        discardElem.className = "card " + (topCard.chosenColor || "black");
+      } else {
+        discardElem.className = "card " + topCard.color;
+      }
+    }
+
+    // Affichage du nombre de cartes restantes pour chaque adversaire
+    function updateOpponentInfo() {
+      let container = document.getElementById("opponent-info");
+      container.innerHTML = "";
+      for (let i = 1; i < players.length; i++) {
+        let div = document.createElement("div");
+        div.className = "opponent";
+        div.id = "opponent-" + i;
+        div.innerText = players[i].name + "\nCartes: " + players[i].hand.length;
+        container.appendChild(div);
+      }
+    }
+
+    // Affichage de la main du joueur humain
+    function renderPlayerHand() {
+      const handContainer = document.getElementById("player-hand");
+      handContainer.innerHTML = "";
+      let humanPlayer = players[0];
+      humanPlayer.hand.forEach((card, index) => {
+        let cardDiv = document.createElement("div");
+        cardDiv.className = "card " + (card.color === "black" ? "black" : card.color);
+        cardDiv.innerText = card.value;
+        cardDiv.onclick = () => {
+          if (isValidMove(card)) {
+            let playedCard = playCard(humanPlayer, index);
+            handleCardEffect(playedCard, humanPlayer);
+          } else {
+            updateMessage("Carte non valide. Choisissez une carte qui correspond.");
+          }
+        };
+        handContainer.appendChild(cardDiv);
+      });
+    }
+
+    // Vérification d'un coup valide
+    function isValidMove(card) {
+      const topCard = discardPile[discardPile.length - 1];
+      // Les cartes wild et +4 sont toujours jouables
+      if (card.value === "wild" || card.value === "+4") return true;
+      // Si le haut de la défausse est un wild avec une couleur choisie, on utilise cette couleur effective
+      const effectiveColor = (topCard.value === "wild" || topCard.value === "+4") && topCard.chosenColor ? topCard.chosenColor : topCard.color;
+      return (card.color === effectiveColor || card.value === topCard.value);
+    }
+
+    // Jouer une carte
+    function playCard(player, cardIndex) {
+      let card = player.hand.splice(cardIndex, 1)[0];
+      // Si la carte est une carte wild ou +4, demander le choix de couleur
+      if (card.value === "wild" || card.value === "+4") {
+        let chosenColor;
+        if (player.isHuman) {
+          chosenColor = prompt("Choisissez la couleur (red, blue, green, yellow):", "red");
+          if (!colors.includes(chosenColor)) {
+            chosenColor = colors[0];
+          }
+        } else {
+          chosenColor = colors[Math.floor(Math.random() * colors.length)];
+        }
+        card.chosenColor = chosenColor;
+      }
+      discardPile.push(card);
+      updateDiscardPile();
+      return card;
+    }
+
+    // Fonction utilitaire pour obtenir le prochain joueur selon la direction
+    function getNextPlayer() {
+      let nextIndex = (currentPlayerIndex + direction + players.length) % players.length;
+      return players[nextIndex];
+    }
+
+    // Saute le tour du joueur suivant et passe au tour d'après
+    function skipNextTurn() {
+      currentPlayerIndex = (currentPlayerIndex + direction + players.length) % players.length;
+      nextTurn();
+    }
+
+    // Passage au tour suivant en tenant compte du changement de sens
+    function nextTurn() {
+      currentPlayerIndex = (currentPlayerIndex + direction + players.length) % players.length;
+      if (!gameInProgress) return;
+      let currentPlayer = players[currentPlayerIndex];
+      if (currentPlayer.hand.length === 0) {
+        endGame(currentPlayer);
+        return;
+      }
+      updateOpponentInfo();
+      if (currentPlayer.isHuman) {
+        updateMessage("C'est à vous de jouer.");
+        renderPlayerHand();
+      } else {
+        setTimeout(aiTurn, 1000);
+      }
+    }
+
+    // Gestion des effets des cartes spéciales
+    function handleCardEffect(card, player) {
+      if (card.value === "+2") {
+        let nextPlayer = getNextPlayer();
+        for (let i = 0; i < 2; i++) {
+          drawCard(nextPlayer);
+        }
+        updateOpponentInfo();
+        updateMessage(player.name + " a joué +2. " + nextPlayer.name + " pioche 2 cartes.");
+        skipNextTurn();
+        return;
+      } else if (card.value === "+4") {
+        let nextPlayer = getNextPlayer();
+        for (let i = 0; i < 4; i++) {
+          drawCard(nextPlayer);
+        }
+        updateOpponentInfo();
+        updateMessage(player.name + " a joué +4. " + nextPlayer.name + " pioche 4 cartes.");
+        skipNextTurn();
+        return;
+      } else if (card.value === "skip") {
+        updateMessage(player.name + " a joué Skip. Le tour de " + getNextPlayer().name + " est sauté.");
+        skipNextTurn();
+        return;
+      } else if (card.value === "reverse") {
+        direction *= -1;
+        updateMessage(player.name + " a joué Reverse. Changement de sens.");
+        nextTurn();
+        return;
+      } else if (card.value === "wild") {
+        updateMessage(player.name + " a joué Wild. La couleur est maintenant " + card.chosenColor + ".");
+      }
+      nextTurn();
+    }
+
+    // Piocher une carte depuis le deck
+    function drawCard(player) {
+      if (deck.length === 0) reshuffleDeck();
+      let card = deck.pop();
+      player.hand.push(card);
+      return card;
+    }
+
+    // Tour de l'adversaire (IA)
+    function aiTurn() {
+      let aiPlayer = players[currentPlayerIndex];
+      updateMessage(aiPlayer.name + " joue...");
+      // Cherche une carte valide dans la main
+      let validCardIndex = aiPlayer.hand.findIndex(card => isValidMove(card));
+      if (validCardIndex !== -1) {
+        let playedCard = playCard(aiPlayer, validCardIndex);
+        updateMessage(aiPlayer.name + " a joué " + playedCard.value + ".");
+        setTimeout(() => {
+          handleCardEffect(playedCard, aiPlayer);
+        }, 500);
+      } else {
+        let drawn = drawCard(aiPlayer);
+        updateMessage(aiPlayer.name + " pioche une carte.");
+        if (isValidMove(drawn)) {
+          setTimeout(() => {
+            // Jouer la carte piochée
+            let idx = aiPlayer.hand.length - 1;
+            let playedCard = playCard(aiPlayer, idx);
+            updateMessage(aiPlayer.name + " a joué la carte piochée (" + playedCard.value + ").");
+            updateOpponentInfo();
+            handleCardEffect(playedCard, aiPlayer);
+          }, 1000);
+          return;
+        }
+        updateOpponentInfo();
+        nextTurn();
+      }
+    }
+
+    // Vérifie si un joueur a gagné (main vide)
+    function endGame(winner) {
+      gameInProgress = false;
+      updateMessage(winner.name + " a gagné !");
+      document.getElementById("player-hand").innerHTML = "";
+    }
+
+    // Évènements
+    document.getElementById("setupForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      numOpponents = parseInt(document.getElementById("numOpponents").value);
+      numCards = parseInt(document.getElementById("numCards").value);
+      document.getElementById("setup").style.display = "none";
+      document.getElementById("game").style.display = "block";
+      initializeGame();
+    });
+
+    document.getElementById("draw-button").addEventListener("click", function() {
+      let currentPlayer = players[currentPlayerIndex];
+      if (currentPlayer.isHuman) {
+        drawCard(currentPlayer);
+        updateMessage("Vous avez pioché une carte.");
+        renderPlayerHand();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -3,34 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pong</title>
+  <title>Pong en Couleurs vs IA</title>
   <style>
-    html, body { margin: 0; padding: 0; height: 100%; display: flex; justify-content: center; align-items: center; background: linear-gradient(to bottom, #F7CAC9, #FFB7CE); /* Bois de Rose → Dragée */ }
-    canvas { background: #ffffff;  display: block; }
+    html, body { margin: 0; padding: 0; height: 100%; display: flex; justify-content: center; align-items: center; background: linear-gradient(to bottom, #F7CAC9, #FFB7CE); }
+    canvas { background: #E08FDD; }
   </style>
 </head>
 <body>
   <canvas id="pong" width="800" height="600"></canvas>
   <script>
-    // script.js
     const canvas = document.getElementById('pong');
     const ctx = canvas.getContext('2d');
 
     const colors = {
-      paddleLeft: '#EA6E97',    // Framboise
-      paddleRight: '#FF6B6B',   // Corail
-      net: '#E63946',           // Grenadine
-      ball: '#E75480',          // Chèvrefeuille
-      score: '#C72C48'          // Fraise
+      paddleLeft: '#EA6E97',
+      paddleRight: '#FF6B6B',
+      net: '#E63946',
+      ball: '#E75480',
+      score: '#C72C48'
     };
 
     const paddleWidth = 10, paddleHeight = 100;
     const ballSize = 10;
     let leftScore = 0, rightScore = 0;
     const speed = 6;
+    const aiSpeed = 5;
 
-    const leftPaddle = { x: 10, y: canvas.height/2 - paddleHeight/2, dy: 0 };
-    const rightPaddle = { x: canvas.width - 10 - paddleWidth, y: canvas.height/2 - paddleHeight/2, dy: 0 };
+    const leftPaddle = { x: 10, y: canvas.height/2 - paddleHeight/2 };
+    const rightPaddle = { x: canvas.width - 10 - paddleWidth, y: canvas.height/2 - paddleHeight/2 };
     const ball = { x: canvas.width/2 - ballSize/2, y: canvas.height/2 - ballSize/2, dx: speed, dy: speed };
 
     function drawRect(x, y, w, h, color) {
@@ -41,7 +41,7 @@
     function drawCircle(x, y, r, color) {
       ctx.fillStyle = color;
       ctx.beginPath();
-      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.arc(x, y, r, 0, Math.PI*2);
       ctx.closePath();
       ctx.fill();
     }
@@ -58,25 +58,24 @@
       ctx.fillStyle = colors.score;
       ctx.font = "48px sans-serif";
       ctx.fillText(leftScore, canvas.width/4, 50);
-      ctx.fillText(rightScore, 3 * canvas.width/4, 50);
+      ctx.fillText(rightScore, 3*canvas.width/4, 50);
     }
 
     function update() {
-      // Move paddles
-      leftPaddle.y += leftPaddle.dy;
-      rightPaddle.y += rightPaddle.dy;
-      // Boundaries
-      leftPaddle.y = Math.max(Math.min(leftPaddle.y, canvas.height - paddleHeight), 0);
-      rightPaddle.y = Math.max(Math.min(rightPaddle.y, canvas.height - paddleHeight), 0);
-      // Move ball
+      // IA adversaire
+      if (ball.dx > 0) {
+        if (ball.y + ballSize/2 > rightPaddle.y + paddleHeight/2) rightPaddle.y += aiSpeed;
+        else rightPaddle.y -= aiSpeed;
+        rightPaddle.y = Math.max(Math.min(rightPaddle.y, canvas.height - paddleHeight), 0);
+      }
+      // Mouvement balle
       ball.x += ball.dx;
       ball.y += ball.dy;
-      // Top/Bottom collision
+      // Collision haut/bas
       if (ball.y <= 0 || ball.y + ballSize >= canvas.height) ball.dy *= -1;
-      // Paddle collision
-      let paddle = (ball.x < canvas.width/2) ? leftPaddle : rightPaddle;
-      if (ball.x <= leftPaddle.x + paddleWidth && ball.x >= leftPaddle.x && ball.y + ballSize >= leftPaddle.y && ball.y <= leftPaddle.y + paddleHeight) ball.dx *= -1;
-      if (ball.x + ballSize >= rightPaddle.x && ball.x + ballSize <= rightPaddle.x + paddleWidth && ball.y + ballSize >= rightPaddle.y && ball.y <= rightPaddle.y + paddleHeight) ball.dx *= -1;
+      // Collision raquettes
+      if (ball.x <= leftPaddle.x + paddleWidth && ball.y + ballSize >= leftPaddle.y && ball.y <= leftPaddle.y + paddleHeight) ball.dx *= -1;
+      if (ball.x + ballSize >= rightPaddle.x && ball.y + ballSize >= rightPaddle.y && ball.y <= rightPaddle.y + paddleHeight) ball.dx *= -1;
       // Score
       if (ball.x < 0) { rightScore++; resetBall(); }
       if (ball.x > canvas.width) { leftScore++; resetBall(); }
@@ -90,9 +89,7 @@
     }
 
     function render() {
-      // Clear
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      // Draw net, paddles, ball, score
+      ctx.clearRect(0,0,canvas.width,canvas.height);
       drawNet();
       drawRect(leftPaddle.x, leftPaddle.y, paddleWidth, paddleHeight, colors.paddleLeft);
       drawRect(rightPaddle.x, rightPaddle.y, paddleWidth, paddleHeight, colors.paddleRight);
@@ -101,26 +98,15 @@
     }
 
     function loop() {
-      update();
-      render();
-      requestAnimationFrame(loop);
+      update(); render(); requestAnimationFrame(loop);
     }
 
-    // Controls
-    document.addEventListener('keydown', e => {
-      switch(e.key) {
-        case 'z': leftPaddle.dy = -speed; break;
-        case 's': leftPaddle.dy = speed; break;
-        case 'ArrowUp': rightPaddle.dy = -speed; break;
-        case 'ArrowDown': rightPaddle.dy = speed; break;
-      }
-    });
-    document.addEventListener('keyup', e => {
-      if (['z','s'].includes(e.key)) leftPaddle.dy = 0;
-      if (['ArrowUp','ArrowDown'].includes(e.key)) rightPaddle.dy = 0;
+    // Contrôle souris pour raquette gauche
+    canvas.addEventListener('mousemove', e => {
+      leftPaddle.y = e.offsetY - paddleHeight/2;
+      leftPaddle.y = Math.max(Math.min(leftPaddle.y, canvas.height - paddleHeight), 0);
     });
 
-    // Start
     loop();
   </script>
 </body>
